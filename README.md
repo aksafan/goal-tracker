@@ -6,7 +6,7 @@ These instructions are for the **front-end team** so they can setup their local 
 both the back-end server and their front-end app. You can go through these steps during your first group meeting 
 in case you need assistance from your mentors.
 
->The back-end server will be running on port 8000. The front-end app will be running on port 3000. You will need to run both the back-end server and the front-end app at the same time to test your app.
+>The back-end server will be running on port 8000. The front-end app will be running on port 5173. You will need to run both the back-end server and the front-end app at the same time to test your app.
 
 ### Setting up local development environment
 
