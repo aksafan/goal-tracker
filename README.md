@@ -10,13 +10,14 @@ in case you need assistance from your mentors.
 
 ### Setting up local development environment
 
-1. Create a folder to contain both the front-end and back-end repos 
+1. Create a folder to contain both the front-end and back-end repos
 2. Clone this repository to that folder
-3. Run `npm install` to install dependencies
-4. Pull the latest version of the `main` branch (when needed)
-5. Run `npm run dev` to start the development server
-6. Open http://localhost:8000/api/v1/ with your browser to test.
-7. Your back-end server is now running. You can now run the front-end app.
+3. Create `.env` file in the root folder (you can copy from `.env.example` and set it with your vars)
+4. Run `npm install` to install dependencies
+5. Pull the latest version of the `main` branch (when needed)
+6. Run `npm run dev` to start the development server
+7. Open http://localhost:8000/api/v1/ with your browser to test.
+8. Your back-end server is now running. You can now run the front-end app.
 
 #### Running the back-end server in Visual Studio Code
 
