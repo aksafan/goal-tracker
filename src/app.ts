@@ -1,12 +1,12 @@
 import express from "express";
-import cors from "cors";
 import favicon from "express-favicon";
 import logger from "morgan";
-import { rateLimit } from "express-rate-limit";
 import config from "./config";
+import { rateLimit } from "express-rate-limit";
+import cors from "cors";
 import helmet from "helmet";
-import mainRouter from "./routes/mainRouter.js";
-import xss from "xss-clean";
+// import sanitizeMiddleware from "./middleware/sanitize";
+import mainRouter from "./routes/mainRouter";
 
 const app = express();
 
@@ -21,9 +21,9 @@ app.use(favicon(__dirname + "/public/favicon.ico"));
 app.use(cors());
 app.use(rateLimit(config.rateLimiter));
 app.use(helmet());
-app.use(xss());
+// app.use(sanitizeMiddleware);
 
 // routes
 app.use("/api/v1", mainRouter);
 
-module.exports = app;
+export default app;

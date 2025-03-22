@@ -46,4 +46,4 @@ the same.
 When adding new rules you probably want to check if your new configuration contains any rules that are unnecessary or
 conflict with Prettier:
 
-`npx eslint-config-prettier src/app.js`
+`npx eslint-config-prettier src/app.ts`
