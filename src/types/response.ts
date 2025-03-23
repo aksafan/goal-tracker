@@ -4,7 +4,7 @@ export interface User {
   email: string;
 }
 
-export interface Error {
+export interface ErrorResponse {
   code: number;
   name: string;
 }
