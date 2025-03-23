@@ -5,7 +5,7 @@ import config from "./config";
 import { rateLimit } from "express-rate-limit";
 import cors from "cors";
 import helmet from "helmet";
-// import sanitizeMiddleware from "./middleware/sanitize";
+import sanitizeMiddleware from "./middleware/sanitize";
 import mainRouter from "./routes/mainRouter";
 
 const app = express();
@@ -21,7 +21,7 @@ app.use(favicon(__dirname + "/public/favicon.ico"));
 app.use(cors());
 app.use(rateLimit(config.rateLimiter));
 app.use(helmet());
-// app.use(sanitizeMiddleware);
+app.use(sanitizeMiddleware);
 
 // routes
 app.use("/api/v1", mainRouter);

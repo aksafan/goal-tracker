@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon src/server.ts",
     "build": "npx tsc",
-    "start": "node dist/index.js"
+    "start": "node dist/server.js"
   },
   "author": "aksafan,IrinaStoetski",
   "bugs": {
@@ -15,7 +15,6 @@
   "homepage": "https://github.com/Code-the-Dream-School/ii-practicum-team-2-back#readme",
   "license": "ISC",
   "dependencies": {
-    "@types/sanitize-html": "^2.13.0",
     "bcryptjs": "^3.0.2",
     "body-parser": "^2.1.0",
     "cors": "^2.8.5",
@@ -29,7 +28,7 @@
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",
     "sanitize-html": "^2.15.0",
-    "xss-clean": "^0.1.4"
+    "xss": "^1.0.15"
   },
   "engines": {
     "node": "^22.13.0",

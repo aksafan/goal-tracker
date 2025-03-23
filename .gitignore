@@ -30,7 +30,8 @@ Thumbs.db
 /coverage
 
 # production
-/build
+/build/
+/dist/
 
 # dotenv environment variables file
 .env
