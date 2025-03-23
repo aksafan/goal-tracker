@@ -7,6 +7,7 @@ import cors from "cors";
 import helmet from "helmet";
 import sanitizeMiddleware from "./middleware/sanitize";
 import mainRouter from "./routes/mainRouter";
+import swaggerDocs from "./utils/swagger";
 
 const app = express();
 
@@ -25,5 +26,7 @@ app.use(sanitizeMiddleware);
 
 // routes
 app.use("/api/v1", mainRouter);
+
+swaggerDocs(app);
 
 export default app;
