@@ -1,7 +1,11 @@
-import { NextFunction, Request, Response } from "express-serve-static-core";
-import config from "../config";
+import type {
+  NextFunction,
+  Request,
+  Response,
+} from "express-serve-static-core";
+import config from "@/config";
 
-function sanitizeValue(value: unknown): unknown {
+const sanitizeValue = (value: unknown): unknown => {
   if (typeof value === "string") {
     return config.xss.process(value);
   }
@@ -15,9 +19,9 @@ function sanitizeValue(value: unknown): unknown {
   }
 
   return value;
-}
+};
 
-function sanitizeObject<T extends Record<string, unknown>>(obj: T): T {
+const sanitizeObject = <T extends Record<string, unknown>>(obj: T): T => {
   const result = {} as T;
 
   for (const key in obj) {
@@ -26,13 +30,9 @@ function sanitizeObject<T extends Record<string, unknown>>(obj: T): T {
   }
 
   return result;
-}
+};
 
-export default function sanitizeRequest(
-  req: Request,
-  _res: Response,
-  next: NextFunction,
-) {
+const sanitizeRequest = (req: Request, _res: Response, next: NextFunction) => {
   if (req.body && typeof req.body === "object") {
     Object.assign(req.body, sanitizeValue(req.body));
   }
@@ -46,4 +46,6 @@ export default function sanitizeRequest(
   }
 
   next();
-}
+};
+
+export default sanitizeRequest;

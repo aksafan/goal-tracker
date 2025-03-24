@@ -1,5 +1,5 @@
 import swaggerJsdoc from "swagger-jsdoc";
-import { version } from "../../package.json";
+import { version } from "#root/package.json";
 
 const options: swaggerJsdoc.Options = {
   definition: {
@@ -23,7 +23,7 @@ const options: swaggerJsdoc.Options = {
       },
     ],
   },
-  apis: ["./src/routes/**/*.ts", "./src/schema/*.ts", "./src/dtos/*.ts"],
+  apis: ["./src/routes/**/*.ts", "./src/schema/*.ts", "./src/dto/*.ts"],
 };
 
 export default options;

@@ -1,7 +1,7 @@
-import rateLimiter from "./rateLimiter";
-import xss from "./xss";
-import swagger from "./swagger";
-import db from "./db";
+import rateLimiter from "@/config/rateLimiter";
+import xss from "@/config/xss";
+import swagger from "@/config/swagger";
+import db from "@/config/db";
 
 export default {
   rateLimiter,

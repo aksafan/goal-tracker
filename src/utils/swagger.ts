@@ -1,7 +1,7 @@
-import { Express, Request, Response } from "express-serve-static-core";
+import type { Express, Request, Response } from "express-serve-static-core";
 import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
-import config from "./../config";
+import config from "@/config";
 
 const swaggerSpec = swaggerJsdoc(config.swagger);
 

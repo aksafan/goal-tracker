@@ -1,8 +1,8 @@
-import { Request, Response } from "express-serve-static-core";
-import { CreateUserQueryParams } from "../types/queryParams";
-import { ErrorResponse } from "../types/response";
-import { createUser } from "../services/userService";
-import { CreateUserForm, CreateUserResponse } from "../dtos";
+import type { Request, Response } from "express-serve-static-core";
+import type { CreateUserQueryParams } from "@/types/queryParams";
+import type { ErrorResponse } from "@/types/response";
+import { createUser } from "@/services/userService";
+import type { CreateUserForm, CreateUserResponse } from "@/dto";
 
 export const get = (req: Request, res: Response) => {
   res.json({ data: "This is a full stack app!" });
@@ -12,13 +12,10 @@ export const get = (req: Request, res: Response) => {
 // type hints for request body/query and defined Response types
 export const post = async (
   req: Request<unknown, unknown, CreateUserForm, CreateUserQueryParams>,
-  res: Response<CreateUserResponse | ErrorResponse>,
+  res: Response<CreateUserResponse | ErrorResponse>
 ) => {
-  const { username, email } = req.body;
-  console.log(username);
+  const { email } = req.body;
   const password = req.body.password;
-  const loginAfterCreate = req.query.loginAfterCreate;
-  console.log(loginAfterCreate);
 
   if (!email || !password) {
     res.status(400).json({ code: 400, name: "Missing credentials" });

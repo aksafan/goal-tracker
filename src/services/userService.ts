@@ -1,6 +1,6 @@
 import { randomInt } from "node:crypto";
-import User from "../schema/user";
-import CreateUserForm from "../dtos/CreateUserForm";
+import type User from "@/schema/user";
+import type CreateUserForm from "@/dto/CreateUserForm";
 import bcrypt from "bcryptjs";
 
 export const createUser = async (userForm: CreateUserForm): Promise<User> => {

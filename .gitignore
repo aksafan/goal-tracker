@@ -1,6 +1,9 @@
 # optional eslint cache
 .eslintcache
 
+# VSCode project files
+.vscode
+
 # IDEA project files
 .idea
 
