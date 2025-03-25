@@ -1,21 +1,61 @@
 {
-  "name": "bb-practicum-team-1-back",
+  "name": "goal-tracker-api",
   "version": "1.0.0",
-  "description": "Back-End Repo for Team 1 of Baboon/Bald Eagle Practicum",
-  "main": "app.js",
+  "description": "Achieve Your Dreams with Goal Tracker",
+  "main": "dist/app.js",
+  "type": "module",
   "scripts": {
-    "dev": "nodemon src/server.js"
+    "dev": "tsx watch src/server.ts",
+    "build": "tsup",
+    "start": "node dist/server.js",
+    "prettier:write": "npx prettier . --write",
+    "lint": "npx eslint .",
+    "lint:fix": "npx eslint . --fix"
   },
-  "author": "",
+  "author": "aksafan,IrinaStoetski",
+  "bugs": {
+    "url": "https://github.com/Code-the-Dream-School/ii-practicum-team-2-back/issues"
+  },
+  "homepage": "https://github.com/Code-the-Dream-School/ii-practicum-team-2-back#readme",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "body-parser": "^2.1.0",
     "cors": "^2.8.5",
-    "express": "^4.18.2",
+    "dotenv": "^16.4.7",
+    "express": "^5.0.1",
     "express-favicon": "^2.0.4",
-    "mongoose": "^7.0.1",
-    "morgan": "^1.10.0"
+    "express-rate-limit": "^7.5.0",
+    "express-validator": "^7.2.1",
+    "helmet": "^8.1.0",
+    "http-status-codes": "^2.3.0",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
+    "sanitize-html": "^2.15.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
+    "xss": "^1.0.15"
+  },
+  "engines": {
+    "node": "^22.13.0",
+    "npm": "^11.1.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.21"
+    "@eslint/js": "^9.23.0",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.1",
+    "@types/node": "^22.13.11",
+    "@types/sanitize-html": "^2.13.0",
+    "@types/swagger-jsdoc": "^6.0.4",
+    "@types/swagger-ui-express": "^4.1.8",
+    "concurrently": "^9.1.2",
+    "eslint": "^9.23.0",
+    "eslint-config-prettier": "^10.1.1",
+    "globals": "^16.0.0",
+    "prettier": "3.5.3",
+    "tsup": "^8.4.0",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.2",
+    "typescript-eslint": "^8.27.0"
   }
 }
