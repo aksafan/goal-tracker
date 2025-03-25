@@ -38,17 +38,9 @@ the same.
 
 #### Running ESLint
 
-`npx eslint` - to check everything.
+`npm run lint` - to check everything.
+`npm run lint:fix` - to fix everything.
 
 #### Running Prettier
 
-`npx prettier . --write` - to format everything.
-
-> You may run `prettier --write app/` to format a certain directory,
-> or `prettier --write app/components/Button.js` to format a certain file,
-> or use a glob like `prettier --write "app/**/*.test.js"` to format all tests in a directory.
-
-When adding new rules you probably want to check if your new configuration contains any rules that are unnecessary or
-conflict with Prettier:
-
-`npx eslint-config-prettier src/app.ts`
+`npm run prettier:write` - to format everything.
