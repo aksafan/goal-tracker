@@ -19,6 +19,8 @@
   "homepage": "https://github.com/Code-the-Dream-School/ii-practicum-team-2-back#readme",
   "license": "ISC",
   "dependencies": {
+    "@prisma/client": "^6.6.0",
+    "@supabase/supabase-js": "^2.49.4",
     "bcryptjs": "^3.0.2",
     "body-parser": "^2.1.0",
     "cors": "^2.8.5",
@@ -53,6 +55,7 @@
     "eslint-config-prettier": "^10.1.1",
     "globals": "^16.0.0",
     "prettier": "3.5.3",
+    "prisma": "^6.6.0",
     "tsup": "^8.4.0",
     "tsx": "^4.19.3",
     "typescript": "^5.8.2",
