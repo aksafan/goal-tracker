@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -15,19 +9,18 @@ datasource db {
 }
 
 model User {
-  id                  String                  @id @default(uuid())
-  name                String
-  email               String                  @unique
-  password            String
-  created_at          DateTime
-  updated_at          DateTime
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  name      String
+  email     String   @unique
+  password  String
+  updatedAt DateTime @updatedAt @map("updated_at")
 }
 
 model UserAuthProvider {
-  id            String   @id @default(uuid())
-  user        User @relation(fields: [user_id], references: [id])
-  user_id       String
-  provider      String
-  provider_user String
-  created_at    DateTime
+  id           String   @id @default(uuid())
+  userId       String   @map("user_id")
+  provider     String
+  providerUser String   @map("provider_user")
+  createdAt    DateTime @default(now()) @map("created_at")
 }
