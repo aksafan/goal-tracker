@@ -9,18 +9,22 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now()) @map("created_at")
-  name      String
-  email     String   @unique
-  password  String
-  updatedAt DateTime @updatedAt @map("updated_at")
+  id          String   @id @default(uuid())
+  created_at  DateTime @default(now())
+  updated_at  DateTime
+  name        String
+  email       String   @unique
+  password    String
+ 
+  authProviders UserAuthProvider[]
 }
 
 model UserAuthProvider {
-  id           String   @id @default(uuid())
-  userId       String   @map("user_id")
-  provider     String
-  providerUser String   @map("provider_user")
-  createdAt    DateTime @default(now()) @map("created_at")
+  id                String   @id @default(uuid())
+  user_id           String   
+  provider          String
+  provider_user_id  String   
+  created_at        DateTime @default(now())
+
+  user              User     @relation(fields: [user_id], references: [id])
 }
