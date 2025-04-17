@@ -401,19 +401,10 @@
         "summary": "List available goal types",
         "parameters": [
           {
-            "name": "limit",
-            "in": "query",
-            "schema": {
-              "type": "integer"
-            }
+            "$ref": "#/components/parameters/limitParam"
           },
           {
-            "name": "sort",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "enum": ["asc", "desc"]
-            }
+            "$ref": "#/components/parameters/sortParam"
           }
         ],
         "responses": {
@@ -582,24 +573,15 @@
         "summary": "List all user goals",
         "parameters": [
           {
-            "name": "limit",
-            "in": "query",
-            "schema": {
-              "type": "integer"
-            }
+            "$ref": "#/components/parameters/limitParam"
           },
           {
-            "name": "sort",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "enum": ["asc", "desc"]
-            }
+            "$ref": "#/components/parameters/sortParam"
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "List all user goals"
           },
           "400": {
             "$ref": "#/components/responses/BadRequest"
@@ -615,9 +597,6 @@
           },
           "417": {
             "$ref": "#/components/responses/ExpectationFailed"
-          },
-          "422": {
-            "$ref": "#/components/responses/UnprocessableContent"
           }
         }
       },
@@ -660,32 +639,26 @@
       }
     },
     "/goals/{id}/progress": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          },
+          "example": "396eb1db-dc34-418c-b071-714b3732aaef"
+        }
+      ],
       "get": {
         "tags": ["GoalProgress"],
         "summary": "Get goal progress",
         "parameters": [
           {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "$ref": "#/components/parameters/limitParam"
           },
           {
-            "name": "limit",
-            "in": "query",
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "name": "sort",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "enum": ["asc", "desc"]
-            }
+            "$ref": "#/components/parameters/sortParam"
           }
         ],
         "responses": {
@@ -715,16 +688,6 @@
       "post": {
         "tags": ["GoalProgress"],
         "summary": "Add progress",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -766,19 +729,10 @@
         "summary": "Get all daily quests",
         "parameters": [
           {
-            "name": "limit",
-            "in": "query",
-            "schema": {
-              "type": "integer"
-            }
+            "$ref": "#/components/parameters/limitParam"
           },
           {
-            "name": "sort",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "enum": ["asc", "desc"]
-            }
+            "$ref": "#/components/parameters/sortParam"
           }
         ],
         "responses": {
@@ -1030,19 +984,10 @@
             }
           },
           {
-            "name": "limit",
-            "in": "query",
-            "schema": {
-              "type": "integer"
-            }
+            "$ref": "#/components/parameters/limitParam"
           },
           {
-            "name": "sort",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "enum": ["asc", "desc"]
-            }
+            "$ref": "#/components/parameters/sortParam"
           }
         ],
         "responses": {
@@ -1217,19 +1162,10 @@
         "summary": "Get goal board images",
         "parameters": [
           {
-            "name": "limit",
-            "in": "query",
-            "schema": {
-              "type": "integer"
-            }
+            "$ref": "#/components/parameters/limitParam"
           },
           {
-            "name": "sort",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "enum": ["asc", "desc"]
-            }
+            "$ref": "#/components/parameters/sortParam"
           }
         ],
         "responses": {
@@ -1306,19 +1242,10 @@
         "summary": "List daily quests suggestions excluding active daily quests",
         "parameters": [
           {
-            "name": "limit",
-            "in": "query",
-            "schema": {
-              "type": "integer"
-            }
+            "$ref": "#/components/parameters/limitParam"
           },
           {
-            "name": "sort",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "enum": ["asc", "desc"]
-            }
+            "$ref": "#/components/parameters/sortParam"
           }
         ],
         "responses": {
@@ -2062,6 +1989,39 @@
             }
           }
         }
+      }
+    },
+    "parameters": {
+      "sortParam": {
+        "in": "query",
+        "name": "sort",
+        "required": false,
+        "schema": {
+          "type": "string"
+        },
+        "examples": {
+          "By Id ASC": {
+            "summary": "Sort by Id ASC",
+            "value": "id"
+          },
+          "By Name DESC": {
+            "summary": "Sort by Name DESC",
+            "value": "-name"
+          }
+        },
+        "description": "The way to sort by field and direction. Add a '-' sign at the beginning of the field name to sort DESC"
+      },
+      "limitParam": {
+        "in": "query",
+        "name": "limit",
+        "required": false,
+        "schema": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 50,
+          "default": 10
+        },
+        "description": "The numbers of items to return"
       }
     }
   }
