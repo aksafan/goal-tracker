@@ -793,9 +793,14 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/GoalType"
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/GoalType"
+                      }
+                    }
                   }
                 }
               }
@@ -815,9 +820,6 @@
           },
           "417": {
             "$ref": "#/components/responses/ExpectationFailed"
-          },
-          "422": {
-            "$ref": "#/components/responses/UnprocessableContent"
           }
         }
       },
@@ -836,7 +838,14 @@
         },
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GoalType"
+                }
+              }
+            }
           },
           "400": {
             "$ref": "#/components/responses/BadRequest"
@@ -870,7 +879,14 @@
         "summary": "Get goal type",
         "responses": {
           "200": {
-            "description": "Goal type"
+            "description": "Goal type",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GoalType"
+                }
+              }
+            }
           },
           "400": {
             "$ref": "#/components/responses/BadRequest"
@@ -886,9 +902,6 @@
           },
           "417": {
             "$ref": "#/components/responses/ExpectationFailed"
-          },
-          "422": {
-            "$ref": "#/components/responses/UnprocessableContent"
           }
         }
       }
@@ -914,7 +927,14 @@
         },
         "responses": {
           "201": {
-            "description": "Field added"
+            "description": "Field added",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateGoalTypeFieldsResponse"
+                }
+              }
+            }
           },
           "400": {
             "$ref": "#/components/responses/BadRequest"
@@ -1635,13 +1655,14 @@
       },
       "CreateGoalTypeFieldRequest": {
         "type": "object",
-        "required": ["field_name", "field_type"],
+        "required": ["field_name", "field_type", "required"],
         "properties": {
           "field_name": {
             "type": "string"
           },
           "field_type": {
-            "type": "string"
+            "type": "string",
+            "enum": ["string", "integer", "boolean", "dropdown"]
           },
           "required": {
             "type": "boolean"
@@ -1654,6 +1675,45 @@
             "items": {
               "type": "string"
             }
+          }
+        }
+      },
+      "CreateGoalTypeFieldsResponse": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/GoalTypeFieldResponse"
+        }
+      },
+      "GoalTypeFieldResponse": {
+        "type": "object",
+        "required": ["field_name", "field_type", "required"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "goal_type_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "field_name": {
+            "type": "string"
+          },
+          "field_type": {
+            "type": "string",
+            "enum": ["string", "integer", "boolean", "dropdown"]
+          },
+          "required": {
+            "type": "boolean"
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "trackable": {
+            "type": "boolean"
           }
         }
       },
