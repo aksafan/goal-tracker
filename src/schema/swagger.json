@@ -395,6 +395,386 @@
         }
       }
     },
+    "/goals": {
+      "get": {
+        "tags": ["Goals"],
+        "summary": "List all user goals",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/limitParam"
+          },
+          {
+            "$ref": "#/components/parameters/sortParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List all user goals",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/GoalResponse"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "417": {
+            "$ref": "#/components/responses/ExpectationFailed"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Goals"],
+        "summary": "Create a goal",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateGoalRequest"
+              },
+              "examples": {
+                "CreateGoalRequest": {
+                  "$ref": "#/components/examples/GoalRequestForm"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GoalResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "417": {
+            "$ref": "#/components/responses/ExpectationFailed"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableContent"
+          }
+        }
+      }
+    },
+    "/goals/{id}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/idParam"
+        }
+      ],
+      "get": {
+        "tags": ["Goals"],
+        "summary": "Get goal by ID",
+        "responses": {
+          "200": {
+            "description": "Goal details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GoalResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "417": {
+            "$ref": "#/components/responses/ExpectationFailed"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableContent"
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Goals"],
+        "summary": "Update goal title/description",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateGoalRequest"
+              },
+              "examples": {
+                "CreateGoalRequest": {
+                  "$ref": "#/components/examples/GoalRequestForm"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GoalResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "417": {
+            "$ref": "#/components/responses/ExpectationFailed"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableContent"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Goals"],
+        "summary": "Delete or archive goal",
+        "responses": {
+          "204": {
+            "description": "Deleted"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "417": {
+            "$ref": "#/components/responses/ExpectationFailed"
+          }
+        }
+      }
+    },
+    "/goals/{id}/field-values": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/idParam"
+        }
+      ],
+      "patch": {
+        "tags": ["Goals"],
+        "summary": "Update field values for a goal",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateGoalFieldValuesRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Values updated"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "417": {
+            "$ref": "#/components/responses/ExpectationFailed"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableContent"
+          }
+        }
+      }
+    },
+    "/goal-board-images": {
+      "get": {
+        "tags": ["Goals"],
+        "summary": "Get goal board images",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/limitParam"
+          },
+          {
+            "$ref": "#/components/parameters/sortParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Image list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/GoalBoardImageResponse"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "417": {
+            "$ref": "#/components/responses/ExpectationFailed"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Goals"],
+        "summary": "Upload image to goal board list",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/GoalBoardImagesRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Uploaded and resized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GoalBoardImageResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "417": {
+            "$ref": "#/components/responses/ExpectationFailed"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableContent"
+          }
+        }
+      }
+    },
+    "/goal-board-images/{id}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/idParam"
+        }
+      ],
+      "delete": {
+        "tags": ["Goals"],
+        "summary": "Delete Goal Board image",
+        "responses": {
+          "204": {
+            "description": "Deleted"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "417": {
+            "$ref": "#/components/responses/ExpectationFailed"
+          }
+        }
+      }
+    },
     "/goal-types": {
       "get": {
         "tags": ["GoalTypes"],
@@ -480,19 +860,14 @@
       }
     },
     "/goal-types/{id}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/idParam"
+        }
+      ],
       "get": {
         "tags": ["GoalTypes"],
         "summary": "Get goal type",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Goal type"
@@ -519,19 +894,14 @@
       }
     },
     "/goal-types/{id}/fields": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/idParam"
+        }
+      ],
       "post": {
         "tags": ["GoalTypes"],
         "summary": "Add fields to goal type",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -567,89 +937,7 @@
         }
       }
     },
-    "/goals": {
-      "get": {
-        "tags": ["Goals"],
-        "summary": "List all user goals",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/limitParam"
-          },
-          {
-            "$ref": "#/components/parameters/sortParam"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "List all user goals"
-          },
-          "400": {
-            "$ref": "#/components/responses/BadRequest"
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "403": {
-            "$ref": "#/components/responses/Forbidden"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          },
-          "417": {
-            "$ref": "#/components/responses/ExpectationFailed"
-          }
-        }
-      },
-      "post": {
-        "tags": ["Goals"],
-        "summary": "Create a goal",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateGoalRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Created"
-          },
-          "400": {
-            "$ref": "#/components/responses/BadRequest"
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "403": {
-            "$ref": "#/components/responses/Forbidden"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          },
-          "417": {
-            "$ref": "#/components/responses/ExpectationFailed"
-          },
-          "422": {
-            "$ref": "#/components/responses/UnprocessableContent"
-          }
-        }
-      }
-    },
     "/goals/{id}/progress": {
-      "parameters": [
-        {
-          "name": "id",
-          "in": "path",
-          "required": true,
-          "schema": {
-            "type": "string"
-          },
-          "example": "396eb1db-dc34-418c-b071-714b3732aaef"
-        }
-      ],
       "get": {
         "tags": ["GoalProgress"],
         "summary": "Get goal progress",
@@ -797,178 +1085,6 @@
         }
       }
     },
-    "/goals/{id}": {
-      "get": {
-        "tags": ["Goals"],
-        "summary": "Get goal by ID",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Goal details"
-          },
-          "400": {
-            "$ref": "#/components/responses/BadRequest"
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "403": {
-            "$ref": "#/components/responses/Forbidden"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          },
-          "417": {
-            "$ref": "#/components/responses/ExpectationFailed"
-          },
-          "422": {
-            "$ref": "#/components/responses/UnprocessableContent"
-          }
-        }
-      },
-      "patch": {
-        "tags": ["Goals"],
-        "summary": "Update goal title/description",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateGoalRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Updated"
-          },
-          "400": {
-            "$ref": "#/components/responses/BadRequest"
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "403": {
-            "$ref": "#/components/responses/Forbidden"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          },
-          "417": {
-            "$ref": "#/components/responses/ExpectationFailed"
-          },
-          "422": {
-            "$ref": "#/components/responses/UnprocessableContent"
-          }
-        }
-      },
-      "delete": {
-        "tags": ["Goals"],
-        "summary": "Delete or archive goal",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Deleted"
-          },
-          "400": {
-            "$ref": "#/components/responses/BadRequest"
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "403": {
-            "$ref": "#/components/responses/Forbidden"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          },
-          "417": {
-            "$ref": "#/components/responses/ExpectationFailed"
-          },
-          "422": {
-            "$ref": "#/components/responses/UnprocessableContent"
-          }
-        }
-      }
-    },
-    "/goals/{id}/field-values": {
-      "patch": {
-        "tags": ["Goals"],
-        "summary": "Update field values for a goal",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateGoalFieldValuesRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Values updated"
-          },
-          "400": {
-            "$ref": "#/components/responses/BadRequest"
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "403": {
-            "$ref": "#/components/responses/Forbidden"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          },
-          "417": {
-            "$ref": "#/components/responses/ExpectationFailed"
-          },
-          "422": {
-            "$ref": "#/components/responses/UnprocessableContent"
-          }
-        }
-      }
-    },
     "/daily-quests/for-date": {
       "get": {
         "tags": ["DailyQuests"],
@@ -1016,19 +1132,14 @@
       }
     },
     "/daily-quests/{id}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/idParam"
+        }
+      ],
       "patch": {
         "tags": ["DailyQuests"],
         "summary": "Update daily quest",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -1066,16 +1177,6 @@
       "delete": {
         "tags": ["DailyQuests"],
         "summary": "Delete daily quest",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "204": {
             "description": "Deleted"
@@ -1102,19 +1203,14 @@
       }
     },
     "/daily-quests/{id}/toggle": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/idParam"
+        }
+      ],
       "post": {
         "tags": ["DailyQuests"],
         "summary": "Toggle daily quest completion for date",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -1134,86 +1230,6 @@
         "responses": {
           "200": {
             "description": "Toggled"
-          },
-          "400": {
-            "$ref": "#/components/responses/BadRequest"
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "403": {
-            "$ref": "#/components/responses/Forbidden"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          },
-          "417": {
-            "$ref": "#/components/responses/ExpectationFailed"
-          },
-          "422": {
-            "$ref": "#/components/responses/UnprocessableContent"
-          }
-        }
-      }
-    },
-    "/goal-board": {
-      "get": {
-        "tags": ["Goals"],
-        "summary": "Get goal board images",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/limitParam"
-          },
-          {
-            "$ref": "#/components/parameters/sortParam"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Image list"
-          },
-          "400": {
-            "$ref": "#/components/responses/BadRequest"
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "403": {
-            "$ref": "#/components/responses/Forbidden"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          },
-          "417": {
-            "$ref": "#/components/responses/ExpectationFailed"
-          },
-          "422": {
-            "$ref": "#/components/responses/UnprocessableContent"
-          }
-        }
-      },
-      "post": {
-        "tags": ["Goals"],
-        "summary": "Upload image to goal board",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "file": {
-                    "type": "string",
-                    "format": "binary"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Uploaded and resized"
           },
           "400": {
             "$ref": "#/components/responses/BadRequest"
@@ -1319,19 +1335,14 @@
       }
     },
     "/daily-quests/suggestions/{id}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/idParam"
+        }
+      ],
       "get": {
         "tags": ["DailyQuestsSuggestions"],
         "summary": "Get daily quests suggestion by ID",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Daily quests suggestion details"
@@ -1359,16 +1370,6 @@
       "patch": {
         "tags": ["DailyQuestsSuggestions"],
         "summary": "Update daily quests suggestion",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -1414,16 +1415,6 @@
       "delete": {
         "tags": ["DailyQuestsSuggestions"],
         "summary": "Delete daily quests suggestion",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "204": {
             "description": "Deleted"
@@ -1569,6 +1560,54 @@
           }
         }
       },
+      "GoalResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "user_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "goal_type_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "goal_field_values": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GoalFieldValue"
+            }
+          }
+        }
+      },
+      "GoalFieldValue": {
+        "type": "object",
+        "properties": {
+          "goal_type_field_id": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          }
+        }
+      },
       "GoalType": {
         "type": "object",
         "properties": {
@@ -1620,52 +1659,42 @@
       },
       "CreateGoalRequest": {
         "type": "object",
-        "required": ["name", "goal_type_id", "field_values"],
+        "required": ["name", "goal_type_id", "goal_field_values"],
         "properties": {
           "name": {
+            "type": "string"
+          },
+          "description": {
             "type": "string"
           },
           "goal_type_id": {
             "type": "string"
           },
-          "field_values": {
+          "goal_field_values": {
             "type": "array",
             "items": {
-              "type": "object",
-              "properties": {
-                "goal_type_field_id": {
-                  "type": "string"
-                },
-                "value": {
-                  "type": "string"
-                }
-              }
+              "$ref": "#/components/schemas/GoalFieldValue"
             }
           }
         }
       },
       "UpdateGoalRequest": {
         "type": "object",
-        "required": ["name", "goal_type_id", "field_values"],
+        "required": ["name", "goal_type_id", "goal_field_values"],
         "properties": {
           "name": {
+            "type": "string"
+          },
+          "description": {
             "type": "string"
           },
           "goal_type_id": {
             "type": "string"
           },
-          "field_values": {
+          "goal_field_values": {
             "type": "array",
             "items": {
-              "type": "object",
-              "properties": {
-                "goal_type_field_id": {
-                  "type": "string"
-                },
-                "value": {
-                  "type": "string"
-                }
-              }
+              "$ref": "#/components/schemas/GoalFieldValue"
             }
           }
         }
@@ -1733,14 +1762,35 @@
         }
       },
       "UpdateGoalFieldValuesRequest": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/GoalFieldValue"
+        }
+      },
+      "GoalBoardImageResponse": {
         "type": "object",
-        "required": ["title", "icon", "is_daily"],
         "properties": {
-          "goal_type_field_id": {
-            "type": "string"
+          "file_url": {
+            "type": "string",
+            "format": "uri"
           },
-          "value": {
-            "type": "string"
+          "thumbnail_url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "GoalBoardImagesRequest": {
+        "type": "object",
+        "required": ["image"],
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "binary"
           }
         }
       },
@@ -1844,6 +1894,46 @@
         "value": {
           "email": "example@gmail.com",
           "name": "John Dou"
+        }
+      },
+      "GoalResponse": {
+        "summary": "An example of Goal response",
+        "value": {
+          "id": "396eb1db-dc34-418c-b071-714b3732aaef",
+          "name": "Read more books",
+          "description": "Read more books during this year",
+          "user_id": "400eb1db-dc34-418c-b071-714b3732aaef",
+          "goal_type_id": "12heb1db-dc34-418c-b071-714b3732aaef",
+          "created_at": "2019-08-24T14:15:22Z",
+          "updated_at": "2019-08-24T14:15:22Z",
+          "goal_field_values": [
+            {
+              "goal_type_field_id": "600eb1db-dc34-418c-b071-714b3732aaef",
+              "value": "10"
+            },
+            {
+              "goal_type_field_id": "700eb1db-dc34-418c-b071-714b3732aaef",
+              "value": "Every day"
+            }
+          ]
+        }
+      },
+      "GoalRequestForm": {
+        "summary": "An example of Create/Update Goal response",
+        "value": {
+          "name": "Read more books",
+          "description": "Read more books during this year",
+          "goal_type_id": "12heb1db-dc34-418c-b071-714b3732aaef",
+          "goal_field_values": [
+            {
+              "goal_type_field_id": "600eb1db-dc34-418c-b071-714b3732aaef",
+              "value": "10"
+            },
+            {
+              "goal_type_field_id": "700eb1db-dc34-418c-b071-714b3732aaef",
+              "value": "Every day"
+            }
+          ]
         }
       },
       "BadRequestResponse": {
@@ -1997,7 +2087,8 @@
         "name": "sort",
         "required": false,
         "schema": {
-          "type": "string"
+          "type": "string",
+          "default": "id"
         },
         "examples": {
           "By Id ASC": {
@@ -2021,7 +2112,18 @@
           "maximum": 50,
           "default": 10
         },
-        "description": "The numbers of items to return"
+        "description": "The numbers of items to return",
+        "example": 10
+      },
+      "idParam": {
+        "in": "path",
+        "name": "id",
+        "required": true,
+        "schema": {
+          "type": "string"
+        },
+        "description": "The ID of resource",
+        "example": "396eb1db-dc34-418c-b071-714b3732aaef"
       }
     }
   }
