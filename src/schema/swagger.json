@@ -451,7 +451,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateGoalRequest"
+                "$ref": "#/components/schemas/GoalRequestForm"
               },
               "examples": {
                 "CreateGoalRequest": {
@@ -541,7 +541,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateGoalRequest"
+                "$ref": "#/components/schemas/GoalRequestForm"
               },
               "examples": {
                 "CreateGoalRequest": {
@@ -798,7 +798,7 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/GoalType"
+                        "$ref": "#/components/schemas/GoalTypeResponse"
                       }
                     }
                   }
@@ -842,7 +842,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GoalType"
+                  "$ref": "#/components/schemas/GoalTypeResponse"
                 }
               }
             }
@@ -883,7 +883,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GoalType"
+                  "$ref": "#/components/schemas/GoalTypeResponse"
                 }
               }
             }
@@ -1682,6 +1682,27 @@
           }
         }
       },
+      "GoalRequestForm": {
+        "type": "object",
+        "required": ["name", "goal_type_id", "goal_field_values"],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "goal_type_id": {
+            "type": "string"
+          },
+          "goal_field_values": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GoalFieldValue"
+            }
+          }
+        }
+      },
       "GoalFieldValue": {
         "type": "object",
         "properties": {
@@ -1693,7 +1714,40 @@
           }
         }
       },
-      "GoalType": {
+      "UpdateGoalFieldValuesRequest": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/GoalFieldValue"
+        }
+      },
+      "GoalBoardImageResponse": {
+        "type": "object",
+        "properties": {
+          "file_url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "thumbnail_url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "GoalBoardImagesRequest": {
+        "type": "object",
+        "required": ["image"],
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "binary"
+          }
+        }
+      },
+      "GoalTypeResponse": {
         "type": "object",
         "properties": {
           "id": {
@@ -1779,48 +1833,6 @@
           },
           "trackable": {
             "type": "boolean"
-          }
-        }
-      },
-      "CreateGoalRequest": {
-        "type": "object",
-        "required": ["name", "goal_type_id", "goal_field_values"],
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string"
-          },
-          "goal_type_id": {
-            "type": "string"
-          },
-          "goal_field_values": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/GoalFieldValue"
-            }
-          }
-        }
-      },
-      "UpdateGoalRequest": {
-        "type": "object",
-        "required": ["name", "goal_type_id", "goal_field_values"],
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string"
-          },
-          "goal_type_id": {
-            "type": "string"
-          },
-          "goal_field_values": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/GoalFieldValue"
-            }
           }
         }
       },
@@ -1951,39 +1963,6 @@
           "updated_at": {
             "type": "string",
             "format": "date-time"
-          }
-        }
-      },
-      "UpdateGoalFieldValuesRequest": {
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/GoalFieldValue"
-        }
-      },
-      "GoalBoardImageResponse": {
-        "type": "object",
-        "properties": {
-          "file_url": {
-            "type": "string",
-            "format": "uri"
-          },
-          "thumbnail_url": {
-            "type": "string",
-            "format": "uri"
-          },
-          "created_at": {
-            "type": "string",
-            "format": "date-time"
-          }
-        }
-      },
-      "GoalBoardImagesRequest": {
-        "type": "object",
-        "required": ["image"],
-        "properties": {
-          "image": {
-            "type": "string",
-            "format": "binary"
           }
         }
       },
