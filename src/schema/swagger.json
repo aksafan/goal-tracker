@@ -1064,7 +1064,22 @@
         ],
         "responses": {
           "200": {
-            "description": "List"
+            "description": "List",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/DailyQuestResponse"
+                      }
+                    }
+                  }
+                }
+              }
+            }
           },
           "400": {
             "$ref": "#/components/responses/BadRequest"
@@ -1080,9 +1095,6 @@
           },
           "417": {
             "$ref": "#/components/responses/ExpectationFailed"
-          },
-          "422": {
-            "$ref": "#/components/responses/UnprocessableContent"
           }
         }
       },
@@ -1094,14 +1106,21 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateDailyQuestRequest"
+                "$ref": "#/components/schemas/DailyQuestForm"
               }
             }
           }
         },
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DailyQuestResponse"
+                }
+              }
+            }
           },
           "400": {
             "$ref": "#/components/responses/BadRequest"
@@ -1147,7 +1166,22 @@
         ],
         "responses": {
           "200": {
-            "description": "List for date"
+            "description": "List for date",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/DailyQuestResponse"
+                      }
+                    }
+                  }
+                }
+              }
+            }
           },
           "400": {
             "$ref": "#/components/responses/BadRequest"
@@ -1163,9 +1197,6 @@
           },
           "417": {
             "$ref": "#/components/responses/ExpectationFailed"
-          },
-          "422": {
-            "$ref": "#/components/responses/UnprocessableContent"
           }
         }
       }
@@ -1184,14 +1215,21 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateDailyQuestRequest"
+                "$ref": "#/components/schemas/DailyQuestForm"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Updated"
+            "description": "Updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DailyQuestResponse"
+                }
+              }
+            }
           },
           "400": {
             "$ref": "#/components/responses/BadRequest"
@@ -1234,9 +1272,6 @@
           },
           "417": {
             "$ref": "#/components/responses/ExpectationFailed"
-          },
-          "422": {
-            "$ref": "#/components/responses/UnprocessableContent"
           }
         }
       }
@@ -1305,7 +1340,22 @@
         ],
         "responses": {
           "200": {
-            "description": "Filtered suggestions"
+            "description": "Filtered suggestions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/DailyQuestSuggestionResponse"
+                      }
+                    }
+                  }
+                }
+              }
+            }
           },
           "400": {
             "$ref": "#/components/responses/BadRequest"
@@ -1321,9 +1371,6 @@
           },
           "417": {
             "$ref": "#/components/responses/ExpectationFailed"
-          },
-          "422": {
-            "$ref": "#/components/responses/UnprocessableContent"
           }
         }
       },
@@ -1335,22 +1382,21 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "title": {
-                    "type": "string"
-                  },
-                  "icon": {
-                    "type": "string"
-                  }
-                }
+                "$ref": "#/components/schemas/DailyQuestSuggestionForm"
               }
             }
           }
         },
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DailyQuestSuggestionResponse"
+                }
+              }
+            }
           },
           "400": {
             "$ref": "#/components/responses/BadRequest"
@@ -1384,7 +1430,14 @@
         "summary": "Get daily quests suggestion by ID",
         "responses": {
           "200": {
-            "description": "Daily quests suggestion details"
+            "description": "Daily quests suggestion details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DailyQuestSuggestionResponse"
+                }
+              }
+            }
           },
           "400": {
             "$ref": "#/components/responses/BadRequest"
@@ -1400,9 +1453,6 @@
           },
           "417": {
             "$ref": "#/components/responses/ExpectationFailed"
-          },
-          "422": {
-            "$ref": "#/components/responses/UnprocessableContent"
           }
         }
       },
@@ -1414,22 +1464,21 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "title": {
-                    "type": "string"
-                  },
-                  "icon": {
-                    "type": "string"
-                  }
-                }
+                "$ref": "#/components/schemas/DailyQuestSuggestionForm"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Updated"
+            "description": "Updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DailyQuestSuggestionResponse"
+                }
+              }
+            }
           },
           "400": {
             "$ref": "#/components/responses/BadRequest"
@@ -1472,9 +1521,6 @@
           },
           "417": {
             "$ref": "#/components/responses/ExpectationFailed"
-          },
-          "422": {
-            "$ref": "#/components/responses/UnprocessableContent"
           }
         }
       }
@@ -1813,7 +1859,7 @@
           }
         }
       },
-      "CreateDailyQuestRequest": {
+      "DailyQuestForm": {
         "type": "object",
         "required": ["title", "icon", "is_daily"],
         "properties": {
@@ -1838,19 +1884,21 @@
           }
         }
       },
-      "UpdateDailyQuestRequest": {
+      "DailyQuestResponse": {
         "type": "object",
-        "required": ["title", "icon", "is_daily"],
         "properties": {
+          "goal_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "suggestion_id": {
+            "type": "string"
+          },
           "title": {
             "type": "string"
           },
           "icon": {
             "type": "string"
-          },
-          "goal_id": {
-            "type": "string",
-            "nullable": true
           },
           "is_daily": {
             "type": "boolean"
@@ -1860,6 +1908,49 @@
             "items": {
               "type": "string"
             }
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "DailyQuestSuggestionForm": {
+        "type": "object",
+        "required": ["title", "icon"],
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "icon": {
+            "type": "string"
+          }
+        }
+      },
+      "DailyQuestSuggestionResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string"
+          },
+          "icon": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
           }
         }
       },
