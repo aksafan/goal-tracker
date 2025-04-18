@@ -971,7 +971,22 @@
         ],
         "responses": {
           "200": {
-            "description": "Progress list"
+            "description": "Progress list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/GoalProgressResponse"
+                      }
+                    }
+                  }
+                }
+              }
+            }
           },
           "400": {
             "$ref": "#/components/responses/BadRequest"
@@ -987,9 +1002,6 @@
           },
           "417": {
             "$ref": "#/components/responses/ExpectationFailed"
-          },
-          "422": {
-            "$ref": "#/components/responses/UnprocessableContent"
           }
         }
       },
@@ -1001,14 +1013,21 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateProgressRequest"
+                "$ref": "#/components/schemas/CreateGoalProgressRequest"
               }
             }
           }
         },
         "responses": {
           "201": {
-            "description": "Added"
+            "description": "Added",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GoalProgressResponse"
+                }
+              }
+            }
           },
           "400": {
             "$ref": "#/components/responses/BadRequest"
@@ -1759,7 +1778,7 @@
           }
         }
       },
-      "CreateProgressRequest": {
+      "CreateGoalProgressRequest": {
         "type": "object",
         "required": ["goal_type_field_id", "progress_value"],
         "properties": {
@@ -1768,6 +1787,29 @@
           },
           "progress_value": {
             "type": "integer"
+          }
+        }
+      },
+      "GoalProgressResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "goal_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "goal_type_field_id": {
+            "type": "string"
+          },
+          "progress_value": {
+            "type": "integer"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
           }
         }
       },
