@@ -1,6 +1,6 @@
 export default interface CreateUserForm {
   id: number;
-  username: string;
+  name: string;
   email: string;
   password: string;
   passwordConfirmation: string;

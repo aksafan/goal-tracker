@@ -1,6 +1,6 @@
 import type { Request, Response } from "express-serve-static-core";
-import type { CreateUserQueryParams } from "@/types/queryParams";
-import type { ErrorResponse } from "@/types/response";
+import CreateUserQueryParams from "@/types/queryParams";
+import ErrorResponse from "@/types/response";
 import { createUser } from "@/user/user.service";
 import type { CreateUserForm, CreateUserResponse } from "@/dto";
 
@@ -24,7 +24,7 @@ export const post = async (
 
     res.status(201).json({
       id: user.id,
-      username: user.username,
+      name: user.name,
       email: user.email,
       created_at: user.created_at,
       updated_at: user.updated_at,

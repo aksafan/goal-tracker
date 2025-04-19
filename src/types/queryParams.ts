@@ -1,3 +1,3 @@
-export interface CreateUserQueryParams {
+export default interface CreateUserQueryParams {
   loginAfterCreate?: boolean;
 }

@@ -1,20 +1,13 @@
-import { randomInt } from "node:crypto";
 import type User from "@/user/user.types";
 import type CreateUserForm from "@/dto/CreateUserForm";
-import bcrypt from "bcryptjs";
+import { uuid } from "@supabase/supabase-js/dist/main/lib/helpers";
 
 export const createUser = async (userForm: CreateUserForm): Promise<User> => {
-  // Do something with user, e.g. save to DB
-
-  const salt = await bcrypt.genSalt(10);
-  const password = await bcrypt.hash(userForm.password, salt);
-
   return {
-    id: randomInt(123),
-    username: userForm.username,
+    id: uuid(),
+    name: userForm.name,
     email: userForm.email,
-    password: password,
-    created_at: Date.now(),
-    updated_at: Date.now(),
+    created_at: Date.now().toString(),
+    updated_at: Date.now().toString(),
   };
 };

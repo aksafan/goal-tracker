@@ -101,6 +101,10 @@ src/
 │   ├── goal-type.service.ts
 │   ├── goal-type.routes.ts
 │   └── goal-type.types.ts
+│   └── fiels/
+│       ├── field.controller.ts
+│       ├── field.service.ts
+│       └── field.types.ts
 ├── goal-progress/
 │   ├── goal-progress.controller.ts
 │   ├── goal-progress.service.ts
