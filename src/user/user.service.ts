@@ -1,5 +1,5 @@
 import { randomInt } from "node:crypto";
-import type User from "@/schema/user";
+import type User from "@/user/user.types";
 import type CreateUserForm from "@/dto/CreateUserForm";
 import bcrypt from "bcryptjs";
 

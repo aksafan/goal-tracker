@@ -6,7 +6,7 @@ import { rateLimit } from "express-rate-limit";
 import cors from "cors";
 import helmet from "helmet";
 import sanitizeMiddleware from "@/middleware/sanitize";
-import mainRouter from "@/routes/mainRouter";
+import mainRouter from "@/test-resource/test.routes";
 import swaggerDocs from "@/utils/swagger";
 import { fileURLToPath } from "url";
 import { dirname } from "path";

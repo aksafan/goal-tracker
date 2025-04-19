@@ -2,7 +2,7 @@ import type { Express, Request, Response } from "express-serve-static-core";
 import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import config from "@/config";
-import swagger_poc_json from "../schema/swagger.json";
+import swagger_poc_json from "../../swagger.json";
 
 const swaggerSpec = swaggerJsdoc(config.swagger);
 const swaggerPocSpec = JSON.parse(JSON.stringify(swagger_poc_json));

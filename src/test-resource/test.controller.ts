@@ -1,7 +1,7 @@
 import type { Request, Response } from "express-serve-static-core";
 import type { CreateUserQueryParams } from "@/types/queryParams";
 import type { ErrorResponse } from "@/types/response";
-import { createUser } from "@/services/userService";
+import { createUser } from "@/user/user.service";
 import type { CreateUserForm, CreateUserResponse } from "@/dto";
 
 export const get = (req: Request, res: Response) => {
