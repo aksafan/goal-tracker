@@ -1996,7 +1996,18 @@
           "frequency": {
             "type": "array",
             "items": {
-              "type": "string"
+              "type": "string",
+              "enum": [
+                "Daily",
+                "Mondays",
+                "Tuesdays",
+                "Wednesdays",
+                "Thursdays",
+                "Fridays",
+                "Saturdays",
+                "Sundays"
+              ],
+              "description": "Frequency of the daily quest repetition"
             }
           }
         }
@@ -2023,7 +2034,18 @@
           "frequency": {
             "type": "array",
             "items": {
-              "type": "string"
+              "type": "string",
+              "enum": [
+                "Daily",
+                "Mondays",
+                "Tuesdays",
+                "Wednesdays",
+                "Thursdays",
+                "Fridays",
+                "Saturdays",
+                "Sundays"
+              ],
+              "description": "Frequency of the daily quest repetition"
             }
           },
           "created_at": {

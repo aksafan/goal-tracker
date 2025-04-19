@@ -45,6 +45,31 @@ the same.
 
 `npm run prettier:write` - to format everything.
 
+### Using Prisma
+
+Use this every time you:
+
+- Add/edit a model.
+- Rename fields.
+- Change enum values.
+- Add new relations.
+
+#### Create + apply a new migration to your dev database
+
+This runs `prisma:generate` under the hood as well.
+
+```bash
+prisma migrate dev
+```
+
+#### Generate latest Prisma client for TypeScript
+
+```bash
+prisma generate
+```
+
+> ⛔️ Never use `migrate dev` in production — it may reset or seed the DB!
+
 ## Application structure
 
 <details>

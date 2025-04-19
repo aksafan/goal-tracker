@@ -1,0 +1,26 @@
+model GoalType {
+  id          String @id @default(uuid())
+  name        String
+  description String
+
+  fields GoalTypeField[]
+  goals  Goal[]
+
+  @@map("goal_type")
+}
+
+model GoalTypeField {
+  id           String    @id @default(uuid())
+  goal_type_id String
+  field_name   String
+  field_type   FieldType
+  required     Boolean
+  options      Json?
+  trackable    Boolean
+
+  goal_type    GoalType         @relation(fields: [goal_type_id], references: [id], onDelete: Cascade)
+  field_values GoalFieldValue[]
+  progress     GoalProgress[]
+
+  @@map("goal_type_field")
+}
