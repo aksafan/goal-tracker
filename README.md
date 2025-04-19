@@ -152,8 +152,8 @@ entity daily_quest_completion {
   completed_at : DateTime
 }
 
-' === GOAL BOARD (Image Uploads) ===
-entity goal_board {
+' === GOAL BOARD Images (Image Uploads) ===
+entity goal_board_images {
   *id : UUID <<PK>>
   user_id : UUID <<FK>>
   file_path : String
@@ -188,7 +188,7 @@ suggestion ||--o{ daily_quest : based_on
 daily_quest ||--o{ daily_quest_completion : logs
 user ||--o{ daily_quest_completion : toggles
 
-user ||--o{ goal_board : adds_pictures
+user ||--o{ goal_board_images : adds_pictures
 
 @enduml
 ```
@@ -203,7 +203,7 @@ user ||--o{ goal_board : adds_pictures
 ### 🧑 Users & Auth
 
 | Method  | Endpoint                               | Description                       |
-| ------- | -------------------------------------- | --------------------------------- |
+|---------|----------------------------------------|-----------------------------------|
 | `POST`  | `/api/v1/users/register`               | Register a new user               |
 | `POST`  | `/api/v1/users/login`                  | Log in with email and password    |
 | `POST`  | `/api/v1/users/google-login`           | Log in or register via Google     |
@@ -215,7 +215,7 @@ user ||--o{ goal_board : adds_pictures
 ### 🎯 Goals (Instances)
 
 | Method   | Endpoint            | Description                        |
-| -------- | ------------------- | ---------------------------------- |
+|----------|---------------------|------------------------------------|
 | `GET`    | `/api/v1/goals`     | List all goals for current user    |
 | `GET`    | `/api/v1/goals/:id` | Get a specific goal and details    |
 | `POST`   | `/api/v1/goals`     | Create a new goal from a goal type |
@@ -225,20 +225,20 @@ user ||--o{ goal_board : adds_pictures
 ### 🧾 Goal Field Values
 
 | Method  | Endpoint                         | Description                     |
-| ------- | -------------------------------- | ------------------------------- |
+|---------|----------------------------------|---------------------------------|
 | `PATCH` | `/api/v1/goals/:id/field-values` | Update static values for a goal |
 
 ### 🧾 Goal Board Images
 
-| Method | Endpoint             | Description                |
-| ------ | -------------------- | -------------------------- |
-| `GET`  | `/api/v1/goal-board` | Get goal board images      |
-| `POST` | `/api/v1/goal-board` | Upload image to goal board |
+| Method | Endpoint                           | Description                     |
+|--------|------------------------------------|---------------------------------|
+| `GET`  | `/api/v1/goal-board-images`        | Get goal board images           |
+| `POST` | `/api/v1/goal-board-images/upload` | Upload image to goal board list |
 
 ### 🧱 Goal Types (Templates)
 
 | Method | Endpoint                        | Description                    |
-| ------ | ------------------------------- | ------------------------------ |
+|--------|---------------------------------|--------------------------------|
 | `GET`  | `/api/v1/goal-types`            | List all goal types            |
 | `GET`  | `/api/v1/goal-types/:id`        | Get type and its fields        |
 | `POST` | `/api/v1/goal-types`            | Create a new goal type (admin) |
@@ -247,14 +247,14 @@ user ||--o{ goal_board : adds_pictures
 ### 📈 Goal Progress
 
 | Method | Endpoint                         | Description                     |
-| ------ | -------------------------------- | ------------------------------- |
+|--------|----------------------------------|---------------------------------|
 | `GET`  | `/api/v1/goals/:goalId/progress` | Get progress entries for a goal |
 | `POST` | `/api/v1/goals/:goalId/progress` | Add new progress for a goal     |
 
 ### 📅 Daily Quests
 
 | Method   | Endpoint                          | Description                            |
-| -------- | --------------------------------- | -------------------------------------- |
+|----------|-----------------------------------|----------------------------------------|
 | `GET`    | `/api/v1/daily-quests`            | List all daily quests for user         |
 | `POST`   | `/api/v1/daily-quests`            | Create a daily quest                   |
 | `GET`    | `/api/v1/daily-quests/for-date`   | Get quests for a given date            |
@@ -265,7 +265,7 @@ user ||--o{ goal_board : adds_pictures
 ### 📅 Daily Quests Suggestions
 
 | Method   | Endpoint                               | Description                              |
-| -------- | -------------------------------------- | ---------------------------------------- |
+|----------|----------------------------------------|------------------------------------------|
 | `GET`    | `/api/v1/daily-quests/suggestions`     | List suggestions (excluding active ones) |
 | `GET`    | `/api/v1/daily-quests/suggestions/:id` | Read single suggestion by ID             |
 | `POST`   | `/api/v1/daily-quests/suggestions`     | Create new suggestion                    |
