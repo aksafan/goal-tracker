@@ -207,6 +207,7 @@ user ||--o{ goal_board_images : adds_pictures
 | `POST`  | `/api/v1/users/register`               | Register a new user               |
 | `POST`  | `/api/v1/users/login`                  | Log in with email and password    |
 | `POST`  | `/api/v1/users/google-login`           | Log in or register via Google     |
+| `POST`  | `/api/v1/users/logout`                 | Log out user (invalidate token)   |
 | `POST`  | `/api/v1/users/password-reset/request` | Request password reset link       |
 | `POST`  | `/api/v1/users/password-reset/confirm` | Confirm password reset with token |
 | `GET`   | `/api/v1/users/profile`                | Get current user profile          |
@@ -237,12 +238,13 @@ user ||--o{ goal_board_images : adds_pictures
 
 ### 🧱 Goal Types (Templates)
 
-| Method | Endpoint                        | Description                    |
-|--------|---------------------------------|--------------------------------|
-| `GET`  | `/api/v1/goal-types`            | List all goal types            |
-| `GET`  | `/api/v1/goal-types/:id`        | Get type and its fields        |
-| `POST` | `/api/v1/goal-types`            | Create a new goal type (admin) |
-| `POST` | `/api/v1/goal-types/:id/fields` | Add fields to a goal type      |
+| Method  | Endpoint                        | Description                    |
+|---------|---------------------------------|--------------------------------|
+| `GET`   | `/api/v1/goal-types`            | List all goal types            |
+| `GET`   | `/api/v1/goal-types/:id`        | Get type and its fields        |
+| `POST`  | `/api/v1/goal-types`            | Create a new goal type (admin) |
+| `PATCH` | `/api/v1/goal-types/:id`        | Update goal type (admin)       |
+| `POST`  | `/api/v1/goal-types/:id/fields` | Add fields to a goal type      |
 
 ### 📈 Goal Progress
 

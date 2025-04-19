@@ -37,6 +37,11 @@
       "description": "Daily quests suggestions"
     }
   ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
   "paths": {
     "/users/register": {
       "post": {
@@ -193,6 +198,29 @@
           },
           "422": {
             "$ref": "#/components/responses/UnprocessableContent"
+          }
+        }
+      }
+    },
+    "/users/logout": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Log out the current user",
+        "responses": {
+          "204": {
+            "description": "Logged out successfully"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "417": {
+            "$ref": "#/components/responses/ExpectationFailed"
           }
         }
       }
@@ -831,7 +859,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateGoalTypeRequest"
+                "$ref": "#/components/schemas/GoalTypeForm"
               }
             }
           }
@@ -842,7 +870,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GoalTypeResponse"
+                  "$ref": "#/components/schemas/GoalTypeDetailedResponse"
                 }
               }
             }
@@ -876,14 +904,14 @@
       ],
       "get": {
         "tags": ["GoalTypes"],
-        "summary": "Get goal type",
+        "summary": "Get detailed goal type with goal type fields",
         "responses": {
           "200": {
             "description": "Goal type",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GoalTypeResponse"
+                  "$ref": "#/components/schemas/GoalTypeDetailedResponse"
                 }
               }
             }
@@ -904,6 +932,50 @@
             "$ref": "#/components/responses/ExpectationFailed"
           }
         }
+      },
+      "patch": {
+        "tags": ["GoalTypes"],
+        "summary": "Update goal type (admin)",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GoalTypeForm"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GoalTypeDetailedResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "417": {
+            "$ref": "#/components/responses/ExpectationFailed"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableContent"
+          }
+        }
       }
     },
     "/goal-types/{id}/fields": {
@@ -920,7 +992,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateGoalTypeFieldRequest"
+                "$ref": "#/components/schemas/GoalTypeFieldForm"
               }
             }
           }
@@ -1527,6 +1599,13 @@
     }
   },
   "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
     "schemas": {
       "RegisterUserRequest": {
         "type": "object",
@@ -1761,7 +1840,27 @@
           }
         }
       },
-      "CreateGoalTypeRequest": {
+      "GoalTypeDetailedResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "goal_type_fields": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GoalTypeFieldForm"
+            }
+          }
+        }
+      },
+      "GoalTypeForm": {
         "type": "object",
         "properties": {
           "name": {
@@ -1769,10 +1868,16 @@
           },
           "description": {
             "type": "string"
+          },
+          "goal_type_fields": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GoalTypeFieldForm"
+            }
           }
         }
       },
-      "CreateGoalTypeFieldRequest": {
+      "GoalTypeFieldForm": {
         "type": "object",
         "required": ["field_name", "field_type", "required"],
         "properties": {
