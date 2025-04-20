@@ -10,6 +10,7 @@ import mainRouter from "@/test-resource/test.routes";
 import swaggerDocs from "@/utils/swagger";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
+import { errorHandler } from "@/middleware/errorHandler";
 
 const app = express();
 
@@ -32,5 +33,7 @@ app.use(sanitizeMiddleware);
 app.use("/api/v1", mainRouter);
 
 swaggerDocs(app);
+
+app.use(errorHandler);
 
 export default app;

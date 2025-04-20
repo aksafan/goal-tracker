@@ -14,12 +14,21 @@ both the back-end server and their front-end app.
 2. Clone this [repository](https://github.com/Code-the-Dream-School/ii-practicum-team-2-back.git) to that folder
 3. Create `.env` file in the root of backend folder (you can copy from `.env.example` and set it with your vars)
 4. Run `npm install` to install dependencies inside backend directory
-5. Run `npm run dev` to start the development server
-6. Open http://localhost:8000/api/v1/ with your browser to test
-7. Your back-end server is now running. You can now run the front-end app
-8. Swagger API Docs are available at http://localhost:8000/docs (json format at http://localhost:8000/docs.json)
+5. Run `prisma migrate dev` to apply migrations
+6. Run `npm run dev` to start the development server
+7. Open http://localhost:8000/api/v1/ with your browser to test
+8. Your back-end server is now running. You can now run the front-end app
+9. Swagger API Docs are available at http://localhost:8000/docs (json format at http://localhost:8000/docs.json)
 
 > N.B. Start every coding session with pulling `main` branch of this repository.
+
+### Logs
+
+Logs can be observed in `logs/`:
+
+- all logs with level `error` (and below) will be in `logs/error.log`;
+- all logs with level `info` (and below) will be in `logs/app.log`;
+- all logs NOT in production will be in console as well.
 
 ### Running the back-end server in Visual Studio Code
 
