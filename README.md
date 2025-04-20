@@ -101,19 +101,11 @@ src/
 │   ├── goal.service.ts
 │   ├── goal.routes.ts
 │   ├── goal.types.ts
-│   └── field-value/
-│       ├── field-value.controller.ts
-│       ├── field-value.service.ts
-│       └── field-value.types.ts
 ├── goal-type/
 │   ├── goal-type.controller.ts
 │   ├── goal-type.service.ts
 │   ├── goal-type.routes.ts
 │   └── goal-type.types.ts
-│   └── fiels/
-│       ├── field.controller.ts
-│       ├── field.service.ts
-│       └── field.types.ts
 ├── goal-progress/
 │   ├── goal-progress.controller.ts
 │   ├── goal-progress.service.ts

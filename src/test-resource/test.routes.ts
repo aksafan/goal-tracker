@@ -1,10 +1,10 @@
-import express from "express";
-import * as mainController from "@/test-resource/test.controller";
+import { Router } from "express";
+import TestController from "@/test-resource/test.controller";
 
-const router = express.Router();
+// TODO: remove when other controllers will be implemented and no examples needed anymore
+const testRouter = Router();
+const testController = new TestController();
 
-router.get("/", mainController.get);
+testRouter.post("/", testController.post);
 
-router.post("/", mainController.post);
-
-export default router;
+export default testRouter;

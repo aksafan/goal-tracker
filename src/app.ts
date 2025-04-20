@@ -6,11 +6,11 @@ import { rateLimit } from "express-rate-limit";
 import cors from "cors";
 import helmet from "helmet";
 import sanitizeMiddleware from "@/middleware/sanitize";
-import mainRouter from "@/test-resource/test.routes";
 import swaggerDocs from "@/utils/swagger";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 import { errorHandler } from "@/middleware/errorHandler";
+import { defineRoutes } from "@/utils/defineRoutes";
 
 const app = express();
 
@@ -30,7 +30,7 @@ app.use(helmet());
 app.use(sanitizeMiddleware);
 
 // routes
-app.use("/api/v1", mainRouter);
+defineRoutes(app);
 
 swaggerDocs(app);
 
