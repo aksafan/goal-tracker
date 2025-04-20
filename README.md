@@ -30,17 +30,6 @@ Logs can be observed in `logs/`:
 - all logs with level `info` (and below) will be in `logs/app.log`;
 - all logs NOT in production will be in console as well.
 
-### Running the back-end server in Visual Studio Code
-
-Note: In the below example, the group's front-end repository was named `bb-practicum-team1-front` and the back-end
-repository was named `bb-practicum-team-1-back`. Your repository will have a different name, but the rest should look
-the same.
-![vsc running](docs/images/back-end-running-vsc.png)
-
-### Testing the back-end server API in the browser
-
-![browser server](docs/images/back-end-running-browser.png)
-
 ### To build TS into JS (production ready)
 
 `npm run build` and then you can run `npm run start`
@@ -297,86 +286,5 @@ user ||--o{ goal_board_images : adds_pictures
 
 @enduml
 ```
-
-</details>
-
-## API endpoints
-
-<details>
-  <summary>Click to expend</summary>
-
-### 🧑 Users & Auth
-
-| Method  | Endpoint                               | Description                       |
-|---------|----------------------------------------|-----------------------------------|
-| `POST`  | `/api/v1/users/register`               | Register a new user               |
-| `POST`  | `/api/v1/users/login`                  | Log in with email and password    |
-| `POST`  | `/api/v1/users/google-login`           | Log in or register via Google     |
-| `POST`  | `/api/v1/users/logout`                 | Log out user (invalidate token)   |
-| `POST`  | `/api/v1/users/password-reset/request` | Request password reset link       |
-| `POST`  | `/api/v1/users/password-reset/confirm` | Confirm password reset with token |
-| `GET`   | `/api/v1/users/profile`                | Get current user profile          |
-| `PATCH` | `/api/v1/users/profile`                | Update current user's profile     |
-
-### 🎯 Goals (Instances)
-
-| Method   | Endpoint            | Description                        |
-|----------|---------------------|------------------------------------|
-| `GET`    | `/api/v1/goals`     | List all goals for current user    |
-| `GET`    | `/api/v1/goals/:id` | Get a specific goal and details    |
-| `POST`   | `/api/v1/goals`     | Create a new goal from a goal type |
-| `PATCH`  | `/api/v1/goals/:id` | Update goal name/description       |
-| `DELETE` | `/api/v1/goals/:id` | Delete (archive) a goal            |
-
-### 🧾 Goal Field Values
-
-| Method  | Endpoint                         | Description                     |
-|---------|----------------------------------|---------------------------------|
-| `PATCH` | `/api/v1/goals/:id/field-values` | Update static values for a goal |
-
-### 🧾 Goal Board Images
-
-| Method | Endpoint                           | Description                     |
-|--------|------------------------------------|---------------------------------|
-| `GET`  | `/api/v1/goal-board-images`        | Get goal board images           |
-| `POST` | `/api/v1/goal-board-images/upload` | Upload image to goal board list |
-
-### 🧱 Goal Types (Templates)
-
-| Method  | Endpoint                        | Description                    |
-|---------|---------------------------------|--------------------------------|
-| `GET`   | `/api/v1/goal-types`            | List all goal types            |
-| `GET`   | `/api/v1/goal-types/:id`        | Get type and its fields        |
-| `POST`  | `/api/v1/goal-types`            | Create a new goal type (admin) |
-| `PATCH` | `/api/v1/goal-types/:id`        | Update goal type (admin)       |
-| `POST`  | `/api/v1/goal-types/:id/fields` | Add fields to a goal type      |
-
-### 📈 Goal Progress
-
-| Method | Endpoint                         | Description                     |
-|--------|----------------------------------|---------------------------------|
-| `GET`  | `/api/v1/goals/:goalId/progress` | Get progress entries for a goal |
-| `POST` | `/api/v1/goals/:goalId/progress` | Add new progress for a goal     |
-
-### 📅 Daily Quests
-
-| Method   | Endpoint                          | Description                            |
-|----------|-----------------------------------|----------------------------------------|
-| `GET`    | `/api/v1/daily-quests`            | List all daily quests for user         |
-| `POST`   | `/api/v1/daily-quests`            | Create a daily quest                   |
-| `GET`    | `/api/v1/daily-quests/for-date`   | Get quests for a given date            |
-| `PATCH`  | `/api/v1/daily-quests/:id`        | Update a daily quest                   |
-| `DELETE` | `/api/v1/daily-quests/:id`        | Delete a daily quest                   |
-| `POST`   | `/api/v1/daily-quests/:id/toggle` | Toggle daily quest completion for date |
-
-### 📅 Daily Quests Suggestions
-
-| Method   | Endpoint                               | Description                              |
-|----------|----------------------------------------|------------------------------------------|
-| `GET`    | `/api/v1/daily-quests/suggestions`     | List suggestions (excluding active ones) |
-| `GET`    | `/api/v1/daily-quests/suggestions/:id` | Read single suggestion by ID             |
-| `POST`   | `/api/v1/daily-quests/suggestions`     | Create new suggestion                    |
-| `PATCH`  | `/api/v1/daily-quests/suggestions/:id` | Update a suggestion                      |
-| `DELETE` | `/api/v1/daily-quests/suggestions/:id` | Delete a suggestion                      |
 
 </details>
