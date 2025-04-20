@@ -1,4 +1,5 @@
 import type {
+  ErrorRequestHandler,
   NextFunction,
   Request,
   Response,
@@ -6,7 +7,7 @@ import type {
 import { StatusCodes } from "http-status-codes";
 import { HttpError, UnprocessableEntityError } from "@/errors";
 
-export const errorHandler = (
+export const errorHandler: ErrorRequestHandler = (
   err: Error | HttpError,
   _req: Request,
   res: Response,
@@ -16,16 +17,20 @@ export const errorHandler = (
     const { statusCode } = err;
 
     if (err instanceof UnprocessableEntityError) {
-      return res.status(statusCode).send({
+      res.status(statusCode).send({
         code: statusCode,
         message: err.message,
         errors: err.errors,
       });
+
+      return;
     } else {
-      return res.status(statusCode).send({
+      res.status(statusCode).send({
         code: statusCode,
         message: err.message,
       });
+
+      return;
     }
   }
 
