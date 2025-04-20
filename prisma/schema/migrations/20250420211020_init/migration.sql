@@ -158,6 +158,19 @@ CREATE TABLE "password_reset_token"
     CONSTRAINT "password_reset_token_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "refresh_token"
+(
+    "id"         TEXT         NOT NULL,
+    "user_id"    TEXT         NOT NULL,
+    "token"      TEXT         NOT NULL,
+    "revoked"    BOOLEAN      NOT NULL DEFAULT false,
+    "expires_at" TIMESTAMP(3) NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "refresh_token_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "daily_quest_completion_daily_quest_id_user_id_date_key" ON "daily_quest_completion" ("daily_quest_id", "user_id", "date");
 
@@ -172,6 +185,12 @@ CREATE INDEX "password_reset_token_user_id_idx" ON "password_reset_token" ("user
 
 -- CreateIndex
 CREATE INDEX "password_reset_token_token_idx" ON "password_reset_token" ("token");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "refresh_token_token_key" ON "refresh_token" ("token");
+
+-- CreateIndex
+CREATE INDEX "refresh_token_user_id_idx" ON "refresh_token" ("user_id");
 
 -- AddForeignKey
 ALTER TABLE "daily_quest"
@@ -240,3 +259,7 @@ ALTER TABLE "user_auth_provider"
 -- AddForeignKey
 ALTER TABLE "password_reset_token"
     ADD CONSTRAINT "password_reset_token_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "user" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "refresh_token"
+    ADD CONSTRAINT "refresh_token_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "user" ("id") ON DELETE CASCADE ON UPDATE CASCADE;

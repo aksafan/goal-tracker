@@ -18,6 +18,10 @@ export default class AuthController {
     res.status(StatusCodes.OK).json({ message: "It works!" });
   }
 
+  async refreshToken(req: Request, res: Response) {
+    res.status(StatusCodes.OK).json({ message: "It works!" });
+  }
+
   async requestPasswordReset(req: Request, res: Response) {
     res.status(StatusCodes.OK).json({ message: "It works!" });
   }

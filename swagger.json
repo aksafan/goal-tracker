@@ -55,8 +55,8 @@
                 "$ref": "#/components/schemas/RegisterUserRequest"
               },
               "examples": {
-                "NewUserRequest": {
-                  "$ref": "#/components/examples/NewUserRequest"
+                "RegisterUserRequest": {
+                  "$ref": "#/components/examples/RegisterUserRequest"
                 }
               }
             }
@@ -68,11 +68,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserResponse"
+                  "$ref": "#/components/schemas/RegisterUserResponse"
                 },
                 "examples": {
                   "UserResponse": {
-                    "$ref": "#/components/examples/UserResponse"
+                    "$ref": "#/components/examples/RegisterUserResponse"
                   }
                 }
               }
@@ -221,6 +221,62 @@
           },
           "417": {
             "$ref": "#/components/responses/ExpectationFailed"
+          }
+        }
+      }
+    },
+    "/users/refresh-token": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Refresh access token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "refresh_token": {
+                    "type": "string"
+                  }
+                },
+                "required": ["refresh_token"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "New access and refresh tokens",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "access_token": {
+                      "type": "string",
+                      "description": "JWT used for authenticated requests"
+                    },
+                    "refresh_token": {
+                      "type": "string",
+                      "description": "Token used to obtain a new access token"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableContent"
           }
         }
       }
@@ -1625,6 +1681,23 @@
           }
         }
       },
+      "RegisterUserResponse": {
+        "type": "object",
+        "required": ["user", "access_token", "refresh_token"],
+        "properties": {
+          "user": {
+            "$ref": "#/components/schemas/UserResponse"
+          },
+          "access_token": {
+            "type": "string",
+            "description": "JWT used for authenticated requests"
+          },
+          "refresh_token": {
+            "type": "string",
+            "description": "Token used to obtain a new access token"
+          }
+        }
+      },
       "LoginRequest": {
         "type": "object",
         "required": ["email", "password"],
@@ -1639,9 +1712,15 @@
       },
       "LoginResponse": {
         "type": "object",
+        "required": ["user", "access_token", "refresh_token"],
         "properties": {
-          "token": {
-            "type": "string"
+          "access_token": {
+            "type": "string",
+            "description": "JWT used for authenticated requests"
+          },
+          "refresh_token": {
+            "type": "string",
+            "description": "Token used to obtain a new access token"
           }
         }
       },
@@ -2125,13 +2204,26 @@
       }
     },
     "examples": {
-      "NewUserRequest": {
-        "summary": "An example of New User request",
+      "RegisterUserRequest": {
+        "summary": "An example of Register User request",
         "value": {
           "email": "example@gmail.com",
           "password": "23j2jn&*&bUHUwq",
           "password_confirmation": "23j2jn&*&bUHUwq",
           "name": "John Dou"
+        }
+      },
+      "RegisterUserResponse": {
+        "summary": "An example of Register User response",
+        "value": {
+          "user": {
+            "id": "396eb1db-dc34-418c-b071-714b3732aaef",
+            "email": "example@gmail.com",
+            "name": "John Dou",
+            "created_at": "2019-08-24T14:15:22Z"
+          },
+          "access_token": "396eb1db-dc34-418c-b071-714b3732aaef",
+          "refresh_token": "789eb1db-dc34-418c-b071-714b3732aaef"
         }
       },
       "UserResponse": {
@@ -2153,7 +2245,8 @@
       "LoginUserResponse": {
         "summary": "An example of New User response",
         "value": {
-          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.KMUFsIDTnFmyG3nMiGM6H9FNFUROf3wh7SmqJp-QV30"
+          "access_token": "396eb1db-dc34-418c-b071-714b3732aaef",
+          "refresh_token": "789eb1db-dc34-418c-b071-714b3732aaef"
         }
       },
       "GoogleLoginRequest": {

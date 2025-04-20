@@ -180,6 +180,15 @@ entity password_reset_tokens {
   created_at : DateTime
 }
 
+entity refresh_token {
+  *id : UUID <<PK>>
+  user_id : UUID <<FK>>
+  token : String <<unique>>
+  expires_at : DateTime
+  revoked : Boolean
+  created_at : DateTime
+}
+
 ' === GOALS & PROGRESS ===
 entity goal {
   *id : UUID <<PK>>
@@ -267,6 +276,7 @@ entity suggestion {
 ' === RELATIONSHIPS ===
 user ||--o{ user_auth_providers : authenticates_with
 user ||--o{ password_reset_tokens : can_reset
+user ||--o{ refresh_token : issues
 user ||--o{ goal : owns
 goal_type ||--o{ goal : typed_as
 goal_type ||--o{ goal_type_field : defines
