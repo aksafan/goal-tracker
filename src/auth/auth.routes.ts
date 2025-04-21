@@ -4,8 +4,8 @@ import AuthController from "./auth.controller";
 const authRouter = Router();
 const authController = new AuthController();
 
-authRouter.post("/register", authController.register);
-authRouter.post("/login", authController.login);
+authRouter.post("/users/register", authController.register);
+authRouter.post("/users/login", authController.login);
 authRouter.post("/google-login", authController.googleLogin);
 authRouter.post("/logout", authController.logout);
 authRouter.post("/refresh-token", authController.refreshToken);
