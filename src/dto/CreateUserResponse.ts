@@ -1,7 +1,7 @@
 export default interface CreateUserResponse {
-  id: number;
-  username: string;
+  id: string;
+  name: string;
   email: string;
-  created_at: number;
-  updated_at: number;
+  created_at: string;
+  updated_at: string;
 }

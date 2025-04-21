@@ -1,7 +1,11 @@
-import app from "@/app.js";
+import app from "@/app";
 import "dotenv/config";
+import { setupGracefulShutdown } from "@/utils/gracefulShutdown";
+import { Server } from "http";
 
 const { PORT = 8000 } = process.env;
 
 const listener = () => console.log(`Listening on Port ${PORT}!`);
-app.listen(PORT, listener);
+const server: Server = app.listen(PORT, listener);
+
+setupGracefulShutdown(server);
