@@ -1,0 +1,17 @@
+enum FieldType {
+  string
+  integer
+  boolean
+  dropdown
+}
+
+enum Frequency {
+  Daily
+  Mondays
+  Tuesdays
+  Wednesdays
+  Thursdays
+  Fridays
+  Saturdays
+  Sundays
+}

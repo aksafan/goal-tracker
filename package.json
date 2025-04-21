@@ -10,7 +10,10 @@
     "start": "node dist/server.js",
     "prettier:write": "npx prettier . --write",
     "lint": "npx eslint .",
-    "lint:fix": "npx eslint . --fix"
+    "lint:fix": "npx eslint . --fix",
+    "prisma:migrate": "prisma migrate dev --skip-seed",
+    "prisma:seed": "prisma db seed",
+    "prisma:deploy": "prisma migrate deploy & prisma generate"
   },
   "author": "aksafan,IrinaStoetski",
   "bugs": {
@@ -36,14 +39,21 @@
     "sanitize-html": "^2.15.0",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
+    "uuid": "^11.1.0",
+    "winston": "^3.17.0",
     "xss": "^1.0.15"
   },
   "engines": {
     "node": "^22.13.0",
     "npm": "^11.1.0"
   },
+  "prisma": {
+    "schema": "./prisma/schema",
+    "seed": "tsx prisma/seed.ts"
+  },
   "devDependencies": {
     "@eslint/js": "^9.23.0",
+    "@faker-js/faker": "^9.7.0",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.1",
     "@types/node": "^22.13.11",

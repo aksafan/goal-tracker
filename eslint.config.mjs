@@ -6,6 +6,16 @@ import eslintConfigPrettier from "eslint-config-prettier/flat";
 
 export default defineConfig([
   {
+    ignores: [
+      "node_modules",
+      "dist",
+      "coverage",
+      "**/.prisma/**",
+      "**/prisma/**",
+      "**/generated/**",
+    ],
+  },
+  {
     languageOptions: {
       globals: {
         ...globals.node,
@@ -23,5 +33,13 @@ export default defineConfig([
     extends: ["js/recommended"],
   },
   tseslint.configs.recommended,
+  {
+    rules: {
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        { argsIgnorePattern: "^_" },
+      ],
+    },
+  },
   eslintConfigPrettier,
 ]);

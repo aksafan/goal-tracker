@@ -1,7 +1,8 @@
+// TODO: remove when other controllers will be implemented and no examples needed anymore
 export default interface CreateUserForm {
   id: number;
-  username: string;
+  name: string;
   email: string;
   password: string;
-  passwordConfirmation: string;
+  password_confirmation: string;
 }

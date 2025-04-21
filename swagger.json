@@ -1,0 +1,2522 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "GoalTracker API",
+    "version": "1.0.0",
+    "description": "REST API for goal tracking, daily quests, and progress logging."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8000/api/v1",
+      "description": "Local development server"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Users",
+      "description": "Authentication & profile"
+    },
+    {
+      "name": "Goals",
+      "description": "Goal management"
+    },
+    {
+      "name": "GoalTypes",
+      "description": "Goal templates & field definitions"
+    },
+    {
+      "name": "GoalProgress",
+      "description": "Track and retrieve goal progress"
+    },
+    {
+      "name": "DailyQuests",
+      "description": "Habit-like nudges and their tracking"
+    },
+    {
+      "name": "DailyQuestsSuggestions",
+      "description": "Daily quests suggestions"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/users/register": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Register a new user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterUserRequest"
+              },
+              "examples": {
+                "RegisterUserRequest": {
+                  "$ref": "#/components/examples/RegisterUserRequest"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegisterUserResponse"
+                },
+                "examples": {
+                  "UserResponse": {
+                    "$ref": "#/components/examples/RegisterUserResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "417": {
+            "$ref": "#/components/responses/ExpectationFailed"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableContent"
+          }
+        }
+      }
+    },
+    "/users/login": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Log in with email and password",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              },
+              "examples": {
+                "LoginUserRequest": {
+                  "$ref": "#/components/examples/LoginUserRequest"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Authenticated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                },
+                "examples": {
+                  "LoginUserResponse": {
+                    "$ref": "#/components/examples/LoginUserResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "417": {
+            "$ref": "#/components/responses/ExpectationFailed"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableContent"
+          }
+        }
+      }
+    },
+    "/users/google-login": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Login or register via Google",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GoogleLoginRequest"
+              },
+              "examples": {
+                "LoginUserRequest": {
+                  "$ref": "#/components/examples/GoogleLoginRequest"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Authenticated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                },
+                "examples": {
+                  "LoginUserResponse": {
+                    "$ref": "#/components/examples/LoginUserResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "417": {
+            "$ref": "#/components/responses/ExpectationFailed"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableContent"
+          }
+        }
+      }
+    },
+    "/users/logout": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Log out the current user",
+        "responses": {
+          "204": {
+            "description": "Logged out successfully"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "417": {
+            "$ref": "#/components/responses/ExpectationFailed"
+          }
+        }
+      }
+    },
+    "/users/refresh-token": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Refresh access token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "refresh_token": {
+                    "type": "string"
+                  }
+                },
+                "required": ["refresh_token"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "New access and refresh tokens",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "access_token": {
+                      "type": "string",
+                      "description": "JWT used for authenticated requests"
+                    },
+                    "refresh_token": {
+                      "type": "string",
+                      "description": "Token used to obtain a new access token"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableContent"
+          }
+        }
+      }
+    },
+    "/users/password-reset/request": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Request password reset link",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PasswordResetRequestRequest"
+              },
+              "examples": {
+                "PasswordResetRequestRequest": {
+                  "$ref": "#/components/examples/PasswordResetRequestRequest"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Reset link sent",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PasswordResetRequestResponse"
+                },
+                "examples": {
+                  "PasswordResetRequestResponse": {
+                    "$ref": "#/components/examples/PasswordResetRequestResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "417": {
+            "$ref": "#/components/responses/ExpectationFailed"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableContent"
+          }
+        }
+      }
+    },
+    "/users/password-reset/confirm": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Confirm password reset with token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PasswordResetConfirmRequest"
+              },
+              "examples": {
+                "PasswordResetConfirmRequest": {
+                  "$ref": "#/components/examples/PasswordResetConfirmRequest"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Password updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PasswordResetConfirmResponse"
+                },
+                "examples": {
+                  "PasswordResetConfirmResponse": {
+                    "$ref": "#/components/examples/PasswordResetConfirmResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "417": {
+            "$ref": "#/components/responses/ExpectationFailed"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableContent"
+          }
+        }
+      }
+    },
+    "/users/profile": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Get current user profile",
+        "responses": {
+          "200": {
+            "description": "Profile info",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponse"
+                },
+                "examples": {
+                  "UserResponse": {
+                    "$ref": "#/components/examples/UserResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "417": {
+            "$ref": "#/components/responses/ExpectationFailed"
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Users"],
+        "summary": "Update user profile",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserRequest"
+              },
+              "examples": {
+                "UpdateUserRequest": {
+                  "$ref": "#/components/examples/UpdateUserRequest"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Profile updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponse"
+                },
+                "examples": {
+                  "UserResponse": {
+                    "$ref": "#/components/examples/UserResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "417": {
+            "$ref": "#/components/responses/ExpectationFailed"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableContent"
+          }
+        }
+      }
+    },
+    "/goals": {
+      "get": {
+        "tags": ["Goals"],
+        "summary": "List all user goals",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/limitParam"
+          },
+          {
+            "$ref": "#/components/parameters/sortParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List all user goals",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/GoalResponse"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "417": {
+            "$ref": "#/components/responses/ExpectationFailed"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Goals"],
+        "summary": "Create a goal",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GoalRequestForm"
+              },
+              "examples": {
+                "CreateGoalRequest": {
+                  "$ref": "#/components/examples/GoalRequestForm"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GoalResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "417": {
+            "$ref": "#/components/responses/ExpectationFailed"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableContent"
+          }
+        }
+      }
+    },
+    "/goals/{id}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/idParam"
+        }
+      ],
+      "get": {
+        "tags": ["Goals"],
+        "summary": "Get goal by ID",
+        "responses": {
+          "200": {
+            "description": "Goal details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GoalResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "417": {
+            "$ref": "#/components/responses/ExpectationFailed"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableContent"
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Goals"],
+        "summary": "Update goal title/description",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GoalRequestForm"
+              },
+              "examples": {
+                "CreateGoalRequest": {
+                  "$ref": "#/components/examples/GoalRequestForm"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GoalResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "417": {
+            "$ref": "#/components/responses/ExpectationFailed"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableContent"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Goals"],
+        "summary": "Delete or archive goal",
+        "responses": {
+          "204": {
+            "description": "Deleted"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "417": {
+            "$ref": "#/components/responses/ExpectationFailed"
+          }
+        }
+      }
+    },
+    "/goals/{id}/field-values": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/idParam"
+        }
+      ],
+      "patch": {
+        "tags": ["Goals"],
+        "summary": "Update field values for a goal",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateGoalFieldValuesRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Values updated"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "417": {
+            "$ref": "#/components/responses/ExpectationFailed"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableContent"
+          }
+        }
+      }
+    },
+    "/goal-board-images": {
+      "get": {
+        "tags": ["Goals"],
+        "summary": "Get goal board images",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/limitParam"
+          },
+          {
+            "$ref": "#/components/parameters/sortParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Image list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/GoalBoardImageResponse"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "417": {
+            "$ref": "#/components/responses/ExpectationFailed"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Goals"],
+        "summary": "Upload image to goal board list",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/GoalBoardImagesRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Uploaded and resized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GoalBoardImageResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "417": {
+            "$ref": "#/components/responses/ExpectationFailed"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableContent"
+          }
+        }
+      }
+    },
+    "/goal-board-images/{id}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/idParam"
+        }
+      ],
+      "delete": {
+        "tags": ["Goals"],
+        "summary": "Delete Goal Board image",
+        "responses": {
+          "204": {
+            "description": "Deleted"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "417": {
+            "$ref": "#/components/responses/ExpectationFailed"
+          }
+        }
+      }
+    },
+    "/goal-types": {
+      "get": {
+        "tags": ["GoalTypes"],
+        "summary": "List available goal types",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/limitParam"
+          },
+          {
+            "$ref": "#/components/parameters/sortParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of templates",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/GoalTypeResponse"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "417": {
+            "$ref": "#/components/responses/ExpectationFailed"
+          }
+        }
+      },
+      "post": {
+        "tags": ["GoalTypes"],
+        "summary": "Create new goal type (admin)",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GoalTypeForm"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GoalTypeDetailedResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "417": {
+            "$ref": "#/components/responses/ExpectationFailed"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableContent"
+          }
+        }
+      }
+    },
+    "/goal-types/{id}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/idParam"
+        }
+      ],
+      "get": {
+        "tags": ["GoalTypes"],
+        "summary": "Get detailed goal type with goal type fields",
+        "responses": {
+          "200": {
+            "description": "Goal type",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GoalTypeDetailedResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "417": {
+            "$ref": "#/components/responses/ExpectationFailed"
+          }
+        }
+      },
+      "patch": {
+        "tags": ["GoalTypes"],
+        "summary": "Update goal type (admin)",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GoalTypeForm"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GoalTypeDetailedResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "417": {
+            "$ref": "#/components/responses/ExpectationFailed"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableContent"
+          }
+        }
+      }
+    },
+    "/goal-types/{id}/fields": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/idParam"
+        }
+      ],
+      "post": {
+        "tags": ["GoalTypes"],
+        "summary": "Add fields to goal type",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GoalTypeFieldForm"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Field added",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateGoalTypeFieldsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "417": {
+            "$ref": "#/components/responses/ExpectationFailed"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableContent"
+          }
+        }
+      }
+    },
+    "/goals/{id}/progress": {
+      "get": {
+        "tags": ["GoalProgress"],
+        "summary": "Get goal progress",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/limitParam"
+          },
+          {
+            "$ref": "#/components/parameters/sortParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Progress list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/GoalProgressResponse"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "417": {
+            "$ref": "#/components/responses/ExpectationFailed"
+          }
+        }
+      },
+      "post": {
+        "tags": ["GoalProgress"],
+        "summary": "Add progress",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateGoalProgressRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Added",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GoalProgressResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "417": {
+            "$ref": "#/components/responses/ExpectationFailed"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableContent"
+          }
+        }
+      }
+    },
+    "/daily-quests": {
+      "get": {
+        "tags": ["DailyQuests"],
+        "summary": "Get all daily quests",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/limitParam"
+          },
+          {
+            "$ref": "#/components/parameters/sortParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/DailyQuestResponse"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "417": {
+            "$ref": "#/components/responses/ExpectationFailed"
+          }
+        }
+      },
+      "post": {
+        "tags": ["DailyQuests"],
+        "summary": "Create a daily quest",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DailyQuestForm"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DailyQuestResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "417": {
+            "$ref": "#/components/responses/ExpectationFailed"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableContent"
+          }
+        }
+      }
+    },
+    "/daily-quests/for-date": {
+      "get": {
+        "tags": ["DailyQuests"],
+        "summary": "Get quests for a given date",
+        "parameters": [
+          {
+            "name": "date",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/limitParam"
+          },
+          {
+            "$ref": "#/components/parameters/sortParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List for date",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/DailyQuestResponse"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "417": {
+            "$ref": "#/components/responses/ExpectationFailed"
+          }
+        }
+      }
+    },
+    "/daily-quests/{id}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/idParam"
+        }
+      ],
+      "patch": {
+        "tags": ["DailyQuests"],
+        "summary": "Update daily quest",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DailyQuestForm"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DailyQuestResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "417": {
+            "$ref": "#/components/responses/ExpectationFailed"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableContent"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["DailyQuests"],
+        "summary": "Delete daily quest",
+        "responses": {
+          "204": {
+            "description": "Deleted"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "417": {
+            "$ref": "#/components/responses/ExpectationFailed"
+          }
+        }
+      }
+    },
+    "/daily-quests/{id}/toggle": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/idParam"
+        }
+      ],
+      "post": {
+        "tags": ["DailyQuests"],
+        "summary": "Toggle daily quest completion for date",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "date": {
+                    "type": "string",
+                    "format": "date"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Toggled"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "417": {
+            "$ref": "#/components/responses/ExpectationFailed"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableContent"
+          }
+        }
+      }
+    },
+    "/daily-quests/suggestions": {
+      "get": {
+        "tags": ["DailyQuestsSuggestions"],
+        "summary": "List daily quests suggestions excluding active daily quests",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/limitParam"
+          },
+          {
+            "$ref": "#/components/parameters/sortParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Filtered suggestions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/DailyQuestSuggestionResponse"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "417": {
+            "$ref": "#/components/responses/ExpectationFailed"
+          }
+        }
+      },
+      "post": {
+        "tags": ["DailyQuestsSuggestions"],
+        "summary": "Create new daily quests suggestion",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DailyQuestSuggestionForm"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DailyQuestSuggestionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "417": {
+            "$ref": "#/components/responses/ExpectationFailed"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableContent"
+          }
+        }
+      }
+    },
+    "/daily-quests/suggestions/{id}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/idParam"
+        }
+      ],
+      "get": {
+        "tags": ["DailyQuestsSuggestions"],
+        "summary": "Get daily quests suggestion by ID",
+        "responses": {
+          "200": {
+            "description": "Daily quests suggestion details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DailyQuestSuggestionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "417": {
+            "$ref": "#/components/responses/ExpectationFailed"
+          }
+        }
+      },
+      "patch": {
+        "tags": ["DailyQuestsSuggestions"],
+        "summary": "Update daily quests suggestion",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DailyQuestSuggestionForm"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DailyQuestSuggestionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "417": {
+            "$ref": "#/components/responses/ExpectationFailed"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableContent"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["DailyQuestsSuggestions"],
+        "summary": "Delete daily quests suggestion",
+        "responses": {
+          "204": {
+            "description": "Deleted"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "417": {
+            "$ref": "#/components/responses/ExpectationFailed"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "RegisterUserRequest": {
+        "type": "object",
+        "required": ["email", "password", "password_confirmation", "name"],
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "password_confirmation": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "RegisterUserResponse": {
+        "type": "object",
+        "required": ["user", "access_token", "refresh_token"],
+        "properties": {
+          "user": {
+            "$ref": "#/components/schemas/UserResponse"
+          },
+          "access_token": {
+            "type": "string",
+            "description": "JWT used for authenticated requests"
+          },
+          "refresh_token": {
+            "type": "string",
+            "description": "Token used to obtain a new access token"
+          }
+        }
+      },
+      "LoginRequest": {
+        "type": "object",
+        "required": ["email", "password"],
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "LoginResponse": {
+        "type": "object",
+        "required": ["user", "access_token", "refresh_token"],
+        "properties": {
+          "access_token": {
+            "type": "string",
+            "description": "JWT used for authenticated requests"
+          },
+          "refresh_token": {
+            "type": "string",
+            "description": "Token used to obtain a new access token"
+          }
+        }
+      },
+      "GoogleLoginRequest": {
+        "type": "object",
+        "required": ["token"],
+        "properties": {
+          "token": {
+            "type": "string"
+          }
+        }
+      },
+      "PasswordResetRequestRequest": {
+        "type": "object",
+        "required": ["email"],
+        "properties": {
+          "email": {
+            "type": "string"
+          }
+        }
+      },
+      "PasswordResetRequestResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          }
+        }
+      },
+      "PasswordResetConfirmRequest": {
+        "type": "object",
+        "required": ["email"],
+        "properties": {
+          "token": {
+            "type": "string"
+          },
+          "new_password": {
+            "type": "string"
+          },
+          "new_password_confirmation": {
+            "type": "string"
+          }
+        }
+      },
+      "PasswordResetConfirmResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          }
+        }
+      },
+      "UserResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "email": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "UpdateUserRequest": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "GoalResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "user_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "goal_type_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "goal_field_values": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GoalFieldValue"
+            }
+          }
+        }
+      },
+      "GoalRequestForm": {
+        "type": "object",
+        "required": ["name", "goal_type_id", "goal_field_values"],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "goal_type_id": {
+            "type": "string"
+          },
+          "goal_field_values": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GoalFieldValue"
+            }
+          }
+        }
+      },
+      "GoalFieldValue": {
+        "type": "object",
+        "properties": {
+          "goal_type_field_id": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          }
+        }
+      },
+      "UpdateGoalFieldValuesRequest": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/GoalFieldValue"
+        }
+      },
+      "GoalBoardImageResponse": {
+        "type": "object",
+        "properties": {
+          "file_url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "thumbnail_url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "GoalBoardImagesRequest": {
+        "type": "object",
+        "required": ["image"],
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "binary"
+          }
+        }
+      },
+      "GoalTypeResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      },
+      "GoalTypeDetailedResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "goal_type_fields": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GoalTypeFieldForm"
+            }
+          }
+        }
+      },
+      "GoalTypeForm": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "goal_type_fields": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GoalTypeFieldForm"
+            }
+          }
+        }
+      },
+      "GoalTypeFieldForm": {
+        "type": "object",
+        "required": ["field_name", "field_type", "required"],
+        "properties": {
+          "field_name": {
+            "type": "string"
+          },
+          "field_type": {
+            "type": "string",
+            "enum": ["string", "integer", "boolean", "dropdown"]
+          },
+          "required": {
+            "type": "boolean"
+          },
+          "trackable": {
+            "type": "boolean"
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "CreateGoalTypeFieldsResponse": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/GoalTypeFieldResponse"
+        }
+      },
+      "GoalTypeFieldResponse": {
+        "type": "object",
+        "required": ["field_name", "field_type", "required"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "goal_type_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "field_name": {
+            "type": "string"
+          },
+          "field_type": {
+            "type": "string",
+            "enum": ["string", "integer", "boolean", "dropdown"]
+          },
+          "required": {
+            "type": "boolean"
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "trackable": {
+            "type": "boolean"
+          }
+        }
+      },
+      "CreateGoalProgressRequest": {
+        "type": "object",
+        "required": ["goal_type_field_id", "progress_value"],
+        "properties": {
+          "goal_type_field_id": {
+            "type": "string"
+          },
+          "progress_value": {
+            "type": "integer"
+          }
+        }
+      },
+      "GoalProgressResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "goal_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "goal_type_field_id": {
+            "type": "string"
+          },
+          "progress_value": {
+            "type": "integer"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "DailyQuestForm": {
+        "type": "object",
+        "required": ["title", "icon", "is_daily"],
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "icon": {
+            "type": "string"
+          },
+          "goal_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "is_daily": {
+            "type": "boolean"
+          },
+          "frequency": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "Daily",
+                "Mondays",
+                "Tuesdays",
+                "Wednesdays",
+                "Thursdays",
+                "Fridays",
+                "Saturdays",
+                "Sundays"
+              ],
+              "description": "Frequency of the daily quest repetition"
+            }
+          }
+        }
+      },
+      "DailyQuestResponse": {
+        "type": "object",
+        "properties": {
+          "goal_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "suggestion_id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "icon": {
+            "type": "string"
+          },
+          "is_daily": {
+            "type": "boolean"
+          },
+          "frequency": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "Daily",
+                "Mondays",
+                "Tuesdays",
+                "Wednesdays",
+                "Thursdays",
+                "Fridays",
+                "Saturdays",
+                "Sundays"
+              ],
+              "description": "Frequency of the daily quest repetition"
+            }
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "DailyQuestSuggestionForm": {
+        "type": "object",
+        "required": ["title", "icon"],
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "icon": {
+            "type": "string"
+          }
+        }
+      },
+      "DailyQuestSuggestionResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string"
+          },
+          "icon": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": ["code", "message"]
+      },
+      "ValidationError": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "message": {
+            "type": "string"
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        },
+        "required": ["code", "message", "errors"]
+      }
+    },
+    "examples": {
+      "RegisterUserRequest": {
+        "summary": "An example of Register User request",
+        "value": {
+          "email": "example@gmail.com",
+          "password": "23j2jn&*&bUHUwq",
+          "password_confirmation": "23j2jn&*&bUHUwq",
+          "name": "John Dou"
+        }
+      },
+      "RegisterUserResponse": {
+        "summary": "An example of Register User response",
+        "value": {
+          "user": {
+            "id": "396eb1db-dc34-418c-b071-714b3732aaef",
+            "email": "example@gmail.com",
+            "name": "John Dou",
+            "created_at": "2019-08-24T14:15:22Z"
+          },
+          "access_token": "396eb1db-dc34-418c-b071-714b3732aaef",
+          "refresh_token": "789eb1db-dc34-418c-b071-714b3732aaef"
+        }
+      },
+      "UserResponse": {
+        "summary": "An example of New User response",
+        "value": {
+          "id": "396eb1db-dc34-418c-b071-714b3732aaef",
+          "email": "example@gmail.com",
+          "name": "John Dou",
+          "created_at": "2019-08-24T14:15:22Z"
+        }
+      },
+      "LoginUserRequest": {
+        "summary": "An example of New User request",
+        "value": {
+          "email": "example@gmail.com",
+          "password": "23j2jn&*&bUHUwq"
+        }
+      },
+      "LoginUserResponse": {
+        "summary": "An example of New User response",
+        "value": {
+          "access_token": "396eb1db-dc34-418c-b071-714b3732aaef",
+          "refresh_token": "789eb1db-dc34-418c-b071-714b3732aaef"
+        }
+      },
+      "GoogleLoginRequest": {
+        "summary": "An example of Google Login request",
+        "value": {
+          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+        }
+      },
+      "PasswordResetRequestRequest": {
+        "summary": "An example of Password Reset request",
+        "value": {
+          "email": "example@gmail.com"
+        }
+      },
+      "PasswordResetRequestResponse": {
+        "summary": "An example of Password Reset response",
+        "value": {
+          "success": true
+        }
+      },
+      "PasswordResetConfirmRequest": {
+        "summary": "An example of Password Confirm request",
+        "value": {
+          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+          "new_password": "23j2jn&*&bUHUwq",
+          "new_password_confirmation": "23j2jn&*&bUHUwq"
+        }
+      },
+      "PasswordResetConfirmResponse": {
+        "summary": "An example of Password Confirm response",
+        "value": {
+          "success": true
+        }
+      },
+      "UpdateUserRequest": {
+        "summary": "An example of Update User request",
+        "value": {
+          "email": "example@gmail.com",
+          "name": "John Dou"
+        }
+      },
+      "GoalResponse": {
+        "summary": "An example of Goal response",
+        "value": {
+          "id": "396eb1db-dc34-418c-b071-714b3732aaef",
+          "name": "Read more books",
+          "description": "Read more books during this year",
+          "user_id": "400eb1db-dc34-418c-b071-714b3732aaef",
+          "goal_type_id": "12heb1db-dc34-418c-b071-714b3732aaef",
+          "created_at": "2019-08-24T14:15:22Z",
+          "updated_at": "2019-08-24T14:15:22Z",
+          "goal_field_values": [
+            {
+              "goal_type_field_id": "600eb1db-dc34-418c-b071-714b3732aaef",
+              "value": "10"
+            },
+            {
+              "goal_type_field_id": "700eb1db-dc34-418c-b071-714b3732aaef",
+              "value": "Every day"
+            }
+          ]
+        }
+      },
+      "GoalRequestForm": {
+        "summary": "An example of Create/Update Goal response",
+        "value": {
+          "name": "Read more books",
+          "description": "Read more books during this year",
+          "goal_type_id": "12heb1db-dc34-418c-b071-714b3732aaef",
+          "goal_field_values": [
+            {
+              "goal_type_field_id": "600eb1db-dc34-418c-b071-714b3732aaef",
+              "value": "10"
+            },
+            {
+              "goal_type_field_id": "700eb1db-dc34-418c-b071-714b3732aaef",
+              "value": "Every day"
+            }
+          ]
+        }
+      },
+      "BadRequestResponse": {
+        "summary": "An example of BadRequest response",
+        "value": {
+          "code": "400",
+          "message": "Invalid request format. 'email' field is required."
+        }
+      },
+      "UnauthorizedResponse": {
+        "summary": "An example of Unauthorized response",
+        "value": {
+          "code": "401",
+          "message": "Authentication required. Please provide a valid API token."
+        }
+      },
+      "ForbiddenResponse": {
+        "summary": "An example of Forbidden response",
+        "value": {
+          "code": "403",
+          "message": "Access denied. You do not have permission to access this resource."
+        }
+      },
+      "NotFoundResponse": {
+        "summary": "An example of NotFound response",
+        "value": {
+          "code": "404",
+          "message": "The requested resource was not found."
+        }
+      },
+      "ExpectationFailedResponse": {
+        "summary": "An example of ExpectationFailed response",
+        "value": {
+          "code": "417",
+          "message": "Request expectations could not be fulfilled. Please check your headers."
+        }
+      },
+      "UnprocessableEntityResponse": {
+        "summary": "An example of UnprocessableEntity response",
+        "value": {
+          "code": "422",
+          "message": "Validation failed.",
+          "errors": [
+            {
+              "field": "password",
+              "message": "'password' must be at least 8 symbols long."
+            },
+            {
+              "field": "price",
+              "message": "'price' must be a positive number."
+            }
+          ]
+        }
+      }
+    },
+    "responses": {
+      "BadRequest": {
+        "description": "The server cannot process the request due to a client error (e.g., malformed request syntax)",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "examples": {
+              "BadRequestResponse": {
+                "$ref": "#/components/examples/BadRequestResponse"
+              }
+            }
+          }
+        }
+      },
+      "Unauthorized": {
+        "description": "The request requires user authentication",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "examples": {
+              "UnauthorizedResponse": {
+                "$ref": "#/components/examples/UnauthorizedResponse"
+              }
+            }
+          }
+        }
+      },
+      "Forbidden": {
+        "description": "You don't have permissions to access this action",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "examples": {
+              "ForbiddenResponse": {
+                "$ref": "#/components/examples/ForbiddenResponse"
+              }
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "The specified resource was not found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "examples": {
+              "NotFoundResponse": {
+                "$ref": "#/components/examples/NotFoundResponse"
+              }
+            }
+          }
+        }
+      },
+      "ExpectationFailed": {
+        "description": "No required headers",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "examples": {
+              "ExpectationFailedResponse": {
+                "$ref": "#/components/examples/ExpectationFailedResponse"
+              }
+            }
+          }
+        }
+      },
+      "UnprocessableContent": {
+        "description": "The request was well-formed but was unable to be followed due to semantic (validation) errors",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "examples": {
+              "UnprocessableEntityResponse": {
+                "$ref": "#/components/examples/UnprocessableEntityResponse"
+              }
+            }
+          }
+        }
+      }
+    },
+    "parameters": {
+      "sortParam": {
+        "in": "query",
+        "name": "sort",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "default": "id"
+        },
+        "examples": {
+          "By Id ASC": {
+            "summary": "Sort by Id ASC",
+            "value": "id"
+          },
+          "By Name DESC": {
+            "summary": "Sort by Name DESC",
+            "value": "-name"
+          }
+        },
+        "description": "The way to sort by field and direction. Add a '-' sign at the beginning of the field name to sort DESC"
+      },
+      "limitParam": {
+        "in": "query",
+        "name": "limit",
+        "required": false,
+        "schema": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 50,
+          "default": 10
+        },
+        "description": "The numbers of items to return",
+        "example": 10
+      },
+      "idParam": {
+        "in": "path",
+        "name": "id",
+        "required": true,
+        "schema": {
+          "type": "string"
+        },
+        "description": "The ID of resource",
+        "example": "396eb1db-dc34-418c-b071-714b3732aaef"
+      }
+    }
+  }
+}

@@ -1,0 +1,14 @@
+model GoalProgress {
+  id                 String   @id @default(uuid())
+  goal_id            String
+  goal_type_field_id String
+  user_id            String
+  progress_value     Int
+  created_at         DateTime @default(now())
+
+  goal            Goal          @relation(fields: [goal_id], references: [id], onDelete: Cascade)
+  goal_type_field GoalTypeField @relation(fields: [goal_type_field_id], references: [id])
+  user            User          @relation(fields: [user_id], references: [id])
+
+  @@map("goal_progress")
+}
