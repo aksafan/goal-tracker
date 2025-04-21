@@ -34,7 +34,7 @@ CREATE TABLE "daily_quest_completion"
 );
 
 -- CreateTable
-CREATE TABLE "suggestion"
+CREATE TABLE "daily_quest_suggestion"
 (
     "id"         TEXT         NOT NULL,
     "title"      TEXT         NOT NULL,
@@ -42,7 +42,7 @@ CREATE TABLE "suggestion"
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "suggestion_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "daily_quest_suggestion_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -175,6 +175,9 @@ CREATE TABLE "refresh_token"
 CREATE UNIQUE INDEX "daily_quest_completion_daily_quest_id_user_id_date_key" ON "daily_quest_completion" ("daily_quest_id", "user_id", "date");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "goal_type_name_key" ON "goal_type" ("name");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "user_email_key" ON "user" ("email");
 
 -- CreateIndex
@@ -202,7 +205,7 @@ ALTER TABLE "daily_quest"
 
 -- AddForeignKey
 ALTER TABLE "daily_quest"
-    ADD CONSTRAINT "daily_quest_suggestion_id_fkey" FOREIGN KEY ("suggestion_id") REFERENCES "suggestion" ("id") ON DELETE SET NULL ON UPDATE CASCADE;
+    ADD CONSTRAINT "daily_quest_suggestion_id_fkey" FOREIGN KEY ("suggestion_id") REFERENCES "daily_quest_suggestion" ("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "daily_quest_completion"

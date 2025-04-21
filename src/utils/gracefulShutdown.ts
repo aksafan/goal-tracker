@@ -1,5 +1,5 @@
 import type { Server } from "http";
-import { prisma } from "@/services/prisma";
+import { prisma } from "@/db/prisma";
 
 export const setupGracefulShutdown = (server: Server): void => {
   const shutdown = async (reason: string, err?: unknown): Promise<void> => {
