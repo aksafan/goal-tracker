@@ -1,5 +1,6 @@
 import { prisma } from "@/db/prisma";
 import { FieldType } from "@/generated/prisma";
+import { InputJsonValue } from "@prisma/client/runtime/library";
 
 type GoalTypeSeed = {
   name: string;
@@ -8,7 +9,7 @@ type GoalTypeSeed = {
     field_name: string;
     field_type: FieldType;
     required: boolean;
-    options: any | null;
+    options: InputJsonValue | null;
     trackable: boolean;
   }[];
 };
@@ -271,10 +272,14 @@ export const seedGoalTypes = async (): Promise<void> => {
     });
 
     await prisma.goalTypeField.createMany({
-      data: fields.map((field) => ({
-        ...field,
-        goal_type_id: created.id,
-      })),
+      data: fields.map((field) => {
+        const { options, ...rest } = field;
+        return {
+          ...rest,
+          goal_type_id: created.id,
+          ...(options ? { options } : {}),
+        };
+      }),
       skipDuplicates: true,
     });
   }

@@ -43,7 +43,7 @@ export const seedGoals = async (): Promise<void> => {
 
 const generateFieldValueFromField = (field: {
   field_type: FieldType;
-  options: any;
+  options: unknown | null;
 }): string => {
   switch (field.field_type) {
     case "string":
