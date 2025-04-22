@@ -2,7 +2,6 @@ import HttpError from "@/errors/http/httpError";
 import { StatusCodes } from "http-status-codes";
 import { ValidationErrorDetail } from "@/types/errors";
 import { LogEntry } from "winston";
-import { fixPrototype } from "@/utils/fixPrototype";
 import { FlattenedFieldErrors } from "@/types/zod";
 
 export default class UnprocessableEntityError extends HttpError {
@@ -24,8 +23,6 @@ export default class UnprocessableEntityError extends HttpError {
       params?.message || "Validation failed",
       params?.logging || false
     );
-
-    fixPrototype(this, UnprocessableEntityError);
 
     this.context = params?.context || {};
     this.statusCode = statusCode;

@@ -1,6 +1,5 @@
 import HttpError from "@/errors/http/httpError";
 import { StatusCodes } from "http-status-codes";
-import { fixPrototype } from "@/utils/fixPrototype";
 
 export default class BadRequestError extends HttpError {
   public readonly statusCode: number;
@@ -19,8 +18,6 @@ export default class BadRequestError extends HttpError {
       params?.message || "Bad request",
       params?.logging || false
     );
-
-    fixPrototype(this, BadRequestError);
 
     this.context = params?.context || {};
     this.statusCode = statusCode;

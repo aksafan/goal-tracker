@@ -10,7 +10,7 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 export const logPrismaKnownError = (e: PrismaClientKnownRequestError): void => {
-  logger.warning({
+  logger.warn({
     message: e.message,
     prismaCode: e.code,
     e,

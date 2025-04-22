@@ -1,6 +1,5 @@
 import HttpError from "@/errors/http/httpError";
 import { StatusCodes } from "http-status-codes";
-import { fixPrototype } from "@/utils/fixPrototype";
 
 export default class UnauthorizedError extends HttpError {
   public readonly statusCode: number;
@@ -19,8 +18,6 @@ export default class UnauthorizedError extends HttpError {
       params?.message || "Unauthorized",
       params?.logging || false
     );
-
-    fixPrototype(this, UnauthorizedError);
 
     this.context = params?.context || {};
     this.statusCode = statusCode;

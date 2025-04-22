@@ -1,4 +1,3 @@
-import { fixPrototype } from "@/utils/fixPrototype";
 import { DomainException } from "@/errors/domain/index";
 
 export default class ValidationDomainException extends DomainException {
@@ -6,8 +5,6 @@ export default class ValidationDomainException extends DomainException {
 
   constructor(params: { message?: string; context: Record<string, unknown> }) {
     super(params?.message || "Validation domain exception");
-
-    fixPrototype(this, ValidationDomainException);
 
     this.context = params.context || {};
   }
