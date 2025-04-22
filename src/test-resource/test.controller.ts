@@ -1,5 +1,5 @@
 import type { Request, Response } from "express-serve-static-core";
-import CreateUserQueryParams from "@/types/queryParams";
+import { CreateUserQueryParams } from "@/types/queryParams";
 import { createUser } from "@/user/user.service";
 import type { CreateUserForm, CreateUserResponse } from "@/dto";
 import { Error, ValidationError } from "@/types/errors";

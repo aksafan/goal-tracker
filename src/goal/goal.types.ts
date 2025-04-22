@@ -38,6 +38,10 @@ export function toGoalResponse(goal: GoalModel): GoalResponse {
   };
 }
 
+export function toGoalResponses(goals: GoalModel[]): GoalResponse[] {
+  return goals.map(toGoalResponse);
+}
+
 //
 // export interface GoalFieldValueDTO {
 //   id: string;

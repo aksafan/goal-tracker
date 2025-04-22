@@ -1,0 +1,22 @@
+import { parseQueryParams } from "@/utils/queryParams";
+import type { NextFunction, Request, Response } from "express";
+import { queryParamsRawSchema } from "@/types/queryParams";
+import { BadRequestError } from "@/errors/http";
+
+export function queryParamsParser(
+  req: Request,
+  _res: Response,
+  next: NextFunction
+) {
+  const parsed = queryParamsRawSchema.safeParse(req.query);
+
+  if (!parsed.success) {
+    throw new BadRequestError({
+      message: parsed.error.errors.map((e) => e.message).join("; "),
+    });
+  }
+
+  req.queryParams = parseQueryParams(parsed.data);
+
+  next();
+}

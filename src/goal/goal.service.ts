@@ -5,17 +5,18 @@ import {
   UnknownDomainException,
 } from "@/errors/domain";
 import { GoalModel } from "@/goal/goal.domain.types";
+import QueryParams from "@/types/queryParams";
 
 export default class GoalService {
   findAll = async (
     userId: string,
-    options: { limit: number; sort: string }
+    { limit, sortBy, sortOrder }: QueryParams
   ): Promise<GoalModel[]> => {
     return prisma.goal.findMany({
       where: { user_id: userId },
       include: { goal_field_values: true },
-      orderBy: { created_at: "desc" },
-      take: options.limit,
+      orderBy: { [sortBy]: sortOrder },
+      take: limit,
     });
   };
 

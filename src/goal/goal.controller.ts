@@ -4,7 +4,7 @@ import GoalService from "@/goal/goal.service";
 // import { instanceof } from "zod";
 import { NotFoundDomainException } from "@/errors/domain";
 import { NotFoundError } from "@/errors/http";
-import { toGoalResponse } from "@/goal/goal.types";
+import { toGoalResponse, toGoalResponses } from "@/goal/goal.types";
 import { GoalModel } from "@/goal/goal.domain.types";
 // import { GoalRequestFormSchema, UpdateGoalFieldValuesSchema } from "./goal.forms";
 
@@ -14,14 +14,12 @@ export default class GoalController {
   getAllGoals = async (req: Request, res: Response): Promise<void> => {
     // const goals = await this.goalService.findAll(req.user.id);
 
-    const { limit, sort } = req.query;
     const goals = await this.goalService.findAll(
       "7171f91a-bd67-41c2-9e38-7d81be9edf22",
-      { limit: parseInt(limit as string), sort: sort as string }
+      req.queryParams
     );
-    const response = goals.map(toGoalResponse);
 
-    res.status(StatusCodes.OK).json({ data: response });
+    res.status(StatusCodes.OK).json({ data: toGoalResponses(goals) });
   };
 
   getGoalById = async (req: Request, res: Response): Promise<void> => {
