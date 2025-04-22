@@ -11,7 +11,5 @@ router.patch("/:id", controller.updateGoal);
 router.delete("/:id", controller.deleteGoal);
 
 router.patch("/:id/field-values", controller.updateFieldValues);
-router.get("/:goalId/progress", controller.getGoalProgress);
-router.post("/:goalId/progress", controller.addGoalProgress);
 
 export default router;

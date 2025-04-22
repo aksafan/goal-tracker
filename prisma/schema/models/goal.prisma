@@ -7,11 +7,11 @@ model Goal {
   created_at   DateTime @default(now())
   updated_at   DateTime @updatedAt
 
-  user         User             @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  goal_type    GoalType         @relation(fields: [goal_type_id], references: [id])
-  field_values GoalFieldValue[]
-  progress     GoalProgress[]
-  daily_quests DailyQuest[]
+  user              User             @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  goal_type         GoalType         @relation(fields: [goal_type_id], references: [id])
+  goal_field_values GoalFieldValue[]
+  progress          GoalProgress[]
+  daily_quests      DailyQuest[]
 
   @@map("goal")
 }

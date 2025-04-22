@@ -1,12 +1,26 @@
 import type { Request, Response } from "express-serve-static-core";
 import { StatusCodes } from "http-status-codes";
+import GoalProgressService from "@/goal-progress/goal-progress.service";
 
 export default class GoalProgressController {
-  async getAllForGoal(req: Request, res: Response) {
-    res.status(StatusCodes.OK).json({ message: "It works!" });
-  }
+  private goalProgressService: GoalProgressService = new GoalProgressService();
 
-  async add(req: Request, res: Response) {
+  getGoalProgress = async (req: Request, res: Response) => {
     res.status(StatusCodes.OK).json({ message: "It works!" });
-  }
+    // const progress = await this.goalProgressService.getProgress(
+    //   req.params.goalId,
+    //   req.user.id
+    // );
+    // res.status(StatusCodes.OK).json({ data: progress });
+  };
+
+  addGoalProgress = async (req: Request, res: Response) => {
+    res.status(StatusCodes.OK).json({ message: "It works!" });
+    // const entry = await this.goalProgressService.addProgress(
+    //   req.params.goalId,
+    //   req.body,
+    //   req.user.id
+    // );
+    // res.status(StatusCodes.CREATED).json({ data: entry });
+  };
 }

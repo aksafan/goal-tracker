@@ -1,4 +1,4 @@
-import HttpError from "./httpError";
+import HttpError from "@/errors/http/httpError";
 import { StatusCodes } from "http-status-codes";
 import { fixPrototype } from "@/utils/fixPrototype";
 

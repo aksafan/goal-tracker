@@ -4,7 +4,10 @@ import GoalProgressController from "./goal-progress.controller";
 const goalProgressRouter = Router();
 const goalProgressController = new GoalProgressController();
 
-goalProgressRouter.get("/:goalId", goalProgressController.getAllForGoal);
-goalProgressRouter.post("/:goalId", goalProgressController.add);
+goalProgressRouter.get("/:id/progress", goalProgressController.getGoalProgress);
+goalProgressRouter.post(
+  "/:id/progress",
+  goalProgressController.addGoalProgress
+);
 
 export default goalProgressRouter;

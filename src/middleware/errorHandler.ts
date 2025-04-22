@@ -5,7 +5,8 @@ import type {
   Response,
 } from "express-serve-static-core";
 import { StatusCodes } from "http-status-codes";
-import { HttpError, UnprocessableEntityError } from "@/errors";
+import { HttpError, UnprocessableEntityError } from "@/errors/http";
+import { logger } from "@/utils/logger";
 
 export const errorHandler: ErrorRequestHandler = (
   err: Error | HttpError,
@@ -34,8 +35,10 @@ export const errorHandler: ErrorRequestHandler = (
     }
   }
 
+  logger.error(err.message || "Unknown Error", { stack: err.stack });
+
   res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
     code: StatusCodes.INTERNAL_SERVER_ERROR,
-    message: err.message || "Something went wrong",
+    message: "Something went wrong",
   });
 };

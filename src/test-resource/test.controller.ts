@@ -4,7 +4,7 @@ import { createUser } from "@/user/user.service";
 import type { CreateUserForm, CreateUserResponse } from "@/dto";
 import { Error, ValidationError } from "@/types/errors";
 import { StatusCodes } from "http-status-codes";
-import { BadRequestError, UnprocessableEntityError } from "@/errors";
+import { BadRequestError, UnprocessableEntityError } from "@/errors/http";
 
 export default class TestController {
   // This is an example of async action with sanitized body/query fields,

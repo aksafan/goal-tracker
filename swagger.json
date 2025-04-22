@@ -1840,7 +1840,7 @@
           "goal_field_values": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/GoalFieldValue"
+              "$ref": "#/components/schemas/GoalFieldValueResponse"
             }
           }
         }
@@ -1870,6 +1870,26 @@
         "type": "object",
         "properties": {
           "goal_type_field_id": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          }
+        }
+      },
+      "GoalFieldValueResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "goal_type_field_id": {
+            "type": "string"
+          },
+          "goal_id": {
+            "type": "string"
+          },
+          "user_id": {
             "type": "string"
           },
           "value": {

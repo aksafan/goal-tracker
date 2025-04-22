@@ -1,8 +1,8 @@
-import HttpError from "./httpError";
+import HttpError from "@/errors/http/httpError";
 import { StatusCodes } from "http-status-codes";
 import { fixPrototype } from "@/utils/fixPrototype";
 
-export default class UnauthenticatedError extends HttpError {
+export default class UnauthorizedError extends HttpError {
   public readonly statusCode: number;
   public readonly logging: boolean = false;
   public readonly context: Record<string, unknown>;
@@ -12,15 +12,15 @@ export default class UnauthenticatedError extends HttpError {
     logging?: boolean;
     context?: Record<string, unknown>;
   }) {
-    const statusCode = StatusCodes.UNAUTHORIZED;
+    const statusCode = StatusCodes.FORBIDDEN;
 
     super(
       statusCode,
-      params?.message || "Bad request",
+      params?.message || "Unauthorized",
       params?.logging || false
     );
 
-    fixPrototype(this, UnauthenticatedError);
+    fixPrototype(this, UnauthorizedError);
 
     this.context = params?.context || {};
     this.statusCode = statusCode;
