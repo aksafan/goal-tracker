@@ -1,20 +1,24 @@
 import { z } from "zod";
 
-export const GoalFieldValueSchema = z.object({
+export const GoalFieldValueForm = z.object({
   goal_type_field_id: z.string(),
   value: z.string(),
 });
-
-export const GoalRequestFormSchema = z.object({
-  name: z.string(),
-  description: z.string().optional(),
+export const CreateGoalForm = z.object({
+  name: z.string().min(5).max(256),
+  description: z.string().min(5).max(1024),
   goal_type_id: z.string(),
-  goal_field_values: z.array(GoalFieldValueSchema),
+  goal_field_values: z.array(GoalFieldValueForm).min(1),
 });
+export type GoalRequestFormType = z.infer<typeof CreateGoalForm>;
 
-export const UpdateGoalFieldValuesSchema = z.array(GoalFieldValueSchema);
+export const UpdateGoalForm = z.object({
+  name: z.string().min(5).max(256),
+  description: z.string().min(5).max(1024),
+});
+export type UpdateGoalFormType = z.infer<typeof UpdateGoalForm>;
 
-export type GoalRequestFormInput = z.infer<typeof GoalRequestFormSchema>;
-export type UpdateGoalFieldValuesInput = z.infer<
-  typeof UpdateGoalFieldValuesSchema
+export const UpdateGoalFieldValuesForm = z.array(GoalFieldValueForm);
+export type UpdateGoalFieldValuesType = z.infer<
+  typeof UpdateGoalFieldValuesForm
 >;

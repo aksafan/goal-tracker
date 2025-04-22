@@ -9,10 +9,20 @@ export interface GoalFieldValueModel {
 export interface GoalModel {
   id: string;
   name: string;
-  description?: string;
+  description: string;
   user_id: string;
   goal_type_id: string;
   created_at: Date;
   updated_at: Date;
   goal_field_values: GoalFieldValueModel[];
+}
+
+export interface ShortGoalModel {
+  id: string;
+  name: string;
+  description: string;
+  user_id: string;
+  goal_type_id: string;
+  created_at: Date;
+  updated_at: Date;
 }

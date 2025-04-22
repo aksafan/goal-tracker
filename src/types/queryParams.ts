@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const queryParamsRawSchema = z.object({
+export const QueryParamsRawSchema = z.object({
   limit: z
     .string()
     .refine(
@@ -17,7 +17,7 @@ export const queryParamsRawSchema = z.object({
   sort: z.string().optional(),
 });
 
-export type RawQueryParams = z.infer<typeof queryParamsRawSchema>;
+export type RawQueryParams = z.infer<typeof QueryParamsRawSchema>;
 
 export enum SortingOrder {
   ASC = "asc",

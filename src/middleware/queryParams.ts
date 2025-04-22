@@ -1,6 +1,6 @@
 import { parseQueryParams } from "@/utils/queryParams";
 import type { NextFunction, Request, Response } from "express";
-import { queryParamsRawSchema } from "@/types/queryParams";
+import { QueryParamsRawSchema } from "@/types/queryParams";
 import { BadRequestError } from "@/errors/http";
 
 export function queryParamsParser(
@@ -8,7 +8,7 @@ export function queryParamsParser(
   _res: Response,
   next: NextFunction
 ) {
-  const parsed = queryParamsRawSchema.safeParse(req.query);
+  const parsed = QueryParamsRawSchema.safeParse(req.query);
 
   if (!parsed.success) {
     throw new BadRequestError({

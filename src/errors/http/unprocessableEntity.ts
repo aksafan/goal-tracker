@@ -3,6 +3,7 @@ import { StatusCodes } from "http-status-codes";
 import { ValidationErrorDetail } from "@/types/errors";
 import { LogEntry } from "winston";
 import { fixPrototype } from "@/utils/fixPrototype";
+import { FlattenedFieldErrors } from "@/types/zod";
 
 export default class UnprocessableEntityError extends HttpError {
   public readonly statusCode: number;
@@ -12,7 +13,7 @@ export default class UnprocessableEntityError extends HttpError {
 
   constructor(params: {
     message?: string;
-    errors: Array<{ field: string; message: string }>; // TODO: add proper type when validator is added
+    errors: FlattenedFieldErrors;
     logging?: boolean;
     context?: Record<string, unknown>;
   }) {
@@ -38,15 +39,13 @@ export default class UnprocessableEntityError extends HttpError {
     };
   }
 
-  private prepareErrors(
-    errors: Array<{ field: string; message: string }>
-  ): ValidationErrorDetail[] {
+  private prepareErrors(errors: FlattenedFieldErrors): ValidationErrorDetail[] {
     const result: ValidationErrorDetail[] = [];
 
-    for (const error of errors) {
+    for (const error in errors) {
       result.push({
-        field: error.field,
-        message: error.message,
+        field: error,
+        message: errors[error] ? errors[error].join(", ") : "Unknown error",
       });
     }
 

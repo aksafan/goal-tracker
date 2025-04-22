@@ -540,11 +540,11 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/GoalRequestForm"
+                "$ref": "#/components/schemas/CreateGoalRequestForm"
               },
               "examples": {
-                "CreateGoalRequest": {
-                  "$ref": "#/components/examples/GoalRequestForm"
+                "CreateGoalRequestForm": {
+                  "$ref": "#/components/examples/CreateGoalRequestForm"
                 }
               }
             }
@@ -630,11 +630,11 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/GoalRequestForm"
+                "$ref": "#/components/schemas/UpdateGoalRequestForm"
               },
               "examples": {
-                "CreateGoalRequest": {
-                  "$ref": "#/components/examples/GoalRequestForm"
+                "UpdateGoalRequestForm": {
+                  "$ref": "#/components/examples/UpdateGoalRequestForm"
                 }
               }
             }
@@ -1816,10 +1816,14 @@
             "format": "uuid"
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "minimum": 5,
+            "maximum": 256
           },
           "description": {
-            "type": "string"
+            "type": "string",
+            "minimum": 5,
+            "maximum": 1024
           },
           "user_id": {
             "type": "string",
@@ -1845,15 +1849,24 @@
           }
         }
       },
-      "GoalRequestForm": {
+      "CreateGoalRequestForm": {
         "type": "object",
-        "required": ["name", "goal_type_id", "goal_field_values"],
+        "required": [
+          "name",
+          "description",
+          "goal_type_id",
+          "goal_field_values"
+        ],
         "properties": {
           "name": {
-            "type": "string"
+            "type": "string",
+            "minimum": 5,
+            "maximum": 256
           },
           "description": {
-            "type": "string"
+            "type": "string",
+            "minimum": 5,
+            "maximum": 1024
           },
           "goal_type_id": {
             "type": "string"
@@ -1863,6 +1876,22 @@
             "items": {
               "$ref": "#/components/schemas/GoalFieldValue"
             }
+          }
+        }
+      },
+      "UpdateGoalRequestForm": {
+        "type": "object",
+        "required": ["name", "description"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "minimum": 5,
+            "maximum": 256
+          },
+          "description": {
+            "type": "string",
+            "minimum": 5,
+            "maximum": 1024
           }
         }
       },
@@ -2335,8 +2364,8 @@
           ]
         }
       },
-      "GoalRequestForm": {
-        "summary": "An example of Create/Update Goal response",
+      "CreateGoalRequestForm": {
+        "summary": "An example of Create Goal request",
         "value": {
           "name": "Read more books",
           "description": "Read more books during this year",
@@ -2351,6 +2380,13 @@
               "value": "Every day"
             }
           ]
+        }
+      },
+      "UpdateGoalRequestForm": {
+        "summary": "An example of Update Goal request",
+        "value": {
+          "name": "Read more books",
+          "description": "Read more books during this year"
         }
       },
       "BadRequestResponse": {

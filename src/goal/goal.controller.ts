@@ -1,12 +1,19 @@
 import type { Request, Response } from "express-serve-static-core";
 import { StatusCodes } from "http-status-codes";
 import GoalService from "@/goal/goal.service";
-// import { instanceof } from "zod";
-import { NotFoundDomainException } from "@/errors/domain";
-import { NotFoundError } from "@/errors/http";
+import {
+  NotFoundDomainException,
+  ValidationDomainException,
+} from "@/errors/domain";
+import { NotFoundError, UnprocessableEntityError } from "@/errors/http";
 import { toGoalResponse, toGoalResponses } from "@/goal/goal.types";
 import { GoalModel } from "@/goal/goal.domain.types";
-// import { GoalRequestFormSchema, UpdateGoalFieldValuesSchema } from "./goal.forms";
+import {
+  CreateGoalForm,
+  UpdateGoalFieldValuesForm,
+  UpdateGoalForm,
+} from "@/goal/goal.forms";
+import { FlattenedFieldErrors } from "@/types/zod";
 
 export default class GoalController {
   private goalService: GoalService = new GoalService();
@@ -40,53 +47,110 @@ export default class GoalController {
     }
   };
 
-  createGoal = async (req: Request, res: Response) => {
-    res.status(StatusCodes.OK).json({ message: "It works!" });
-    // const parsed = GoalRequestFormSchema.safeParse(req.body);
-    // if (!parsed.success) {
-    //   return res
-    //     .status(StatusCodes.UNPROCESSABLE_ENTITY)
-    //     .json({ errors: parsed.error.format() });
-    // }
-    // const newGoal = await this.goalService.create(parsed.data, req.user.id);
-    // res.status(StatusCodes.CREATED).json({ data: newGoal });
+  createGoal = async (req: Request, res: Response): Promise<void> => {
+    const result = CreateGoalForm.safeParse(req.body);
+    if (!result.success) {
+      throw new UnprocessableEntityError({
+        errors: result.error.flatten().fieldErrors,
+      });
+    }
+
+    try {
+      // const goal = await this.goalService.createGoal(req.user.id, result.data);
+      const goal = await this.goalService.create(
+        "7171f91a-bd67-41c2-9e38-7d81be9edf22",
+        result.data
+      );
+
+      res.status(StatusCodes.CREATED).json(toGoalResponse(goal));
+    } catch (e: unknown) {
+      if (e instanceof NotFoundDomainException) {
+        throw new NotFoundError({ message: e.message });
+      }
+      if (e instanceof ValidationDomainException) {
+        throw new UnprocessableEntityError({
+          errors: e.context as FlattenedFieldErrors,
+        });
+      }
+
+      throw e;
+    }
   };
 
-  updateGoal = async (req: Request, res: Response) => {
-    res.status(StatusCodes.OK).json({ message: "It works!" });
-    // const parsed = GoalRequestFormSchema.partial().safeParse(req.body);
-    // if (!parsed.success) {
-    //   return res
-    //     .status(StatusCodes.UNPROCESSABLE_ENTITY)
-    //     .json({ errors: parsed.error.format() });
-    // }
-    // const updated = await this.goalService.update(
-    //   req.params.id,
-    //   parsed.data,
-    //   req.user.id
-    // );
-    // res.status(StatusCodes.OK).json({ data: updated });
+  updateGoal = async (req: Request, res: Response): Promise<void> => {
+    const result = UpdateGoalForm.safeParse(req.body);
+
+    if (!result.success) {
+      throw new UnprocessableEntityError({
+        errors: result.error.flatten().fieldErrors,
+      });
+    }
+
+    try {
+      // const goal = await this.goalService.update(req.params.id, req.user.id, result.data);
+      const goal = await this.goalService.update(
+        req.params.id,
+        "7171f91a-bd67-41c2-9e38-7d81be9edf22",
+        result.data
+      );
+
+      res.status(StatusCodes.OK).json(toGoalResponse(goal));
+    } catch (e: unknown) {
+      if (e instanceof NotFoundDomainException) {
+        throw new NotFoundError({ message: e.message });
+      }
+
+      throw e;
+    }
   };
 
-  deleteGoal = async (req: Request, res: Response) => {
-    res.status(StatusCodes.OK).json({ message: "It works!" });
-    // await this.goalService.remove(req.params.id, req.user.id);
-    // res.status(StatusCodes.NO_CONTENT).send();
+  deleteGoal = async (req: Request, res: Response): Promise<void> => {
+    try {
+      // await this.goalService.delete(req.params.id, req.user.id);
+      await this.goalService.delete(
+        req.params.id,
+        "7171f91a-bd67-41c2-9e38-7d81be9edf22"
+      );
+
+      res.status(StatusCodes.NO_CONTENT).send();
+    } catch (e: unknown) {
+      if (e instanceof NotFoundDomainException) {
+        throw new NotFoundError({ message: e.message });
+      }
+
+      throw e;
+    }
   };
 
-  updateFieldValues = async (req: Request, res: Response) => {
-    res.status(StatusCodes.OK).json({ message: "It works!" });
-    // const parsed = UpdateGoalFieldValuesSchema.safeParse(req.body);
-    // if (!parsed.success) {
-    //   return res
-    //     .status(StatusCodes.UNPROCESSABLE_ENTITY)
-    //     .json({ errors: parsed.error.format() });
-    // }
-    // const updated = await this.goalService.updateFieldValues(
-    //   req.params.id,
-    //   parsed.data,
-    //   req.user.id
-    // );
-    // res.status(StatusCodes.OK).json({ data: updated });
+  updateFieldValues = async (req: Request, res: Response): Promise<void> => {
+    const result = UpdateGoalFieldValuesForm.safeParse(req.body);
+
+    if (!result.success) {
+      throw new UnprocessableEntityError({
+        errors: result.error.flatten().fieldErrors,
+      });
+    }
+
+    try {
+      // const goal = await this.goalService.updateFieldValues(req.params.id, req.user.id, result.data);
+      const goal = await this.goalService.updateFieldValues(
+        req.params.id,
+        "7171f91a-bd67-41c2-9e38-7d81be9edf22",
+        result.data
+      );
+
+      res.status(StatusCodes.OK).json(toGoalResponse(goal));
+    } catch (e: unknown) {
+      if (e instanceof NotFoundDomainException) {
+        throw new NotFoundError({ message: e.message });
+      }
+      if (e instanceof ValidationDomainException) {
+        throw new UnprocessableEntityError({
+          errors: e.context as FlattenedFieldErrors,
+        });
+      }
+
+      throw e;
+    }
   };
 }

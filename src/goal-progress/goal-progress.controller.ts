@@ -5,7 +5,7 @@ import GoalProgressService from "@/goal-progress/goal-progress.service";
 export default class GoalProgressController {
   private goalProgressService: GoalProgressService = new GoalProgressService();
 
-  getGoalProgress = async (req: Request, res: Response) => {
+  getGoalProgress = async (req: Request, res: Response): Promise<void> => {
     res.status(StatusCodes.OK).json({ message: "It works!" });
     // const progress = await this.goalProgressService.getProgress(
     //   req.params.goalId,
@@ -14,7 +14,7 @@ export default class GoalProgressController {
     // res.status(StatusCodes.OK).json({ data: progress });
   };
 
-  addGoalProgress = async (req: Request, res: Response) => {
+  addGoalProgress = async (req: Request, res: Response): Promise<void> => {
     res.status(StatusCodes.OK).json({ message: "It works!" });
     // const entry = await this.goalProgressService.addProgress(
     //   req.params.goalId,

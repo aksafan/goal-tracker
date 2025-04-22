@@ -2,23 +2,23 @@ import type { Request, Response } from "express-serve-static-core";
 import { StatusCodes } from "http-status-codes";
 
 export default class GoalTypeController {
-  async getAll(req: Request, res: Response) {
+  async getAll(req: Request, res: Response): Promise<void> {
     res.status(StatusCodes.OK).json({ message: "It works!" });
   }
 
-  async getById(req: Request, res: Response) {
+  async getById(req: Request, res: Response): Promise<void> {
     res.status(StatusCodes.OK).json({ message: "It works!" });
   }
 
-  async create(req: Request, res: Response) {
+  async create(req: Request, res: Response): Promise<void> {
     res.status(StatusCodes.OK).json({ message: "It works!" });
   }
 
-  async update(req: Request, res: Response) {
+  async update(req: Request, res: Response): Promise<void> {
     res.status(StatusCodes.OK).json({ message: "It works!" });
   }
 
-  async addFields(req: Request, res: Response) {
+  async addFields(req: Request, res: Response): Promise<void> {
     res.status(StatusCodes.OK).json({ message: "It works!" });
   }
 }

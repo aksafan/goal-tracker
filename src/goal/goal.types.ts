@@ -3,7 +3,7 @@ import { GoalModel } from "@/goal/goal.domain.types";
 export interface GoalResponse {
   id: string;
   name: string;
-  description?: string;
+  description: string;
   user_id: string;
   goal_type_id: string;
   created_at: string;
@@ -41,21 +41,3 @@ export function toGoalResponse(goal: GoalModel): GoalResponse {
 export function toGoalResponses(goals: GoalModel[]): GoalResponse[] {
   return goals.map(toGoalResponse);
 }
-
-//
-// export interface GoalFieldValueDTO {
-//   id: string;
-//   goal_type_field_id: string;
-//   goal_id: string;
-//   user_id: string;
-//   value: string;
-// }
-//
-// export interface GoalRequestForm {
-//   name: string;
-//   description?: string;
-//   goal_type_id: string;
-//   goal_field_values: GoalFieldValueDTO[];
-// }
-//
-// export type UpdateGoalFieldValuesRequest = GoalFieldValueDTO[];
