@@ -1,8 +1,7 @@
 import type User from "@/user/user.types";
 import type CreateUserForm from "@/dto/CreateUserForm";
 import { v4 as uuid } from "uuid";
-import { prisma } from "@/services/prisma";
-import bcrypt from "bcryptjs";
+import { prisma } from "@/db/prisma";
 
 // TODO: remove or update when other controllers will be implemented and no examples needed anymore
 export const createUser = async (userForm: CreateUserForm): Promise<User> => {
@@ -24,12 +23,6 @@ class UserService {
     return prisma.user.create({
       data: { name, email, password: passwordHash },
     });
-  }
-
-  async comparePasswords(plainPassword: string, hashedPassword?: string) {
-    return hashedPassword
-      ? bcrypt.compare(plainPassword, hashedPassword)
-      : false;
   }
 }
 

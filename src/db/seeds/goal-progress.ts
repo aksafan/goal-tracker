@@ -17,7 +17,7 @@ export const seedGoalProgress = async (): Promise<void> => {
       for (const field of trackableFields) {
         const progressRecords = Array.from(
           { length: getRandomInt(1, 3) },
-          (_, i) => ({
+          (_) => ({
             goal_id: goal.id,
             goal_type_field_id: field.id,
             user_id: user.id,

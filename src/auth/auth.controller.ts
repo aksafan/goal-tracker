@@ -1,103 +1,81 @@
 import type { Request, Response } from "express-serve-static-core";
 import { StatusCodes } from "http-status-codes";
-import jwt from "jsonwebtoken";
-import bcrypt from "bcryptjs";
-import { validationService } from "@/services/validationService";
-import { userService } from "@/services/userService";
+import { authValidationService } from "@/services/AuthValidationService";
+import { LoginForm, RegisterForm } from "./auth.types";
+import { passwordService } from "@/services/PasswordService";
+import { userService } from "@/user/user.service";
+import {
+  UnauthenticatedError,
+  UnauthorizedError,
+  UnprocessableEntityError,
+} from "@/errors";
+import { jwtTokenService } from "@/services/JwtTokenService";
 
 export default class AuthController {
-  async register(req: Request, res: Response) {
-    try {
-      const { email, password, password_confirmation, name } = req.body;
-      if (
-        !validationService.validateRegistration(
-          email,
-          password,
-          password_confirmation,
-          res
-        )
-      ) {
-        return;
-      }
+  async register(req: Request<unknown, unknown, RegisterForm>, res: Response) {
+    const { email, password, name } = req.body;
 
-      const existingUser = await userService.findUserByEmail(email);
+    authValidationService.validateRegistration(req.body);
 
-      if (existingUser) {
-        res
-          .status(StatusCodes.CONFLICT)
-          .json({ message: "User already exists" });
-      }
+    const existingUser = await userService.findUserByEmail(email);
 
-      const hashedPassword = await bcrypt.hash(password, 10);
-      const newUser = await userService.createUser(name, email, hashedPassword);
-
-      if (!process.env.JWT_SECRET) {
-        throw new Error("JWT_SECRET is not defined");
-      }
-
-      const token = jwt.sign({ userId: newUser.id }, process.env.JWT_SECRET, {
-        expiresIn: "1h",
-      });
-
-      res.status(StatusCodes.CREATED).json({
-        message: "User registered successfully",
-        token,
-        user: { id: newUser.id, email: newUser.email },
-      });
-    } catch (error: unknown) {
-      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-        message:
-          error instanceof Error ? error.message : "An unknown error occurred",
+    if (existingUser) {
+      throw new UnprocessableEntityError({
+        message: "User already exists",
+        errors: [
+          {
+            field: "email",
+            message: "User with this email already exists",
+          },
+        ],
       });
     }
+
+    const hashedPassword = await passwordService.hash(password);
+    const newUser = await userService.createUser(name, email, hashedPassword);
+
+    const { accessToken, refreshToken } = jwtTokenService.generateTokenPair({
+      userId: newUser.id,
+    });
+
+    res.status(StatusCodes.CREATED).json({
+      message: "User registered successfully",
+      accessToken,
+      refreshToken,
+      user: { id: newUser.id, email: newUser.email },
+    });
   }
 
-  async login(req: Request, res: Response) {
+  async login(req: Request<unknown, unknown, LoginForm>, res: Response) {
     const { email, password } = req.body;
 
-    try {
-      if (!validationService.validateLogin(email, password, res)) {
-        return;
-      }
+    authValidationService.validateLogin(req.body);
 
-      const user = await userService.findUserByEmail(email);
+    const user = await userService.findUserByEmail(email);
 
-      if (!user) {
-        res
-          .status(StatusCodes.UNAUTHORIZED)
-          .json({ message: "Invalid credentials" });
-
-        return;
-      }
-
-      const isMatch = await userService.comparePasswords(
-        password,
-        user.password
-      );
-      if (!isMatch) {
-        res
-          .status(StatusCodes.UNAUTHORIZED)
-          .json({ message: "Invalid credentials" });
-      }
-
-      const secret = process.env.JWT_SECRET;
-      if (!secret) {
-        throw new Error("JWT_SECRET is not defined");
-      }
-
-      const token = jwt.sign({ userId: user.id }, secret, { expiresIn: "1h" });
-
-      res.status(StatusCodes.OK).json({
-        message: "Login successful",
-        token,
-        user: { id: user.id, email: user.email, name: user.name },
-      });
-    } catch (error: unknown) {
-      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-        message:
-          error instanceof Error ? error.message : "An unknown error occurred",
+    if (!user) {
+      throw new UnauthorizedError({
+        message: "Invalid email or password",
       });
     }
+
+    const isMatch = await passwordService.compare(password, user.password);
+    if (!isMatch) {
+      throw new UnauthorizedError({
+        message: "Invalid email or password",
+      });
+    }
+
+    const { accessToken, refreshToken } = jwtTokenService.generateTokenPair({
+      userId: user.id,
+    });
+
+    res.status(StatusCodes.OK).json({
+      message: "Login successful",
+      accessToken,
+      refreshToken,
+      user: { id: user.id, email: user.email, name: user.name },
+    });
   }
 
   async googleLogin(req: Request, res: Response) {
@@ -105,21 +83,33 @@ export default class AuthController {
   }
 
   async logout(req: Request, res: Response) {
-    try {
-      res.clearCookie("token");
-      res.status(StatusCodes.OK).json({
-        message: "Logout successful",
-      });
-    } catch (error: unknown) {
-      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-        message:
-          error instanceof Error ? error.message : "An unknown error occurred",
-      });
-    }
+    res.clearCookie("token");
+    res.status(StatusCodes.OK).json({
+      message: "Logout successful",
+    });
   }
 
   async refreshToken(req: Request, res: Response) {
-    res.status(StatusCodes.OK).json({ message: "It works!" });
+    const { refreshToken } = req.body;
+
+    if (!refreshToken) {
+      throw new UnauthenticatedError({ message: "Missing refresh token" });
+    }
+
+    let payload;
+    try {
+      payload = jwtTokenService.verifyRefreshToken(refreshToken);
+    } catch {
+      throw new UnauthenticatedError({
+        message: "Invalid or expired refresh token",
+      });
+    }
+
+    const newAccessToken = jwtTokenService.generateAccessToken({
+      userId: payload.userId,
+    });
+
+    res.status(200).json({ accessToken: newAccessToken });
   }
 
   async requestPasswordReset(req: Request, res: Response) {
