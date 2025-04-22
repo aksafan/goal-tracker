@@ -14,7 +14,7 @@ both the back-end server and their front-end app.
 2. Clone this [repository](https://github.com/Code-the-Dream-School/ii-practicum-team-2-back.git) to that folder
 3. Create `.env` file in the root of backend folder (you can copy from `.env.example` and set it with your vars)
 4. Run `npm install` to install dependencies inside backend directory
-5. Run `prisma migrate dev` to apply migrations
+5. Run `npm run prisma:migrate` to apply migrations
 6. Run `npm run dev` to start the development server
 7. Open http://localhost:8000/api/v1/ with your browser to test
 8. Your back-end server is now running. You can now run the front-end app
@@ -54,19 +54,23 @@ Use this every time you:
 
 #### Create + apply a new migration to your dev database
 
-This runs `prisma:generate` under the hood as well.
+`npm run prisma:migrate`
 
-```bash
-prisma migrate dev
-```
+This command runs `prisma:generate` under the hood as well.
 
 #### Generate latest Prisma client for TypeScript
 
-```bash
-prisma generate
-```
+`prisma generate`
 
 > ⛔️ Never use `migrate dev` in production — it may reset or seed the DB!
+
+#### Seed DB with testing data
+
+`npm run prisma:seed`
+
+#### Run Prisma studio and observe DB data
+
+`prisma studio`
 
 ## Application structure
 
@@ -264,8 +268,8 @@ entity goal_board_images {
   created_at : DateTime
 }
 
-' === SUGGESTIONS ===
-entity suggestion {
+' ===  DAILY QUESTS SUGGESTIONS ===
+entity daily_quest_suggestion {
   *id : UUID <<PK>>
   title : String
   icon : String
@@ -288,7 +292,7 @@ user ||--o{ goal_progress : logs
 
 user ||--o{ daily_quest : creates
 goal ||--o{ daily_quest : supports
-suggestion ||--o{ daily_quest : based_on
+daily_quest_suggestion ||--o{ daily_quest : based_on
 daily_quest ||--o{ daily_quest_completion : logs
 user ||--o{ daily_quest_completion : toggles
 

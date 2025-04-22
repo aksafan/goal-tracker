@@ -10,18 +10,14 @@ import goalProgressRouter from "@/goal-progress/goal-progress.routes";
 import dailyQuestRouter from "@/daily-quest/daily-quest.routes";
 import dailyQuestSuggestionRouter from "@/daily-quest/suggestion/suggestion.routes";
 
-const ROUTES = [
-  mainRouter,
-  authRouter,
-  userRouter,
-  goalRouter,
-  goalBoardImageRouter,
-  goalTypeRouter,
-  goalProgressRouter,
-  dailyQuestRouter,
-  dailyQuestSuggestionRouter,
-];
-
 export const defineRoutes = (app: Express) => {
-  ROUTES.forEach((router) => app.use("/api/v1", router));
+  app.use("/api/v1", mainRouter); // TODO: remove when other controllers will be implemented and no examples needed anymore
+  app.use("/api/v1/users", authRouter);
+  app.use("/api/v1/users", userRouter);
+  app.use("/api/v1/goals", goalRouter);
+  app.use("/api/v1/goal-board-images", goalBoardImageRouter);
+  app.use("/api/v1/goal-types", goalTypeRouter);
+  app.use("/api/v1/goals", goalProgressRouter);
+  app.use("/api/v1/daily-quests", dailyQuestRouter);
+  app.use("/api/v1/daily-quests/suggestions", dailyQuestSuggestionRouter);
 };

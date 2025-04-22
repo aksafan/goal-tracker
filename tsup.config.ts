@@ -6,7 +6,8 @@ export default defineConfig({
   outDir: "dist",
   splitting: false,
   clean: true,
-  dts: true,
+  // Disables TS checking during type declaration generation to prevent Prisma TS4094 errors
+  dts: false,
   sourcemap: true,
   target: "es2022",
   shims: false,

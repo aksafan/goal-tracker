@@ -12,7 +12,7 @@ model DailyQuest {
 
   user        User                   @relation(fields: [user_id], references: [id], onDelete: Cascade)
   goal        Goal?                  @relation(fields: [goal_id], references: [id])
-  suggestion  Suggestion?            @relation(fields: [suggestion_id], references: [id])
+  suggestion DailyQuestSuggestion? @relation(fields: [suggestion_id], references: [id])
   completions DailyQuestCompletion[]
 
   @@map("daily_quest")
@@ -32,7 +32,7 @@ model DailyQuestCompletion {
   @@map("daily_quest_completion")
 }
 
-model Suggestion {
+model DailyQuestSuggestion {
   id         String   @id @default(uuid())
   title      String
   icon       String
@@ -41,5 +41,5 @@ model Suggestion {
 
   daily_quests DailyQuest[]
 
-  @@map("suggestion")
+  @@map("daily_quest_suggestion")
 }
