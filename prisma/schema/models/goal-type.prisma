@@ -1,10 +1,10 @@
 model GoalType {
   id          String @id @default(uuid())
-  name String @unique
+  name        String @unique
   description String
 
-  fields GoalTypeField[]
-  goals  Goal[]
+  goal_type_fields GoalTypeField[]
+  goals            Goal[]
 
   @@map("goal_type")
 }

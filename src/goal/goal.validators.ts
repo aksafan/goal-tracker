@@ -52,9 +52,9 @@ const validateGoalFieldValues = async ({
   }
 };
 
-const validateGoalType = async (input: GoalRequestFormType) => {
+const validateGoalType = async ({ goal_type_id }: GoalRequestFormType) => {
   const goalType = await prisma.goalType.findUnique({
-    where: { id: input.goal_type_id },
+    where: { id: goal_type_id },
   });
 
   if (!goalType) {
