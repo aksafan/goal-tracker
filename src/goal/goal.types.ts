@@ -28,12 +28,12 @@ export function toGoalResponse(goal: GoalModel): GoalResponse {
     goal_type_id: goal.goal_type_id,
     created_at: goal.created_at.toISOString(),
     updated_at: goal.updated_at.toISOString(),
-    goal_field_values: goal.goal_field_values.map((m) => ({
-      id: m.id,
-      goal_type_field_id: m.goal_type_field_id,
-      goal_id: m.goal_id,
-      user_id: m.user_id,
-      value: m.value,
+    goal_field_values: goal.goal_field_values.map((field) => ({
+      id: field.id,
+      goal_type_field_id: field.goal_type_field_id,
+      goal_id: field.goal_id,
+      user_id: field.user_id,
+      value: field.value,
     })),
   };
 }

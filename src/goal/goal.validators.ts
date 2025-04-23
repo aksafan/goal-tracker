@@ -29,12 +29,15 @@ export const validateGoalCreationInput = async (input: GoalRequestFormType) => {
   await validateGoalFieldValues(input);
 };
 
-async function validateGoalFieldValues(input: GoalRequestFormType) {
-  const fieldIds = input.goal_field_values.map((f) => f.goal_type_field_id);
+const validateGoalFieldValues = async ({
+  goal_type_id,
+  goal_field_values,
+}: GoalRequestFormType) => {
+  const fieldIds = goal_field_values.map((field) => field.goal_type_field_id);
   const matchingFields = await prisma.goalTypeField.findMany({
     where: {
       id: { in: fieldIds },
-      goal_type_id: input.goal_type_id,
+      goal_type_id: goal_type_id,
     },
   });
 
@@ -47,7 +50,7 @@ async function validateGoalFieldValues(input: GoalRequestFormType) {
       },
     });
   }
-}
+};
 
 const validateGoalType = async (input: GoalRequestFormType) => {
   const goalType = await prisma.goalType.findUnique({
@@ -78,7 +81,7 @@ const validateFieldsMatchGoalType = async (
     where: { goal_type_id: goalTypeId },
   });
 
-  const allowedFieldIds = new Set(goalTypeFields.map((f) => f.id));
+  const allowedFieldIds = new Set(goalTypeFields.map((field) => field.id));
   for (const f of values) {
     if (!allowedFieldIds.has(f.goal_type_field_id)) {
       throw new ValidationDomainException({

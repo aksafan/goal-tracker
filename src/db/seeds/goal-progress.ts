@@ -12,7 +12,9 @@ export const seedGoalProgress = async (): Promise<void> => {
     });
 
     for (const goal of goals) {
-      const trackableFields = goal.goal_type.fields.filter((f) => f.trackable);
+      const trackableFields = goal.goal_type.fields.filter(
+        (goalTypeField) => goalTypeField.trackable
+      );
 
       for (const field of trackableFields) {
         const progressRecords = Array.from(

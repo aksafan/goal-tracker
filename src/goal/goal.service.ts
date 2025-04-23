@@ -19,6 +19,7 @@ import {
   validateGoalExists,
   validateGoalFieldValuesUpdateInput,
 } from "@/goal/goal.validators";
+import prismaErrorCodes from "@/types/prismaErrorCodes";
 
 export default class GoalService {
   findAll = async (
@@ -41,7 +42,7 @@ export default class GoalService {
       });
     } catch (e: unknown) {
       if (e instanceof PrismaClientKnownRequestError) {
-        if (e.code === "P2025") {
+        if (e.code === prismaErrorCodes.NOT_FOUND_CODE) {
           logPrismaKnownError(e);
 
           throw new NotFoundDomainException({
@@ -73,9 +74,9 @@ export default class GoalService {
           goal_type_id: form.goal_type_id,
           user_id: userId,
           goal_field_values: {
-            create: form.goal_field_values.map((f) => ({
-              goal_type_field_id: f.goal_type_field_id,
-              value: f.value,
+            create: form.goal_field_values.map((field) => ({
+              goal_type_field_id: field.goal_type_field_id,
+              value: field.value,
               user_id: userId,
             })),
           },
@@ -86,14 +87,14 @@ export default class GoalService {
       });
     } catch (e: unknown) {
       if (e instanceof PrismaClientKnownRequestError) {
-        if (e.code === "P2002") {
+        if (e.code === prismaErrorCodes.UNIQUE_CONSTRAINT_FAILED_CODE) {
           logPrismaKnownError(e);
 
           throw new UniqueConstraintDomainException({
             message: "A new goal cannot be created with this email",
           });
         }
-        if (e.code === "P2003") {
+        if (e.code === prismaErrorCodes.FOREIGN_KEY_CONSTRAINT_FAILED_CODE) {
           logPrismaKnownError(e);
 
           throw new ForeignKeyConstraintDomainException({
@@ -157,15 +158,15 @@ export default class GoalService {
     await validateGoalFieldValuesUpdateInput(goalId, userId, values);
 
     return prisma.$transaction(async (tx) => {
-      const updateFieldValues = values.map((f) =>
+      const updateFieldValues = values.map((field) =>
         tx.goalFieldValue.updateMany({
           where: {
             goal_id: goalId,
-            goal_type_field_id: f.goal_type_field_id,
+            goal_type_field_id: field.goal_type_field_id,
             user_id: userId,
           },
           data: {
-            value: f.value,
+            value: field.value,
           },
         })
       );

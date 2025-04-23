@@ -1817,12 +1817,12 @@
           },
           "name": {
             "type": "string",
-            "minimum": 5,
+            "minimum": 3,
             "maximum": 256
           },
           "description": {
             "type": "string",
-            "minimum": 5,
+            "minimum": 3,
             "maximum": 1024
           },
           "user_id": {
@@ -1860,12 +1860,12 @@
         "properties": {
           "name": {
             "type": "string",
-            "minimum": 5,
+            "minimum": 3,
             "maximum": 256
           },
           "description": {
             "type": "string",
-            "minimum": 5,
+            "minimum": 3,
             "maximum": 1024
           },
           "goal_type_id": {
@@ -1885,12 +1885,12 @@
         "properties": {
           "name": {
             "type": "string",
-            "minimum": 5,
+            "minimum": 3,
             "maximum": 256
           },
           "description": {
             "type": "string",
-            "minimum": 5,
+            "minimum": 3,
             "maximum": 1024
           }
         }
