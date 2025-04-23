@@ -1,10 +1,10 @@
 import jwt, { SignOptions } from "jsonwebtoken";
 
-interface JwtPayload {
+type JwtPayload = {
   userId: string;
 }
 
-interface TokenPair {
+type TokenPair = {
   accessToken: string;
   refreshToken: string;
 }
@@ -33,9 +33,9 @@ export class JwtTokenService {
     }
 
     this.accessSecret = JWT_SECRET;
-    this.accessExpiresIn = JWT_EXPIRES_IN as SignOptions["expiresIn"];
+    this.accessExpiresIn = (JWT_EXPIRES_IN || "1h") as SignOptions["expiresIn"];
     this.refreshSecret = JWT_REFRESH_SECRET;
-    this.refreshExpiresIn = JWT_REFRESH_EXPIRES_IN as SignOptions["expiresIn"];
+    this.refreshExpiresIn = (JWT_REFRESH_EXPIRES_IN || "24h") as SignOptions["expiresIn"];
   }
 
   generateAccessToken(payload: JwtPayload): string {
