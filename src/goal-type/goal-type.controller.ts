@@ -51,16 +51,16 @@ export default class GoalTypeController {
   };
 
   create = async (req: Request, res: Response): Promise<void> => {
-    const result = CreateGoalTypeForm.safeParse(req.body);
-    if (!result.success) {
+    const createGoalTypeForm = CreateGoalTypeForm.safeParse(req.body);
+    if (!createGoalTypeForm.success) {
       throw new UnprocessableEntityError({
-        errors: result.error.flatten().fieldErrors,
+        errors: createGoalTypeForm.error.flatten().fieldErrors,
       });
     }
 
     try {
       const goalType: GoalTypeDetailedModel = await this.goalTypeService.create(
-        result.data
+        createGoalTypeForm.data
       );
 
       res
@@ -81,17 +81,17 @@ export default class GoalTypeController {
   };
 
   async update(req: Request, res: Response): Promise<void> {
-    const result = UpdateGoalTypeForm.safeParse(req.body);
-    if (!result.success) {
+    const updateGoalTypeForm = UpdateGoalTypeForm.safeParse(req.body);
+    if (!updateGoalTypeForm.success) {
       throw new UnprocessableEntityError({
-        errors: result.error.flatten().fieldErrors,
+        errors: updateGoalTypeForm.error.flatten().fieldErrors,
       });
     }
 
     try {
       const goalType: GoalTypeDetailedModel = await this.goalTypeService.update(
         req.params.id,
-        result.data
+        updateGoalTypeForm.data
       );
 
       res
@@ -126,17 +126,17 @@ export default class GoalTypeController {
   };
 
   async addFields(req: Request, res: Response): Promise<void> {
-    const result = z.array(GoalTypeFieldForm).safeParse(req.body);
-    if (!result.success) {
+    const goalTypeFieldForms = z.array(GoalTypeFieldForm).safeParse(req.body);
+    if (!goalTypeFieldForms.success) {
       throw new UnprocessableEntityError({
-        errors: result.error.flatten().fieldErrors,
+        errors: goalTypeFieldForms.error.flatten().fieldErrors,
       });
     }
 
     try {
       const createdFields = await this.goalTypeService.addFields(
         req.params.id,
-        result.data
+        goalTypeFieldForms.data
       );
 
       res

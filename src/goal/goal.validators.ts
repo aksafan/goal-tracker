@@ -24,9 +24,9 @@ export const validateGoalExists = async (
   return goal;
 };
 
-export const validateGoalCreationInput = async (input: GoalRequestFormType) => {
-  await validateGoalType(input);
-  await validateGoalFieldValues(input);
+export const validateGoalCreationInput = async (form: GoalRequestFormType) => {
+  await validateGoalType(form);
+  await validateGoalFieldValues(form);
 };
 
 const validateGoalFieldValues = async ({

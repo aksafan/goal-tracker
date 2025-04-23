@@ -48,10 +48,10 @@ export default class GoalController {
   };
 
   create = async (req: Request, res: Response): Promise<void> => {
-    const result = CreateGoalForm.safeParse(req.body);
-    if (!result.success) {
+    const reateGoalForm = CreateGoalForm.safeParse(req.body);
+    if (!reateGoalForm.success) {
       throw new UnprocessableEntityError({
-        errors: result.error.flatten().fieldErrors,
+        errors: reateGoalForm.error.flatten().fieldErrors,
       });
     }
 
@@ -59,7 +59,7 @@ export default class GoalController {
       // const goal = await this.goalService.createGoal(req.user.id, result.data);
       const goal: GoalModel = await this.goalService.create(
         "7171f91a-bd67-41c2-9e38-7d81be9edf22",
-        result.data
+        reateGoalForm.data
       );
 
       res.status(StatusCodes.CREATED).json(toGoalResponse(goal));
@@ -78,10 +78,10 @@ export default class GoalController {
   };
 
   update = async (req: Request, res: Response): Promise<void> => {
-    const result = UpdateGoalForm.safeParse(req.body);
-    if (!result.success) {
+    const updateGoalForm = UpdateGoalForm.safeParse(req.body);
+    if (!updateGoalForm.success) {
       throw new UnprocessableEntityError({
-        errors: result.error.flatten().fieldErrors,
+        errors: updateGoalForm.error.flatten().fieldErrors,
       });
     }
 
@@ -90,7 +90,7 @@ export default class GoalController {
       const goal: GoalModel = await this.goalService.update(
         req.params.id,
         "7171f91a-bd67-41c2-9e38-7d81be9edf22",
-        result.data
+        updateGoalForm.data
       );
 
       res.status(StatusCodes.OK).json(toGoalResponse(goal));
@@ -122,11 +122,13 @@ export default class GoalController {
   };
 
   updateFieldValues = async (req: Request, res: Response): Promise<void> => {
-    const result = UpdateGoalFieldValuesForm.safeParse(req.body);
+    const updateGoalFieldValuesForm = UpdateGoalFieldValuesForm.safeParse(
+      req.body
+    );
 
-    if (!result.success) {
+    if (!updateGoalFieldValuesForm.success) {
       throw new UnprocessableEntityError({
-        errors: result.error.flatten().fieldErrors,
+        errors: updateGoalFieldValuesForm.error.flatten().fieldErrors,
       });
     }
 
@@ -135,7 +137,7 @@ export default class GoalController {
       const goal: GoalModel = await this.goalService.updateFieldValues(
         req.params.id,
         "7171f91a-bd67-41c2-9e38-7d81be9edf22",
-        result.data
+        updateGoalFieldValuesForm.data
       );
 
       res.status(StatusCodes.OK).json(toGoalResponse(goal));

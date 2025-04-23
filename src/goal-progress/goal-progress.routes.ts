@@ -8,11 +8,8 @@ const goalProgressController = new GoalProgressController();
 goalProgressRouter.get(
   "/:id/progress",
   queryParamsParser,
-  goalProgressController.getGoalProgress
+  goalProgressController.getAll
 );
-goalProgressRouter.post(
-  "/:id/progress",
-  goalProgressController.addGoalProgress
-);
+goalProgressRouter.post("/:id/progress", goalProgressController.create);
 
 export default goalProgressRouter;
