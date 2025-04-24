@@ -1,17 +1,17 @@
 model GoalType {
-  id          String @id @default(uuid())
-  name String @unique
+  id          String @id @default(uuid()) @db.Uuid
+  name        String @unique
   description String
 
-  fields GoalTypeField[]
-  goals  Goal[]
+  goal_type_fields GoalTypeField[]
+  goals            Goal[]
 
   @@map("goal_type")
 }
 
 model GoalTypeField {
-  id           String    @id @default(uuid())
-  goal_type_id String
+  id           String    @id @default(uuid()) @db.Uuid
+  goal_type_id String    @db.Uuid
   field_name   String
   field_type   FieldType
   required     Boolean

@@ -1,6 +1,5 @@
 import { logger } from "@/utils/logger";
 import { LogEntry } from "winston";
-import { fixPrototype } from "@/utils/fixPrototype";
 
 export default abstract class HttpError extends Error {
   abstract readonly statusCode: number;
@@ -18,8 +17,6 @@ export default abstract class HttpError extends Error {
     if (logging) {
       logger.log(this.getLogData());
     }
-
-    fixPrototype(this, HttpError);
   }
 
   protected getLogData(): LogEntry {

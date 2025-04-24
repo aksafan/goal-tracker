@@ -1,8 +1,7 @@
-import HttpError from "./httpError";
+import HttpError from "@/errors/http/httpError";
 import { StatusCodes } from "http-status-codes";
-import { fixPrototype } from "@/utils/fixPrototype";
 
-export default class BadRequestError extends HttpError {
+export default class ExpectationFailedError extends HttpError {
   public readonly statusCode: number;
   public readonly logging: boolean = false;
   public readonly context: Record<string, unknown>;
@@ -12,15 +11,13 @@ export default class BadRequestError extends HttpError {
     logging?: boolean;
     context?: Record<string, unknown>;
   }) {
-    const statusCode = StatusCodes.BAD_REQUEST;
+    const statusCode = StatusCodes.EXPECTATION_FAILED;
 
     super(
       statusCode,
       params?.message || "Bad request",
       params?.logging || false
     );
-
-    fixPrototype(this, BadRequestError);
 
     this.context = params?.context || {};
     this.statusCode = statusCode;

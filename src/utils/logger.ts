@@ -1,5 +1,6 @@
 import { createLogger, transports } from "winston";
 import config from "@/config";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
 export const logger = createLogger(config.loggerOptions);
 
@@ -7,3 +8,11 @@ export const logger = createLogger(config.loggerOptions);
 if (process.env.NODE_ENV !== "production") {
   logger.add(new transports.Console(config.loggerConsoleOptions));
 }
+
+export const logPrismaKnownError = (e: PrismaClientKnownRequestError): void => {
+  logger.warn({
+    message: e.message,
+    prismaCode: e.code,
+    e,
+  });
+};

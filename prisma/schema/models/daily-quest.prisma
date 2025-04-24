@@ -1,27 +1,27 @@
 model DailyQuest {
-  id            String      @id @default(uuid())
-  user_id       String
-  goal_id       String?
-  suggestion_id String?
+  id            String      @id @default(uuid()) @db.Uuid
+  user_id       String      @db.Uuid
+  goal_id       String?     @db.Uuid
+  suggestion_id String?     @db.Uuid
   title         String
   icon          String
-  is_daily      Boolean
   frequency     Frequency[]
   created_at    DateTime    @default(now())
   updated_at    DateTime    @updatedAt
 
   user        User                   @relation(fields: [user_id], references: [id], onDelete: Cascade)
   goal        Goal?                  @relation(fields: [goal_id], references: [id])
-  suggestion DailyQuestSuggestion? @relation(fields: [suggestion_id], references: [id])
+  suggestion  DailyQuestSuggestion?  @relation(fields: [suggestion_id], references: [id])
   completions DailyQuestCompletion[]
 
+  @@unique([user_id, title])
   @@map("daily_quest")
 }
 
 model DailyQuestCompletion {
-  id             String   @id @default(uuid())
-  daily_quest_id String
-  user_id        String
+  id             String   @id @default(uuid()) @db.Uuid
+  daily_quest_id String   @db.Uuid
+  user_id        String   @db.Uuid
   date           DateTime @db.Date // Only the date part (no time)
   completed_at   DateTime
 
@@ -33,7 +33,7 @@ model DailyQuestCompletion {
 }
 
 model DailyQuestSuggestion {
-  id         String   @id @default(uuid())
+  id         String   @id @default(uuid()) @db.Uuid
   title      String
   icon       String
   created_at DateTime @default(now())

@@ -15,7 +15,7 @@ export default class AuthController {
     res.status(StatusCodes.OK).json(result);
   }
 
-  async googleLogin(req: Request, res: Response) {
+  async googleLogin(req: Request, res: Response): Promise<void> {
     res.status(StatusCodes.OK).json({ message: "It works!" });
   }
 
@@ -33,11 +33,11 @@ export default class AuthController {
     res.status(StatusCodes.OK).json(result);
   }
 
-  async requestPasswordReset(req: Request, res: Response) {
+  async requestPasswordReset(req: Request, res: Response): Promise<void> {
     res.status(StatusCodes.OK).json({ message: "It works!" });
   }
 
-  async confirmPasswordReset(req: Request, res: Response) {
+  async confirmPasswordReset(req: Request, res: Response): Promise<void> {
     res.status(StatusCodes.OK).json({ message: "It works!" });
   }
 }

@@ -7,12 +7,14 @@ export const seedGoalProgress = async (): Promise<void> => {
     const goals = await prisma.goal.findMany({
       where: { user_id: user.id },
       include: {
-        goal_type: { include: { fields: true } },
+        goal_type: { include: { goal_type_fields: true } },
       },
     });
 
     for (const goal of goals) {
-      const trackableFields = goal.goal_type.fields.filter((f) => f.trackable);
+      const trackableFields = goal.goal_type.goal_type_fields.filter(
+        (goalTypeField) => goalTypeField.trackable
+      );
 
       for (const field of trackableFields) {
         const progressRecords = Array.from(
