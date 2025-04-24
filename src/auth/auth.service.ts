@@ -11,11 +11,9 @@ import {
   RegistrationForm,
   registrationFormSchema,
 } from "./auth.forms";
-import {
-  validateExistingUser,
-  validateUserPassword,
-} from "./auth.validators";
+import { validateExistingUser, validateUserPassword } from "./auth.validators";
 import bcrypt from "bcryptjs";
+import { prisma } from "@/db/prisma";
 
 export class AuthService {
   async register(data: RegistrationForm) {
@@ -91,10 +89,34 @@ export class AuthService {
       });
     }
 
-    const accessToken = jwtTokenService.generateAccessToken({
-      userId: payload.userId,
+    const oldToken = await prisma.refreshToken.findUnique({
+      where: { token },
     });
 
-    return { accessToken };
+    await prisma.refreshToken.update({
+      where: { token },
+      data: { revoked: true },
+    });
+
+    if (!oldToken || oldToken.revoked || oldToken.expires_at < new Date()) {
+      throw new UnauthenticatedError({
+        message: "Invalid or expired refresh token",
+      });
+    }
+
+    const { accessToken: access_token, refreshToken: refresh_token } =
+      jwtTokenService.generateTokenPair({
+        userId: payload.userId,
+      });
+
+    await prisma.refreshToken.create({
+      data: {
+        user_id: payload.userId,
+        token: refresh_token,
+        expires_at: jwtTokenService.getRefreshTokenExpirationDate(),
+      },
+    });
+
+    return { access_token, refresh_token };
   }
 }

@@ -20,9 +20,11 @@ export default class AuthController {
   }
 
   async logout(req: Request, res: Response) {
-    res.clearCookie("token");
-    res.status(StatusCodes.OK).json({
-      message: "Logout successful",
+    // TO-DO: implement logout
+    // const result = await authService.logout();
+
+    res.status(StatusCodes.NO_CONTENT).json({
+      message: "Logout successfully",
     });
   }
 

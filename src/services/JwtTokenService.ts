@@ -1,4 +1,5 @@
-import jwt, { SignOptions } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
+import ms, { StringValue } from 'ms';
 
 type JwtPayload = {
   userId: string;
@@ -12,8 +13,8 @@ type TokenPair = {
 export class JwtTokenService {
   private accessSecret: string;
   private refreshSecret: string;
-  private accessExpiresIn: SignOptions["expiresIn"];
-  private refreshExpiresIn: SignOptions["expiresIn"];
+  private accessExpiresIn: StringValue;
+  private refreshExpiresIn: StringValue;
 
   constructor() {
     const {
@@ -33,9 +34,9 @@ export class JwtTokenService {
     }
 
     this.accessSecret = JWT_SECRET;
-    this.accessExpiresIn = (JWT_EXPIRES_IN || "1h") as SignOptions["expiresIn"];
+    this.accessExpiresIn = (JWT_EXPIRES_IN || "1h") as StringValue;
     this.refreshSecret = JWT_REFRESH_SECRET;
-    this.refreshExpiresIn = (JWT_REFRESH_EXPIRES_IN || "24h") as SignOptions["expiresIn"];
+    this.refreshExpiresIn = (JWT_REFRESH_EXPIRES_IN || "24h") as StringValue;
   }
 
   generateAccessToken(payload: JwtPayload): string {
@@ -63,6 +64,12 @@ export class JwtTokenService {
 
   verifyRefreshToken(token: string): JwtPayload {
     return jwt.verify(token, this.refreshSecret) as JwtPayload;
+  }
+
+  getRefreshTokenExpirationDate(): Date {
+    const expiresInMs = ms(this.refreshExpiresIn);
+
+    return new Date(Date.now() + expiresInMs);
   }
 }
 
