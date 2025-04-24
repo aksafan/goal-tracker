@@ -1,10 +1,15 @@
 import { Router } from "express";
 import GoalProgressController from "./goal-progress.controller";
+import { queryParamsParser } from "@/middleware/queryParams";
 
 const goalProgressRouter = Router();
 const goalProgressController = new GoalProgressController();
 
-goalProgressRouter.get("/:goalId", goalProgressController.getAllForGoal);
-goalProgressRouter.post("/:goalId", goalProgressController.add);
+goalProgressRouter.get(
+  "/:id/progress",
+  queryParamsParser,
+  goalProgressController.getAll
+);
+goalProgressRouter.post("/:id/progress", goalProgressController.create);
 
 export default goalProgressRouter;

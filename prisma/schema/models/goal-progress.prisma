@@ -1,8 +1,8 @@
 model GoalProgress {
-  id                 String   @id @default(uuid())
-  goal_id            String
-  goal_type_field_id String
-  user_id            String
+  id                 String   @id @default(uuid()) @db.Uuid
+  goal_id            String   @db.Uuid
+  goal_type_field_id String   @db.Uuid
+  user_id            String   @db.Uuid
   progress_value     Int
   created_at         DateTime @default(now())
 

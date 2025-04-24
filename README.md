@@ -245,7 +245,6 @@ entity daily_quest {
   suggestion_id : UUID <<FK>> <<nullable>>
   title : String
   icon : String
-  is_daily : Boolean
   frequency : String[]
   created_at : DateTime
   updated_at : DateTime

@@ -1,17 +1,16 @@
 import { Router } from "express";
 import GoalController from "./goal.controller";
+import { queryParamsParser } from "@/middleware/queryParams";
 
 const router = Router();
-const controller = new GoalController();
+const goalController = new GoalController();
 
-router.get("/", controller.getAllGoals);
-router.get("/:id", controller.getGoalById);
-router.post("/", controller.createGoal);
-router.patch("/:id", controller.updateGoal);
-router.delete("/:id", controller.deleteGoal);
+router.get("/", queryParamsParser, goalController.getAll);
+router.get("/:id", goalController.getById);
+router.post("/", goalController.create);
+router.patch("/:id", goalController.update);
+router.delete("/:id", goalController.delete);
 
-router.patch("/:id/field-values", controller.updateFieldValues);
-router.get("/:goalId/progress", controller.getGoalProgress);
-router.post("/:goalId/progress", controller.addGoalProgress);
+router.patch("/:id/field-values", goalController.updateFieldValues);
 
 export default router;

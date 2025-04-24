@@ -10,7 +10,7 @@ const predefinedQuests: Record<
     { title: "Read 1 page a day", icon: "📖", frequency: [Frequency.Daily] },
     {
       title: "Write a List of Books You Want to Read",
-      icon: "📝",
+      icon: "\uD83D\uDCD6",
       frequency: [Frequency.Tuesdays],
     },
     {
@@ -27,7 +27,7 @@ const predefinedQuests: Record<
   "Lose Weight": [
     {
       title: "Drink a glass of water",
-      icon: "💧",
+      icon: "\uD83D\uDCA7",
       frequency: [Frequency.Daily],
     },
     {
@@ -63,9 +63,9 @@ export const seedDailyQuests = async (): Promise<void> => {
 
   await prisma.dailyQuestSuggestion.createMany({
     data: [
-      { title: "Go to gym", icon: "🏋️" },
+      { title: "Go to gym", icon: "️️🏋" },
       { title: "Stretch break", icon: "🧘" },
-      { title: "Drink more water", icon: "💧" },
+      { title: "Drink more water", icon: "\uD83D\uDCA7" },
     ],
     skipDuplicates: true,
   });
@@ -86,9 +86,8 @@ export const seedDailyQuests = async (): Promise<void> => {
             data: {
               user_id: user.id,
               goal_id: goal.id,
-              title: predefined.title,
+              title: `${goal.goal_type.name} - ${predefined.title} [${goal.id.slice(0, 5)}]`,
               icon: predefined.icon,
-              is_daily: predefined.frequency.includes("Daily"),
               frequency: predefined.frequency,
             },
           });
@@ -98,20 +97,23 @@ export const seedDailyQuests = async (): Promise<void> => {
 
     for (let i = 0; i < 2; i++) {
       const suggestion = faker.helpers.arrayElement(suggestionRecords);
+      const frequency: Frequency[] =
+        i == 0
+          ? [faker.helpers.arrayElement([Frequency.Daily])]
+          : [
+              faker.helpers.arrayElement([
+                Frequency.Mondays,
+                Frequency.Fridays,
+                Frequency.Wednesdays,
+              ]),
+            ];
       await prisma.dailyQuest.create({
         data: {
           user_id: user.id,
           suggestion_id: suggestion.id,
-          title: suggestion.title,
+          title: `${suggestion.title} (${faker.word.noun()})`,
           icon: suggestion.icon,
-          is_daily: false,
-          frequency: [
-            faker.helpers.arrayElement([
-              Frequency.Mondays,
-              Frequency.Fridays,
-              Frequency.Wednesdays,
-            ]),
-          ],
+          frequency: frequency,
         },
       });
     }

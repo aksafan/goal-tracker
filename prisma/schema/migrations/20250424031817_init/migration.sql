@@ -7,13 +7,12 @@ CREATE TYPE "Frequency" AS ENUM ('Daily', 'Mondays', 'Tuesdays', 'Wednesdays', '
 -- CreateTable
 CREATE TABLE "daily_quest"
 (
-    "id"            TEXT         NOT NULL,
-    "user_id"       TEXT         NOT NULL,
-    "goal_id"       TEXT,
-    "suggestion_id" TEXT,
+    "id"            UUID         NOT NULL,
+    "user_id"       UUID         NOT NULL,
+    "goal_id"       UUID,
+    "suggestion_id" UUID,
     "title"         TEXT         NOT NULL,
     "icon"          TEXT         NOT NULL,
-    "is_daily"      BOOLEAN      NOT NULL,
     "frequency"     "Frequency"[],
     "created_at"    TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at"    TIMESTAMP(3) NOT NULL,
@@ -24,9 +23,9 @@ CREATE TABLE "daily_quest"
 -- CreateTable
 CREATE TABLE "daily_quest_completion"
 (
-    "id"             TEXT         NOT NULL,
-    "daily_quest_id" TEXT         NOT NULL,
-    "user_id"        TEXT         NOT NULL,
+    "id"             UUID         NOT NULL,
+    "daily_quest_id" UUID         NOT NULL,
+    "user_id"        UUID         NOT NULL,
     "date"           DATE         NOT NULL,
     "completed_at"   TIMESTAMP(3) NOT NULL,
 
@@ -36,7 +35,7 @@ CREATE TABLE "daily_quest_completion"
 -- CreateTable
 CREATE TABLE "daily_quest_suggestion"
 (
-    "id"         TEXT         NOT NULL,
+    "id"         UUID         NOT NULL,
     "title"      TEXT         NOT NULL,
     "icon"       TEXT         NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -48,10 +47,10 @@ CREATE TABLE "daily_quest_suggestion"
 -- CreateTable
 CREATE TABLE "goal_progress"
 (
-    "id"                 TEXT         NOT NULL,
-    "goal_id"            TEXT         NOT NULL,
-    "goal_type_field_id" TEXT         NOT NULL,
-    "user_id"            TEXT         NOT NULL,
+    "id"                 UUID         NOT NULL,
+    "goal_id"            UUID         NOT NULL,
+    "goal_type_field_id" UUID         NOT NULL,
+    "user_id"            UUID         NOT NULL,
     "progress_value"     INTEGER      NOT NULL,
     "created_at"         TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -61,7 +60,7 @@ CREATE TABLE "goal_progress"
 -- CreateTable
 CREATE TABLE "goal_type"
 (
-    "id"          TEXT NOT NULL,
+    "id"          UUID NOT NULL,
     "name"        TEXT NOT NULL,
     "description" TEXT NOT NULL,
 
@@ -71,8 +70,8 @@ CREATE TABLE "goal_type"
 -- CreateTable
 CREATE TABLE "goal_type_field"
 (
-    "id"           TEXT        NOT NULL,
-    "goal_type_id" TEXT        NOT NULL,
+    "id"           UUID        NOT NULL,
+    "goal_type_id" UUID        NOT NULL,
     "field_name"   TEXT        NOT NULL,
     "field_type"   "FieldType" NOT NULL,
     "required"     BOOLEAN     NOT NULL,
@@ -85,11 +84,11 @@ CREATE TABLE "goal_type_field"
 -- CreateTable
 CREATE TABLE "goal"
 (
-    "id"           TEXT         NOT NULL,
+    "id"           UUID         NOT NULL,
     "name"         TEXT         NOT NULL,
     "description"  TEXT         NOT NULL,
-    "user_id"      TEXT         NOT NULL,
-    "goal_type_id" TEXT         NOT NULL,
+    "user_id"      UUID         NOT NULL,
+    "goal_type_id" UUID         NOT NULL,
     "created_at"   TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at"   TIMESTAMP(3) NOT NULL,
 
@@ -99,10 +98,10 @@ CREATE TABLE "goal"
 -- CreateTable
 CREATE TABLE "goal_field_value"
 (
-    "id"                 TEXT NOT NULL,
-    "goal_type_field_id" TEXT NOT NULL,
-    "goal_id"            TEXT NOT NULL,
-    "user_id"            TEXT NOT NULL,
+    "id"                 UUID NOT NULL,
+    "goal_type_field_id" UUID NOT NULL,
+    "goal_id"            UUID NOT NULL,
+    "user_id"            UUID NOT NULL,
     "value"              TEXT NOT NULL,
 
     CONSTRAINT "goal_field_value_pkey" PRIMARY KEY ("id")
@@ -111,8 +110,8 @@ CREATE TABLE "goal_field_value"
 -- CreateTable
 CREATE TABLE "goal_board_images"
 (
-    "id"             TEXT         NOT NULL,
-    "user_id"        TEXT         NOT NULL,
+    "id"             UUID         NOT NULL,
+    "user_id"        UUID         NOT NULL,
     "file_path"      TEXT         NOT NULL,
     "thumbnail_path" TEXT         NOT NULL,
     "created_at"     TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -123,7 +122,7 @@ CREATE TABLE "goal_board_images"
 -- CreateTable
 CREATE TABLE "user"
 (
-    "id"         TEXT         NOT NULL,
+    "id"         UUID         NOT NULL,
     "name"       TEXT         NOT NULL,
     "email"      TEXT         NOT NULL,
     "password"   TEXT         NOT NULL,
@@ -136,10 +135,10 @@ CREATE TABLE "user"
 -- CreateTable
 CREATE TABLE "user_auth_provider"
 (
-    "id"               TEXT         NOT NULL,
-    "user_id"          TEXT         NOT NULL,
+    "id"               UUID         NOT NULL,
+    "user_id"          UUID         NOT NULL,
     "provider"         TEXT         NOT NULL,
-    "provider_user_id" TEXT         NOT NULL,
+    "provider_user_id" UUID         NOT NULL,
     "created_at"       TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "user_auth_provider_pkey" PRIMARY KEY ("id")
@@ -148,8 +147,8 @@ CREATE TABLE "user_auth_provider"
 -- CreateTable
 CREATE TABLE "password_reset_token"
 (
-    "id"         TEXT         NOT NULL,
-    "user_id"    TEXT         NOT NULL,
+    "id"         UUID         NOT NULL,
+    "user_id"    UUID         NOT NULL,
     "token"      TEXT         NOT NULL,
     "expires_at" TIMESTAMP(3) NOT NULL,
     "used"       BOOLEAN      NOT NULL DEFAULT false,
@@ -161,8 +160,8 @@ CREATE TABLE "password_reset_token"
 -- CreateTable
 CREATE TABLE "refresh_token"
 (
-    "id"         TEXT         NOT NULL,
-    "user_id"    TEXT         NOT NULL,
+    "id"         UUID         NOT NULL,
+    "user_id"    UUID         NOT NULL,
     "token"      TEXT         NOT NULL,
     "revoked"    BOOLEAN      NOT NULL DEFAULT false,
     "expires_at" TIMESTAMP(3) NOT NULL,
@@ -170,6 +169,9 @@ CREATE TABLE "refresh_token"
 
     CONSTRAINT "refresh_token_pkey" PRIMARY KEY ("id")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "daily_quest_user_id_title_key" ON "daily_quest" ("user_id", "title");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "daily_quest_completion_daily_quest_id_user_id_date_key" ON "daily_quest_completion" ("daily_quest_id", "user_id", "date");
