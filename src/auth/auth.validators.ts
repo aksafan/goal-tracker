@@ -1,4 +1,4 @@
-import { UnauthorizedError, UnprocessableEntityError } from "@/errors";
+import { UnauthorizedError, UnprocessableEntityError } from "@/errors/http";
 import { userService } from "@/user/user.service";
 import bcrypt from "bcryptjs";
 
@@ -8,12 +8,9 @@ export const validateExistingUser = async (email: string) => {
   if (existingUser) {
     throw new UnprocessableEntityError({
       message: "User already exists",
-      errors: [
-        {
-          field: "email",
-          message: "User with this email already exists",
-        },
-      ],
+      errors: {
+        email: ["User with this email already exists"],
+      },
     });
   }
 };

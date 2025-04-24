@@ -29,7 +29,7 @@ export default class AuthController {
   }
 
   async refreshToken(req: Request, res: Response) {
-    const result = await authService.refreshToken(req.body.refreshToken);
+    const result = await authService.refreshToken(req.body.refresh_token);
     res.status(StatusCodes.OK).json(result);
   }
 

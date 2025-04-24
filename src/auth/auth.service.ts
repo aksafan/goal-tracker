@@ -4,7 +4,7 @@ import {
   UnauthenticatedError,
   UnauthorizedError,
   UnprocessableEntityError,
-} from "@/errors";
+} from "@/errors/http";
 import {
   LoginForm,
   loginFormSchema,
@@ -21,7 +21,6 @@ export class AuthService {
 
     if (!result.success) {
       throw new UnprocessableEntityError({
-        // will work after merge of goals
         errors: result.error.flatten().fieldErrors,
       });
     }
@@ -33,6 +32,14 @@ export class AuthService {
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = await userService.createUser(name, email, hashedPassword);
     const tokenPair = jwtTokenService.generateTokenPair({ userId: newUser.id });
+
+    await prisma.refreshToken.create({
+      data: {
+        user_id: newUser.id,
+        token: tokenPair.refreshToken,
+        expires_at: jwtTokenService.getRefreshTokenExpirationDate(),
+      },
+    });
 
     return {
       access_token: tokenPair.accessToken,
@@ -51,7 +58,6 @@ export class AuthService {
 
     if (!result.success) {
       throw new UnprocessableEntityError({
-        // will work after merge of goals
         errors: result.error.flatten().fieldErrors,
       });
     }

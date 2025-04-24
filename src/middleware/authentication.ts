@@ -3,7 +3,7 @@ import type {
   Request,
   Response,
 } from "express-serve-static-core";
-import { UnauthenticatedError } from "@/errors";
+import { UnauthenticatedError } from "@/errors/http";
 import { jwtTokenService } from "@/services/JwtTokenService";
 
 export const auth = async (req: Request, res: Response, next: NextFunction) => {
