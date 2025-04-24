@@ -1237,6 +1237,11 @@
                       }
                     }
                   }
+                },
+                "examples": {
+                  "DailyQuestListResponse": {
+                    "$ref": "#/components/examples/DailyQuestListResponse"
+                  }
                 }
               }
             }
@@ -1267,9 +1272,18 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/DailyQuestForm"
+              },
+              "examples": {
+                "DailyQuestForm": {
+                  "$ref": "#/components/examples/DailyQuestForm"
+                },
+                "DailyQuestFormWithSelectedDays": {
+                  "$ref": "#/components/examples/DailyQuestFormWithSelectedDays"
+                }
               }
             }
-          }
+          },
+          "description": "Add `goal_id` only if you need to link this daily quest with the Goal, leave null if not. Make sure to add `suggestion_id` to create a daily quest from suggestions, leave null if not."
         },
         "responses": {
           "201": {
@@ -1278,6 +1292,14 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DailyQuestResponse"
+                },
+                "examples": {
+                  "DailyQuestResponse": {
+                    "$ref": "#/components/examples/DailyQuestResponse"
+                  },
+                  "DailyQuestResponseWithSelectedDays": {
+                    "$ref": "#/components/examples/DailyQuestResponseWithSelectedDays"
+                  }
                 }
               }
             }
@@ -1312,9 +1334,11 @@
             "name": "date",
             "in": "query",
             "required": true,
+            "description": "The exact date to fetch quests for. Format: YYYY-MM-DD. Example: 2025-04-23",
             "schema": {
               "type": "string",
-              "format": "date"
+              "format": "date",
+              "example": "2025-04-23"
             }
           },
           {
@@ -1338,6 +1362,11 @@
                         "$ref": "#/components/schemas/DailyQuestResponse"
                       }
                     }
+                  }
+                },
+                "examples": {
+                  "DailyQuestListResponse": {
+                    "$ref": "#/components/examples/DailyQuestListResponse"
                   }
                 }
               }
@@ -1367,6 +1396,45 @@
           "$ref": "#/components/parameters/idParam"
         }
       ],
+      "get": {
+        "tags": ["DailyQuests"],
+        "summary": "Get daily quest",
+        "responses": {
+          "200": {
+            "description": "Daily quest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DailyQuestResponse"
+                },
+                "examples": {
+                  "DailyQuestForm": {
+                    "$ref": "#/components/examples/DailyQuestResponse"
+                  },
+                  "DailyQuestFormWithSelectedDays": {
+                    "$ref": "#/components/examples/DailyQuestResponseWithSelectedDays"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "417": {
+            "$ref": "#/components/responses/ExpectationFailed"
+          }
+        }
+      },
       "patch": {
         "tags": ["DailyQuests"],
         "summary": "Update daily quest",
@@ -1376,9 +1444,18 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/DailyQuestForm"
+              },
+              "examples": {
+                "DailyQuestForm": {
+                  "$ref": "#/components/examples/DailyQuestForm"
+                },
+                "DailyQuestFormWithSelectedDays": {
+                  "$ref": "#/components/examples/DailyQuestFormWithSelectedDays"
+                }
               }
             }
-          }
+          },
+          "description": "Add `goal_id` only if you need to link this daily quest with the Goal, leave null if not. Make sure to add `suggestion_id` to create a daily quest from suggestions, leave null if not."
         },
         "responses": {
           "200": {
@@ -1387,6 +1464,14 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DailyQuestResponse"
+                },
+                "examples": {
+                  "DailyQuestForm": {
+                    "$ref": "#/components/examples/DailyQuestResponse"
+                  },
+                  "DailyQuestFormWithSelectedDays": {
+                    "$ref": "#/components/examples/DailyQuestResponseWithSelectedDays"
+                  }
                 }
               }
             }
@@ -1454,12 +1539,14 @@
                 "properties": {
                   "date": {
                     "type": "string",
-                    "format": "date"
+                    "format": "date",
+                    "example": "2025-04-23"
                   }
                 }
               }
             }
-          }
+          },
+          "description": "The exact date to toggle daily quest completion on. Format: YYYY-MM-DD. Example: 2025-04-23"
         },
         "responses": {
           "200": {
@@ -1896,7 +1983,8 @@
             "maximum": 1024
           },
           "goal_type_id": {
-            "type": "string"
+            "type": "string",
+            "format": "uuid"
           },
           "goal_field_values": {
             "type": "array",
@@ -1926,7 +2014,8 @@
         "type": "object",
         "properties": {
           "goal_type_field_id": {
-            "type": "string"
+            "type": "string",
+            "format": "uuid"
           },
           "value": {
             "type": "string"
@@ -1937,16 +2026,20 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "format": "uuid"
           },
           "goal_type_field_id": {
-            "type": "string"
+            "type": "string",
+            "format": "uuid"
           },
           "goal_id": {
-            "type": "string"
+            "type": "string",
+            "format": "uuid"
           },
           "user_id": {
-            "type": "string"
+            "type": "string",
+            "format": "uuid"
           },
           "value": {
             "type": "string"
@@ -1990,7 +2083,8 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "format": "uuid"
           },
           "name": {
             "type": "string"
@@ -2004,7 +2098,8 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "format": "uuid"
           },
           "name": {
             "type": "string"
@@ -2106,7 +2201,8 @@
         "required": ["goal_type_field_id", "progress_value"],
         "properties": {
           "goal_type_field_id": {
-            "type": "string"
+            "type": "string",
+            "format": "uuid"
           },
           "progress_value": {
             "type": "integer"
@@ -2125,7 +2221,8 @@
             "format": "uuid"
           },
           "goal_type_field_id": {
-            "type": "string"
+            "type": "string",
+            "format": "uuid"
           },
           "progress_value": {
             "type": "integer"
@@ -2138,20 +2235,28 @@
       },
       "DailyQuestForm": {
         "type": "object",
-        "required": ["title", "icon", "is_daily"],
+        "required": ["title", "icon", "frequency"],
         "properties": {
-          "title": {
-            "type": "string"
-          },
-          "icon": {
-            "type": "string"
-          },
           "goal_id": {
             "type": "string",
+            "format": "uuid",
             "nullable": true
           },
-          "is_daily": {
-            "type": "boolean"
+          "suggestion_id": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true,
+            "description": "Must be added to create a daily quest from suggestions"
+          },
+          "title": {
+            "type": "string",
+            "minimum": 3,
+            "maximum": 256
+          },
+          "icon": {
+            "type": "string",
+            "minimum": 1,
+            "maximum": 64
           },
           "frequency": {
             "type": "array",
@@ -2167,7 +2272,7 @@
                 "Saturdays",
                 "Sundays"
               ],
-              "description": "Frequency of the daily quest repetition"
+              "description": "Frequency of the daily quest repetition. Frequency must be either 'Daily' or at least one weekday, but not both."
             }
           }
         }
@@ -2175,21 +2280,33 @@
       "DailyQuestResponse": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "user_id": {
+            "type": "string",
+            "format": "uuid"
+          },
           "goal_id": {
             "type": "string",
+            "format": "uuid",
             "nullable": true
           },
           "suggestion_id": {
-            "type": "string"
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
           },
           "title": {
-            "type": "string"
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 256
           },
           "icon": {
-            "type": "string"
-          },
-          "is_daily": {
-            "type": "boolean"
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 256
           },
           "frequency": {
             "type": "array",
@@ -2223,10 +2340,14 @@
         "required": ["title", "icon"],
         "properties": {
           "title": {
-            "type": "string"
+            "type": "string",
+            "minimum": 3,
+            "maximum": 256
           },
           "icon": {
-            "type": "string"
+            "type": "string",
+            "minimum": 3,
+            "maximum": 256
           }
         }
       },
@@ -2235,13 +2356,18 @@
         "properties": {
           "id": {
             "type": "string",
+            "format": "uuid",
             "nullable": true
           },
           "title": {
-            "type": "string"
+            "type": "string",
+            "minimum": 3,
+            "maximum": 256
           },
           "icon": {
-            "type": "string"
+            "type": "string",
+            "minimum": 3,
+            "maximum": 256
           },
           "created_at": {
             "type": "string",
@@ -2414,6 +2540,83 @@
         "value": {
           "name": "Read more books",
           "description": "Read more books during this year"
+        }
+      },
+      "DailyQuestListResponse": {
+        "summary": "An example of Daily Quest list with one daily and one weekday quest",
+        "value": {
+          "data": [
+            {
+              "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+              "user_id": "400eb1db-dc34-418c-b071-714b3732aaef",
+              "goal_id": "12heb1db-dc34-418c-b071-714b3732aaef",
+              "suggestion_id": "56a85f64-5717-4562-b3fc-2c963f66afa6",
+              "title": "Drink 2L of water",
+              "icon": "\uD83D\uDCA7",
+              "frequency": ["Daily"],
+              "created_at": "2025-04-23T20:28:28.425Z",
+              "updated_at": "2025-04-23T20:28:28.425Z"
+            },
+            {
+              "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+              "user_id": "400eb1db-dc34-418c-b071-714b3732aaef",
+              "goal_id": "12heb1db-dc34-418c-b071-714b3732aaef",
+              "suggestion_id": "56a85f64-5717-4562-b3fc-2c963f66afa6",
+              "title": "Read 50 pages",
+              "icon": "\uD83D\uDCD6",
+              "frequency": ["Mondays", "Wednesdays", "Fridays"],
+              "created_at": "2025-04-23T20:28:28.425Z",
+              "updated_at": "2025-04-23T20:28:28.425Z"
+            }
+          ]
+        }
+      },
+      "DailyQuestForm": {
+        "summary": "An example of Daily Quest with daily frequency",
+        "value": {
+          "goal_id": "12heb1db-dc34-418c-b071-714b3732aaef",
+          "suggestion_id": "56a85f64-5717-4562-b3fc-2c963f66afa6",
+          "title": "Drink 2L of water",
+          "icon": "\uD83D\uDCA7",
+          "frequency": ["Daily"]
+        }
+      },
+      "DailyQuestFormWithSelectedDays": {
+        "summary": "An example of Daily Quest with different days frequency",
+        "value": {
+          "goal_id": "12heb1db-dc34-418c-b071-714b3732aaef",
+          "suggestion_id": "56a85f64-5717-4562-b3fc-2c963f66afa6",
+          "title": "Read 50 pages",
+          "icon": "\uD83D\uDCD6",
+          "frequency": ["Mondays", "Wednesdays", "Fridays"]
+        }
+      },
+      "DailyQuestResponse": {
+        "summary": "An example of Daily Quest with daily frequency",
+        "value": {
+          "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          "user_id": "400eb1db-dc34-418c-b071-714b3732aaef",
+          "goal_id": "12heb1db-dc34-418c-b071-714b3732aaef",
+          "suggestion_id": "56a85f64-5717-4562-b3fc-2c963f66afa6",
+          "title": "Drink 2L of water",
+          "icon": "\uD83D\uDCA7",
+          "frequency": ["Daily"],
+          "created_at": "2025-04-23T20:28:28.425Z",
+          "updated_at": "2025-04-23T20:28:28.425Z"
+        }
+      },
+      "DailyQuestResponseWithSelectedDays": {
+        "summary": "An example of Daily Quest with different days frequency",
+        "value": {
+          "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          "user_id": "400eb1db-dc34-418c-b071-714b3732aaef",
+          "goal_id": "12heb1db-dc34-418c-b071-714b3732aaef",
+          "suggestion_id": "56a85f64-5717-4562-b3fc-2c963f66afa6",
+          "title": "Read 50 pages",
+          "icon": "\uD83D\uDCD6",
+          "frequency": ["Mondays", "Wednesdays", "Fridays"],
+          "created_at": "2025-04-23T20:28:28.425Z",
+          "updated_at": "2025-04-23T20:28:28.425Z"
         }
       },
       "BadRequestResponse": {

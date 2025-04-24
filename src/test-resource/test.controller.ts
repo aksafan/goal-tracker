@@ -4,7 +4,7 @@ import { createUser } from "@/user/user.service";
 import type { CreateUserForm, CreateUserResponse } from "@/dto";
 import { Error, ValidationError } from "@/types/errors";
 import { StatusCodes } from "http-status-codes";
-import { BadRequestError, UnprocessableEntityError } from "@/errors/http";
+import { BadRequestError } from "@/errors/http";
 
 export default class TestController {
   // This is an example of async action with sanitized body/query fields,
@@ -15,25 +15,12 @@ export default class TestController {
     res: Response<CreateUserResponse | Error | ValidationError>
   ) {
     const email = req.body.email;
-    const { password, password_confirmation } = req.body;
+    const { password } = req.body;
 
     if (!email || !password) {
       throw new BadRequestError({
         message: "Missing credentials",
         logging: true,
-      });
-    } else if (password.length < 8 || password !== password_confirmation) {
-      throw new UnprocessableEntityError({
-        errors: [
-          {
-            field: "password",
-            message: "'password' must be at least 8 symbols long.",
-          },
-          {
-            field: "password",
-            message: "'password' must match 'password_confirmation'.",
-          },
-        ],
       });
     } else {
       const user = await createUser(req.body);

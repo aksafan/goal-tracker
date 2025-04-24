@@ -1,5 +1,5 @@
 model GoalType {
-  id          String @id @default(uuid())
+  id          String @id @default(uuid()) @db.Uuid
   name        String @unique
   description String
 
@@ -10,8 +10,8 @@ model GoalType {
 }
 
 model GoalTypeField {
-  id           String    @id @default(uuid())
-  goal_type_id String
+  id           String    @id @default(uuid()) @db.Uuid
+  goal_type_id String    @db.Uuid
   field_name   String
   field_type   FieldType
   required     Boolean

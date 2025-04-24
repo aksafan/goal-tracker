@@ -1,9 +1,9 @@
 model Goal {
-  id           String   @id @default(uuid())
+  id           String   @id @default(uuid()) @db.Uuid
   name         String
   description  String
-  user_id      String
-  goal_type_id String
+  user_id      String   @db.Uuid
+  goal_type_id String   @db.Uuid
   created_at   DateTime @default(now())
   updated_at   DateTime @updatedAt
 
@@ -17,10 +17,10 @@ model Goal {
 }
 
 model GoalFieldValue {
-  id                 String @id @default(uuid())
-  goal_type_field_id String
-  goal_id            String
-  user_id            String
+  id                 String @id @default(uuid()) @db.Uuid
+  goal_type_field_id String @db.Uuid
+  goal_id            String @db.Uuid
+  user_id            String @db.Uuid
   value              String
 
   goal_type_field GoalTypeField @relation(fields: [goal_type_field_id], references: [id], onDelete: Cascade)
@@ -31,8 +31,8 @@ model GoalFieldValue {
 }
 
 model GoalBoardImage {
-  id             String   @id @default(uuid())
-  user_id        String
+  id             String   @id @default(uuid()) @db.Uuid
+  user_id        String   @db.Uuid
   file_path      String
   thumbnail_path String
   created_at     DateTime @default(now())

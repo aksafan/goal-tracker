@@ -6,6 +6,7 @@ const dailyQuestRouter = Router();
 const dailyQuestController = new DailyQuestController();
 
 dailyQuestRouter.get("/", queryParamsParser, dailyQuestController.getAll);
+dailyQuestRouter.get("/:id", dailyQuestController.getById);
 dailyQuestRouter.post("/", dailyQuestController.create);
 dailyQuestRouter.get(
   "/for-date",
@@ -13,7 +14,7 @@ dailyQuestRouter.get(
   dailyQuestController.getForDate
 );
 dailyQuestRouter.patch("/:id", dailyQuestController.update);
-dailyQuestRouter.delete("/:id", dailyQuestController.remove);
+dailyQuestRouter.delete("/:id", dailyQuestController.delete);
 dailyQuestRouter.post("/:id/toggle", dailyQuestController.toggleCompletion);
 
 export default dailyQuestRouter;

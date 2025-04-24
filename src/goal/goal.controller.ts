@@ -19,10 +19,9 @@ export default class GoalController {
   private goalService: GoalService = new GoalService();
 
   getAll = async (req: Request, res: Response): Promise<void> => {
-    // const goals = await this.goalService.findAll(req.user.id);
-
     const goals: GoalModel[] = await this.goalService.findAll(
       "7171f91a-bd67-41c2-9e38-7d81be9edf22",
+      // req.user.id,
       req.queryParams
     );
 
@@ -31,9 +30,9 @@ export default class GoalController {
 
   getById = async (req: Request, res: Response): Promise<void> => {
     try {
-      // const goal = await this.goalService.findById(req.params.id, req.user.id);
       const goal: GoalModel = await this.goalService.findById(
         req.params.id,
+        // req.user.id,
         "7171f91a-bd67-41c2-9e38-7d81be9edf22"
       );
 
@@ -48,18 +47,18 @@ export default class GoalController {
   };
 
   create = async (req: Request, res: Response): Promise<void> => {
-    const reateGoalForm = CreateGoalForm.safeParse(req.body);
-    if (!reateGoalForm.success) {
+    const createGoalForm = CreateGoalForm.safeParse(req.body);
+    if (!createGoalForm.success) {
       throw new UnprocessableEntityError({
-        errors: reateGoalForm.error.flatten().fieldErrors,
+        errors: createGoalForm.error.flatten().fieldErrors,
       });
     }
 
     try {
-      // const goal = await this.goalService.createGoal(req.user.id, result.data);
       const goal: GoalModel = await this.goalService.create(
+        // req.user.id,
         "7171f91a-bd67-41c2-9e38-7d81be9edf22",
-        reateGoalForm.data
+        createGoalForm.data
       );
 
       res.status(StatusCodes.CREATED).json(toGoalResponse(goal));
@@ -86,9 +85,9 @@ export default class GoalController {
     }
 
     try {
-      // const goal = await this.goalService.update(req.params.id, req.user.id, result.data);
       const goal: GoalModel = await this.goalService.update(
         req.params.id,
+        // req.user.id,
         "7171f91a-bd67-41c2-9e38-7d81be9edf22",
         updateGoalForm.data
       );
@@ -105,9 +104,9 @@ export default class GoalController {
 
   delete = async (req: Request, res: Response): Promise<void> => {
     try {
-      // await this.goalService.delete(req.params.id, req.user.id);
       await this.goalService.delete(
         req.params.id,
+        // req.user.id,
         "7171f91a-bd67-41c2-9e38-7d81be9edf22"
       );
 
@@ -133,9 +132,9 @@ export default class GoalController {
     }
 
     try {
-      // const goal = await this.goalService.updateFieldValues(req.params.id, req.user.id, result.data);
       const goal: GoalModel = await this.goalService.updateFieldValues(
         req.params.id,
+        // req.user.id,
         "7171f91a-bd67-41c2-9e38-7d81be9edf22",
         updateGoalFieldValuesForm.data
       );

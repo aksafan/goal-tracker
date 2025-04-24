@@ -5,7 +5,7 @@ import { faker } from "@faker-js/faker";
 export const seedGoals = async (): Promise<void> => {
   const users = await prisma.user.findMany();
   const goalTypes = await prisma.goalType.findMany({
-    include: { fields: true },
+    include: { goal_type_fields: true },
   });
 
   for (const user of users) {
@@ -20,7 +20,7 @@ export const seedGoals = async (): Promise<void> => {
           },
         });
 
-        const fieldValues = goalType.fields.map((field) => ({
+        const fieldValues = goalType.goal_type_fields.map((field) => ({
           goal_type_field_id: field.id,
           goal_id: goal.id,
           user_id: user.id,

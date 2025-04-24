@@ -15,6 +15,13 @@ export const QueryParamsRawSchema = z.object({
     .optional(),
 
   sort: z.string().optional(),
+
+  date: z
+    .string()
+    .refine((val) => !isNaN(Date.parse(val)), {
+      message: "Date must be a valid ISO format (YYYY-MM-DD)",
+    })
+    .optional(),
 });
 
 export type RawQueryParams = z.infer<typeof QueryParamsRawSchema>;
@@ -28,6 +35,7 @@ type QueryParams = {
   limit: number;
   sortBy: string;
   sortOrder: SortingOrder;
+  date?: Date;
 };
 
 export default QueryParams;
