@@ -19,7 +19,7 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
 
   try {
     const { userId } = jwtTokenService.verifyAccessToken(token);
-    
+
     req.user = { id: userId };
 
     next();

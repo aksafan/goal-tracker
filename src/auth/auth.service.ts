@@ -2,7 +2,6 @@ import { userService } from "@/user/user.service";
 import { jwtTokenService } from "@/services/JwtTokenService";
 import {
   UnauthenticatedError,
-  UnauthorizedError,
   UnprocessableEntityError,
 } from "@/errors/http";
 import {
@@ -67,7 +66,12 @@ export class AuthService {
     const user = await userService.findUserByEmail(email);
 
     if (!user) {
-      throw new UnauthorizedError({ message: "Invalid email or password" });
+      throw new UnprocessableEntityError({
+        message: "Invalid email or password",
+        errors: {
+          email: ["Invalid email or password"],
+        },
+      });
     }
     await validateUserPassword(password, user.password);
 

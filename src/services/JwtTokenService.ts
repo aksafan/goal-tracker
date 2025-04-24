@@ -1,20 +1,20 @@
 import jwt from "jsonwebtoken";
-import ms, { StringValue } from 'ms';
+import ms, { StringValue } from "ms";
 
 type JwtPayload = {
   userId: string;
-}
+};
 
 type TokenPair = {
   accessToken: string;
   refreshToken: string;
-}
+};
 
 export class JwtTokenService {
-  private accessSecret: string;
-  private refreshSecret: string;
-  private accessExpiresIn: StringValue;
-  private refreshExpiresIn: StringValue;
+  private readonly accessSecret: string;
+  private readonly refreshSecret: string;
+  private readonly accessExpiresIn: StringValue;
+  private readonly refreshExpiresIn: StringValue;
 
   constructor() {
     const {
@@ -34,7 +34,7 @@ export class JwtTokenService {
     }
 
     this.accessSecret = JWT_SECRET;
-    this.accessExpiresIn = (JWT_EXPIRES_IN || "1h") as StringValue;
+    this.accessExpiresIn = (JWT_EXPIRES_IN || "15m") as StringValue;
     this.refreshSecret = JWT_REFRESH_SECRET;
     this.refreshExpiresIn = (JWT_REFRESH_EXPIRES_IN || "24h") as StringValue;
   }

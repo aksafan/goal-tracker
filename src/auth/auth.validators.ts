@@ -1,4 +1,4 @@
-import { UnauthorizedError, UnprocessableEntityError } from "@/errors/http";
+import { UnprocessableEntityError } from "@/errors/http";
 import { userService } from "@/user/user.service";
 import bcrypt from "bcryptjs";
 
@@ -19,9 +19,14 @@ export const validateUserPassword = async (
   formValue: string,
   userPassword: string
 ) => {
-    const isMatch =  bcrypt.compare(formValue, userPassword);
+  const isMatch = bcrypt.compare(formValue, userPassword);
 
   if (!isMatch) {
-    throw new UnauthorizedError({ message: "Invalid email or password" });
+    throw new UnprocessableEntityError({
+      message: "Invalid email or password",
+      errors: {
+        email: ["Invalid email or password"],
+      },
+    });
   }
 };
