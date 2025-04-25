@@ -1790,12 +1790,15 @@
             "type": "string"
           },
           "password": {
-            "type": "string"
+            "type": "string",
+            "minimum": 8,
+            "maximum": 64
           },
           "password_confirmation": {
             "type": "string"
           },
           "name": {
+            "minimum": 3,
             "type": "string"
           }
         }
