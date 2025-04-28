@@ -1,4 +1,4 @@
-import type { Request, Response } from "express-serve-static-core";
+import type { Response } from "express-serve-static-core";
 import { StatusCodes } from "http-status-codes";
 import GoalService from "@/goal/goal.service";
 import {
@@ -6,7 +6,7 @@ import {
   ValidationDomainException,
 } from "@/errors/domain";
 import { NotFoundError, UnprocessableEntityError } from "@/errors/http";
-import { toGoalResponse, toGoalResponses } from "@/goal/goal.types";
+import { toGoalResponse, toGoalResponseList } from "@/goal/goal.types";
 import { GoalModel } from "@/goal/goal.domain.types";
 import {
   CreateGoalForm,
@@ -14,26 +14,35 @@ import {
   UpdateGoalForm,
 } from "@/goal/goal.forms";
 import { FlattenedFieldErrors } from "@/types/zod";
+import {
+  AuthenticatedRequest,
+  RequestWithQueryParams,
+  RequestWithRouteParams,
+} from "@/types/express";
 
 export default class GoalController {
   private goalService: GoalService = new GoalService();
 
-  getAll = async (req: Request, res: Response): Promise<void> => {
+  getAll = async (
+    req: AuthenticatedRequest & RequestWithQueryParams,
+    res: Response
+  ): Promise<void> => {
     const goals: GoalModel[] = await this.goalService.findAll(
-      "7171f91a-bd67-41c2-9e38-7d81be9edf22",
-      // req.user.id,
+      req.user.id,
       req.queryParams
     );
 
-    res.status(StatusCodes.OK).json({ data: toGoalResponses(goals) });
+    res.status(StatusCodes.OK).json({ data: toGoalResponseList(goals) });
   };
 
-  getById = async (req: Request, res: Response): Promise<void> => {
+  getById = async (
+    req: AuthenticatedRequest & RequestWithRouteParams,
+    res: Response
+  ): Promise<void> => {
     try {
       const goal: GoalModel = await this.goalService.findById(
-        req.params.id,
-        // req.user.id,
-        "7171f91a-bd67-41c2-9e38-7d81be9edf22"
+        req.routeParams.id,
+        req.user.id
       );
 
       res.status(StatusCodes.OK).json(toGoalResponse(goal));
@@ -46,7 +55,7 @@ export default class GoalController {
     }
   };
 
-  create = async (req: Request, res: Response): Promise<void> => {
+  create = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
     const createGoalForm = CreateGoalForm.safeParse(req.body);
     if (!createGoalForm.success) {
       throw new UnprocessableEntityError({
@@ -56,8 +65,7 @@ export default class GoalController {
 
     try {
       const goal: GoalModel = await this.goalService.create(
-        // req.user.id,
-        "7171f91a-bd67-41c2-9e38-7d81be9edf22",
+        req.user.id,
         createGoalForm.data
       );
 
@@ -76,7 +84,10 @@ export default class GoalController {
     }
   };
 
-  update = async (req: Request, res: Response): Promise<void> => {
+  update = async (
+    req: AuthenticatedRequest & RequestWithRouteParams,
+    res: Response
+  ): Promise<void> => {
     const updateGoalForm = UpdateGoalForm.safeParse(req.body);
     if (!updateGoalForm.success) {
       throw new UnprocessableEntityError({
@@ -86,9 +97,8 @@ export default class GoalController {
 
     try {
       const goal: GoalModel = await this.goalService.update(
-        req.params.id,
-        // req.user.id,
-        "7171f91a-bd67-41c2-9e38-7d81be9edf22",
+        req.routeParams.id,
+        req.user.id,
         updateGoalForm.data
       );
 
@@ -102,13 +112,12 @@ export default class GoalController {
     }
   };
 
-  delete = async (req: Request, res: Response): Promise<void> => {
+  delete = async (
+    req: AuthenticatedRequest & RequestWithRouteParams,
+    res: Response
+  ): Promise<void> => {
     try {
-      await this.goalService.delete(
-        req.params.id,
-        // req.user.id,
-        "7171f91a-bd67-41c2-9e38-7d81be9edf22"
-      );
+      await this.goalService.delete(req.routeParams.id, req.user.id);
 
       res.status(StatusCodes.NO_CONTENT).send();
     } catch (e: unknown) {
@@ -120,7 +129,10 @@ export default class GoalController {
     }
   };
 
-  updateFieldValues = async (req: Request, res: Response): Promise<void> => {
+  updateFieldValues = async (
+    req: AuthenticatedRequest & RequestWithRouteParams,
+    res: Response
+  ): Promise<void> => {
     const updateGoalFieldValuesForm = UpdateGoalFieldValuesForm.safeParse(
       req.body
     );
@@ -133,9 +145,8 @@ export default class GoalController {
 
     try {
       const goal: GoalModel = await this.goalService.updateFieldValues(
-        req.params.id,
-        // req.user.id,
-        "7171f91a-bd67-41c2-9e38-7d81be9edf22",
+        req.routeParams.id,
+        req.user.id,
         updateGoalFieldValuesForm.data
       );
 

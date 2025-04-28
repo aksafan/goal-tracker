@@ -23,7 +23,6 @@ export const QueryParamsRawSchema = z.object({
     })
     .optional(),
 });
-
 export type RawQueryParams = z.infer<typeof QueryParamsRawSchema>;
 
 export enum SortingOrder {
@@ -39,8 +38,3 @@ type QueryParams = {
 };
 
 export default QueryParams;
-
-// TODO: remove when other controllers will be implemented and no examples needed anymore
-export interface CreateUserQueryParams {
-  loginAfterCreate?: boolean;
-}
