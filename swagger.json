@@ -1936,6 +1936,9 @@
         "type": "object",
         "required": ["user", "access_token", "refresh_token"],
         "properties": {
+          "user": {
+            "$ref": "#/components/schemas/UserResponse"
+          },
           "access_token": {
             "type": "string",
             "description": "JWT used for authenticated requests"
