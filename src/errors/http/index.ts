@@ -4,7 +4,7 @@ import NotFoundError from "@/errors/http/notFound";
 import BadRequestError from "@/errors/http/badRequest";
 import UnauthorizedError from "@/errors/http/unauthorized";
 import UnprocessableEntityError from "@/errors/http/unprocessableEntity";
-import ExpectationFailedError from "@/errors/http/unprocessableEntity";
+import ExpectationFailedError from "@/errors/http/expectationFailed";
 
 export {
   HttpError,
