@@ -21,7 +21,7 @@ export const validateUserPassword = async (
   formValue: string,
   userPassword: string
 ) => {
-  const isMatch = bcrypt.compare(formValue, userPassword);
+  const isMatch = await bcrypt.compare(formValue, userPassword);
 
   if (!isMatch) {
     throw new UnprocessableEntityError({
