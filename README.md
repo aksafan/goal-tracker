@@ -16,7 +16,7 @@ both the back-end server and their front-end app.
 4. Run `npm install` to install dependencies inside backend directory
 5. Run `npm run prisma:migrate` to apply migrations
 6. Run `npm run dev` to start the development server
-7. Open http://localhost:8000/api/v1/ with your browser to test
+7. Open http://localhost:8000/docs with your browser to test
 8. Your back-end server is now running. You can now run the front-end app
 9. Swagger API Docs are available at http://localhost:8000/docs (json format at http://localhost:8000/docs.json)
 
